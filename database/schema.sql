@@ -1,26 +1,43 @@
 /*----------------Create Table Vaccine_Type ------------------------*/
 CREATE TABLE Vaccine_Type(
-  Vaccine_ID CHAR(20),
-  Vaccine_Name CHAR(20),
-  Number_Of_Doses INT,
-  Quantity REAL,
-  Side_Effects CHAR(20),
-  Allergies CHAR(20),
+Vaccine_ID CHAR(20),
+Vaccine_Name CHAR(20),
+Number_Of_Doses INT,
+Quantity REAL,
+Allergies CHAR(20),
 
-  PRIMARY KEY(Vaccine_ID),
-  UNIQUE(Vaccine_Name)
+PRIMARY KEY(Vaccine_ID),
+UNIQUE(Vaccine_Name)
 );
+
+select * from Vaccine_Type;
+
+
+Create Table Side_Effects (
+side_effect_id CHAR(10),
+side_effect CHAR(50),
+PRIMARY KEY (side_effect_id));
+
+
+Create Table has_side_effect(
+side_effect_id CHAR(10),
+Vaccine_ID CHAR(20),
+PRIMARY KEY (side_effect_id, Vaccine_ID),
+Foreign Key (side_effect_id) REFERENCES Side_Effects (side_effect_id),
+Foreign Key (Vaccine_ID) REFERENCES Vaccine_Type (Vaccine_ID));
+
+
 
 /*----------------Create Table Vaccine_Companies ------------------------*/
 
 CREATE TABLE Vaccine_Companies(
-  Company_ID CHAR(20),
-  Company_Name CHAR(20),
-  Contact_Name CHAR(20),
-  Contact_Email CHAR(20),
-  Phone CHAR(10),
+Company_ID CHAR(20),
+Company_Name CHAR(20),
+Contact_Name CHAR(20),
+Contact_Email CHAR(20),
+Phone CHAR(10),
 
-  PRIMARY KEY(Company_ID)
+PRIMARY KEY(Company_ID)
 );
 
 select * from Vaccine_Companies;
@@ -28,43 +45,51 @@ select * from Vaccine_Companies;
 /*----------------Create Table Address ------------------------*/
 
 CREATE TABLE Address(
-    Address_ID CHAR(20),
-    Apartment CHAR(50),
-    Street CHAR(50),
-    City CHAR(50),
-    State CHAR(50),
-    Country CHAR(50),
-    Zip_Code CHAR(50),
+Address_ID CHAR(20),
+Apartment CHAR(50),
+Street CHAR(50),
+City CHAR(50),
+State CHAR(50),
+Country CHAR(50),
+Zip_Code CHAR(50),
 
 
-    PRIMARY KEY(Address_ID)
-  );
-
-  /*----------------Create Table Supplies ------------------------*/
-
-  CREATE TABLE Supplies(
-  Vaccine_ID CHAR(20),
-  Company_ID CHAR(20),
-
-  PRIMARY KEY(Vaccine_ID, Company_ID),
-
-  Foreign Key(Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID),
-  Foreign Key(Company_ID) REFERENCES Vaccine_Companies(Company_ID)
+PRIMARY KEY(Address_ID)
 );
 
+select * from  Address;
+
+
+
+
+/*----------------Create Table Supplies ------------------------*/
+
+CREATE TABLE Supplies(
+Vaccine_ID CHAR(20),
+Company_ID CHAR(20),
+
+PRIMARY KEY(Vaccine_ID, Company_ID),
+
+Foreign Key(Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID),
+Foreign Key(Company_ID) REFERENCES Vaccine_Companies(Company_ID)
+);
+
+
+select * from Supplies ;
 
 /*----------------Create Table Located ------------------------*/
 
 CREATE TABLE Located(
-  Address_ID CHAR(20),
-  Company_ID CHAR(20),
+Address_ID CHAR(20),
+Company_ID CHAR(20),
 
-  PRIMARY KEY(Address_ID, Company_ID),
+PRIMARY KEY(Address_ID, Company_ID),
 
-  Foreign Key(Address_ID) REFERENCES Address(Address_ID),
-  Foreign Key(Company_ID) REFERENCES Vaccine_Companies(Company_ID)
+Foreign Key(Address_ID) REFERENCES Address(Address_ID),
+Foreign Key(Company_ID) REFERENCES Vaccine_Companies(Company_ID)
 );
 
+select * from Located;
 
 /*---------------------------------------*/
 
@@ -78,7 +103,7 @@ CREATE TABLE Comorbidities(
 
 CREATE TABLE Distribution_Phase(
   Phase_number CHAR(20),
-  Description VARCHAR(3000),
+  Description VARCHAR2(4000),
   Start_date DATE,
   End_date DATE,
   PRIMARY KEY (Phase_number)
@@ -101,40 +126,42 @@ CREATE TABLE Distribution_Location(
   FOREIGN KEY (Located) REFERENCES Address(Address_ID)
 );
 
+
+
 Create table People(
-  SSN CHAR(9),
-  name CHAR(50),
-  occupation CHAR(50),
-  username CHAR(15),
-  password CHAR(15),
-  email_address CHAR(25),
-  age REAL,
-  address_id CHAR(15) NOT NULL,
-  phase_number CHAR(15) NOT NULL,
-  PRIMARY KEY (SSN),
-  Unique(username),
-  Unique (password),
-  Unique (email_address),
-  Foreign key (address_id) REFERENCES Address (address_id),
-  Foreign key (phase_number) REFERENCES Distribution_Phase (phase_number));
+SSN CHAR(9),
+name CHAR(50),
+occupation CHAR(50),
+username CHAR(15),
+password CHAR(15),
+email_address CHAR(25),
+age REAL,
+address_id CHAR(20) NOT NULL,
+phase_number CHAR(20) NOT NULL,
+PRIMARY KEY (SSN),
+Unique(username),
+Unique (password),
+Unique (email_address),
+Foreign key (address_id) REFERENCES Address (address_id),
+Foreign key (phase_number) REFERENCES Distribution_Phase (phase_number));
 
-  Create table Healthcare_Staff(
-  SSN CHAR(9),
-  Job_Title CHAR(50),
-  PRIMARY KEY (SSN),
-  Foreign key (SSN) REFERENCES People (SSN) ON DELETE CASCADE);
+Create table Healthcare_Staff(
+SSN CHAR(9),
+Job_Title CHAR(50),
+PRIMARY KEY (SSN),
+Foreign key (SSN) REFERENCES People (SSN) ON DELETE CASCADE);
 
 
-  /*----------------Create Table Administers ------------------------*/
+/*----------------Create Table Administers ------------------------*/
 
-  CREATE TABLE Administers(
-  SSN CHAR(9),
-  Vaccine_ID CHAR(20),
+CREATE TABLE Administers(
+SSN CHAR(9),
+Vaccine_ID CHAR(20),
 
-  PRIMARY KEY(SSN, Vaccine_ID),
+PRIMARY KEY(SSN, Vaccine_ID),
 
-  FOREIGN KEY(SSN) REFERENCES Healthcare_Staff(SSN),
-  FOREIGN KEY(Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID)
+FOREIGN KEY(SSN) REFERENCES Healthcare_Staff(SSN),
+FOREIGN KEY(Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID)
 );
 
 
@@ -153,20 +180,20 @@ CREATE TABLE Appointments(
 );
 
 Create table Health_Insurance (
-  Insurance_Number CHAR(25),
-  SSN CHAR(9) NOT NULL,
-  Insurance_Company CHAR(25),
-  covid_coverage BOOLEAN,
-  expiration_date DATE,
-  PRIMARY KEY (Insurance_Number),
-  Unique (SSN),
-  Foreign key (SSN) REFERENCES People (SSN)
-);
+Insurance_Number CHAR(25),
+SSN CHAR(9) NOT NULL,
+Insurance_Company CHAR(25),
+covid_coverage CHAR(1),
+expiration_date DATE,
+PRIMARY KEY (Insurance_Number),
+Unique (SSN),
+Foreign key (SSN) REFERENCES People (SSN));
+
 
 Create table Diagnosed (
-  SSN CHAR(9),
-  Disease_ID CHAR(25),
-  PRIMARY KEY (SSN, Disease_ID),
-  Foreign key (SSN) REFERENCES People (SSN),
-  Foreign key (Disease_ID) REFERENCES Comorbidities (Disease_ID)
-);
+SSN CHAR(9),
+Disease_ID CHAR(20),
+PRIMARY KEY (SSN, Disease_ID),
+Foreign key (SSN) REFERENCES People (SSN),
+Foreign key (Disease_ID) REFERENCES Comorbidities (Disease_ID));
+
