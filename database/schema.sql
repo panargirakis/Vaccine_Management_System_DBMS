@@ -109,10 +109,24 @@ PRIMARY KEY(Address_ID)
 INSERT INTO Address VALUES('1','235', 'East 42nd Street', 'New York', 'NY', 'USA', '10017');
 INSERT INTO Address VALUES('2','200', 'Technology Square', 'Cambridge', 'MA', 'USA', '02139');
 INSERT INTO Address VALUES('3','1', 'Johnson And Johnson Plaza', 'New Brunswick', 'NJ','USA', '08933');
+INSERT INTO Address VALUES('4', '4', 'Mirick Rd', 'Princeton', 'MA', 'USA', '01541');
+INSERT INTO Address VALUES('5', '5', 'N Sturbridge Rd', 'Charlton', 'MA', 'USA', '01507');
+INSERT INTO Address VALUES('6', '6', 'Mount Auburn St', 'Watertown', 'MA', 'USA', '02427');
+INSERT INTO Address VALUES('7', '7', 'Neilson Rd', 'New Salem', 'MA', 'USA', '03155');
+INSERT INTO Address VALUES('8', '88', 'Reservoir Rd', 'Coventry', 'RI', 'USA', '02816');
+INSERT INTO Address VALUES('9', '101', 'Gaulin Ave', 'Woonsocket', 'RI', 'USA', '02895');
+INSERT INTO Address VALUES('10', '200', 'Aldrich St', 'Wyoming', 'RI', 'USA', '02898');
+INSERT INTO Address VALUES('11', '17', 'Morril Ln', 'Providence', 'RI', 'USA', '02904');
+INSERT INTO Address VALUES('12', '25', 'Conifer Rd', 'Rindge', 'NH', 'USA', '03461');
+INSERT INTO Address VALUES('13', '23', 'Wentworth Ave', 'Plaistow', 'NH', 'USA', '03865');
+INSERT INTO Address VALUES('14', '20', 'Varney Point Rd', 'Gilford', 'NH', 'USA', '03249');
+INSERT INTO Address VALUES('15', '41', 'Hixville Rd', 'North Dartmouth', 'MA', 'USA', '02747');
+INSERT INTO Address VALUES('16', '1000', 'Clark St', 'New Bedford', 'MA', 'USA', '02740');
+INSERT INTO Address VALUES('17', '26', 'Main St', 'Acushnet', 'MA', 'USA', '02743');
 
-INSERT INTO Address VALUES('4', NULL, '100 Institute Road', 'Worcester', 'MA', 'USA', '01609');
-INSERT INTO Address VALUES('5', NULL, '85 East Concord Street', 'Boston', 'MA', 'USA', '02118');
-INSERT INTO Address VALUES('6', NULL, '17 Corinth St', 'Roslindale', 'MA', 'USA', '02131');
+INSERT INTO Address VALUES('18', NULL, '100 Institute Road', 'Worcester', 'MA', 'USA', '01609');
+INSERT INTO Address VALUES('19', NULL, '85 East Concord Street', 'Boston', 'MA', 'USA', '02118');
+INSERT INTO Address VALUES('20', NULL, '17 Corinth St', 'Roslindale', 'MA', 'USA', '02131');
 
 select * from  Address;
 
@@ -212,9 +226,9 @@ CREATE TABLE Distribution_Location(
   FOREIGN KEY (Located) REFERENCES Address(Address_ID)
 );
 
-INSERT INTO Distribution_Location VALUES('1', 'WPI', 100, '4');
-INSERT INTO Distribution_Location VALUES('2', 'Boston Medical Center', 2000, '5');
-INSERT INTO Distribution_Location VALUES('3', 'Roslindale COVID-19 Vaccination Site', 50, '6');
+INSERT INTO Distribution_Location VALUES('1', 'WPI', 100, '18');
+INSERT INTO Distribution_Location VALUES('2', 'Boston Medical Center', 2000, '19');
+INSERT INTO Distribution_Location VALUES('3', 'Roslindale COVID-19 Vaccination Site', 50, '20');
 
 
 Create table People(
@@ -234,11 +248,43 @@ Unique (email_address),
 Foreign key (address_id) REFERENCES Address (address_id),
 Foreign key (phase_number) REFERENCES Distribution_Phase (phase_number));
 
+/* NEED to insert the distribution phase number foreign key to each person here */
+
+insert into People Values ('147258369', 'Joe Wild', 'contractor', 'jwild1', 'password13', 'jwild1@gmail.com', 52, '15');
+insert into People Values ('741852963', 'Jim Hendrix', 'musician', 'jhendrix1', 'password14', 'jhendrix1@gmail.com', 32, '16');
+insert into People Values ('951753825', 'Aubrey West', 'teacher', 'awest1', 'password0', 'awest1@gmail.com', 34, '17');
+
+insert into People Values ('123456789', 'Jane Doe', 'nurse', 'jdoe1', 'password1', 'jdoe1@gmail.com', 50, '4');
+insert into People Values ('987654321', 'John Doe', 'physician', 'jdoe2', 'password2', 'jdoe2@gmail.com', 55, '5');
+insert into People Values ('111111111', 'Ben Johnson', 'volunteer', 'bjohnson1', 'password3', 'bjohnson1@gmail.com', 60, '6');
+insert into People Values ('222222222', 'Peter Smith', 'nursing student', 'psmith1', , 'password4', 'psmith1@gmail.com', 25, '6');
+insert into People Values ('333333333', 'Jack Black', 'nurse', 'jblack1', 'password5', 'jblack1@gmail.com', 35, '8');
+insert into People Values ('444444444', 'Tom Johnston', 'pharmacist', 'tjohnston1', 'password6', 'tjohnston1@gmail.com', 45, '9');
+insert into People Values ('555555555', 'Bill Smithers', 'nurse', 'bsmithers1', 'password7', 'bsmithers1@gmail.com', 40, '10');
+insert into People Values ('666666666', 'Jan Moon', 'physician', 'jmoon1', 'password8', 'jmoon1@gmail.com', 55, '11');
+insert into People Values ('777777777', 'Jeff Frost', 'retired physician', 'jfrost1', 'password9', 'jfrost1@gmail.com', 70, '12');
+insert into People Values ('888888888', 'Jim Blake', 'dentist', 'jblake1', 'password10', 'jblake1@gmail.com', 38, '13');
+insert into People Values ('999999999', 'Nick Jones', 'nurse', 'njones1', 'password11', 'njones1@gmail.com', 27, '7');
+insert into People Values ('135791357', 'Jennifer Trent', 'pharmacist', 'jtrent1', 'password12', 'jtrent1@gmail.com', 40, '14');
+
 Create table Healthcare_Staff(
 SSN CHAR(9),
 Job_Title CHAR(50),
 PRIMARY KEY (SSN),
 Foreign key (SSN) REFERENCES People (SSN) ON DELETE CASCADE);
+
+insert into Healthcare_Staff Values ('123456789', 'nurse');
+insert into Healthcare_Staff Values ('987654321', 'physician');
+insert into Healthcare_Staff Values ('111111111', 'volunteer');
+insert into Healthcare_Staff Values ('222222222', 'nursing student');
+insert into Healthcare_Staff Values ('333333333', 'nurse');
+insert into Healthcare_Staff Values ('444444444', 'pharmacist');
+insert into Healthcare_Staff Values ('555555555', 'nurse');
+insert into Healthcare_Staff Values ('666666666', 'physician')
+insert into Healthcare_Staff Values ('777777777', 'retired physician');
+insert into Healthcare_Staff Values ('888888888', 'dentist');
+insert into Healthcare_Staff Values ('999999999', 'nurse');
+insert into Healthcare_Staff Values ('135791357', 'pharmacist');
 
 
 /*----------------Create Table Administers ------------------------*/
@@ -289,6 +335,22 @@ expiration_date DATE,
 PRIMARY KEY (Insurance_Number),
 Unique (SSN),
 Foreign key (SSN) REFERENCES People (SSN));
+
+insert into Health_Insurance Values ('12345', '147258369', 'BCBS', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
+insert into Health_Insurance Values ('67899', '741852963', 'BCBS', 'T', TO_DATE('01 Jan 2022', 'DD MON YYYY');
+insert into Health_Insurance Values ('98765', '951753825', 'BCBS', 'T', TO_DATE('01 Jan 2023', 'DD MON YYYY');
+insert into Health_Insurance Values ('14785', '123456789', 'BCBS', 'T', TO_DATE('01 Jan 2028', 'DD MON YYYY');
+insert into Health_Insurance Values ('11111', '987654321', 'BCBS', 'T', TO_DATE('01 Jan 2025', 'DD MON YYYY');
+insert into Health_Insurance Values ('22222', '111111111', 'BCBS', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
+insert into Health_Insurance Values ('33333', '222222222', 'BCBS', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
+insert into Health_Insurance Values ('44444', '333333333', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
+insert into Health_Insurance Values ('55555', '444444444', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
+insert into Health_Insurance Values ('66666', '555555555', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
+insert into Health_Insurance Values ('77777', '666666666', 'Tufts', 'T', TO_DATE('01 Jan 2022', 'DD MON YYYY');
+insert into Health_Insurance Values ('88888', '777777777', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
+insert into Health_Insurance Values ('99999', '888888888', 'Tufts', 'T', TO_DATE('01 Jan 2022', 'DD MON YYYY');
+insert into Health_Insurance Values ('10101', '999999999', 'Harvard Pilgrim', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
+insert into Health_Insurance Values ('20202', '135791357', 'Harvard Pilgrim', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
 
 
 Create table Diagnosed (

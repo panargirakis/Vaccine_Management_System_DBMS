@@ -17,3 +17,48 @@ HAVING count(AW.Disease_ID) >= 3));
 SELECT DISTINCT VT.Vaccine_ID, VT.Vaccine_Name
 FROM Vaccine_Type VT, (SELECT * FROM Address A NATURAL JOIN Located L)
 WHERE A.address_id = x; 
+
+
+/*----- SANIKA: QUERIES------------- */
+
+/* 3-- List out people eligible for a distribution phase which has three or more comorbidities associated with it. */
+SELECT P.SSN, P.name
+FROM People P
+WHERE P.SSN IN(
+SELECT A.Phase_number
+FROM associated_with A
+GROUP BY A.Phase_number
+HAVING COUNT(DISTINCT A.Disease_ID) >= 3);
+
+/* 7-- List out names and SSN of all healthcare people administering vaccine types supplied by a given vaccine company. */
+SELECT P.SSN, P.name
+FROM People P
+WHERE P.SSN IN(
+SELECT Admin.SSN
+FROM Administers Admin
+WHERE Admin.Vaccine_ID IN(
+SELECT S.Vaccine_ID
+FROM Supplies S
+WHERE S.Company_ID IN((SELECT C.Company_ID FROM Vaccine_Companies C WHERE C.Company_Name = 'ModernaTX'))));
+
+/*9-- List out all the appointments having vaccine types supplied by a given vaccine company. */
+SELECT AP.Appt_ID
+FROM Appointments AP
+WHERE AP.Vaccine_ID IN(
+SELECT S.Vaccine_ID
+FROM Supplies S
+WHERE S.Company_ID IN(
+(SELECT C.Company_ID FROM Vaccine_Companies C WHERE C.Company_Name = 'ModernaTX')))
+
+/*8.-- List out all people scheduling an appointment for a distribution phase with 3 months of duration. -S */
+/*SELECT P.SSN, P.name
+FROM People P
+WHERE P.SSN IN(
+
+SELECT A.SSN
+FROM Appointments A
+WHERE A.is_part_of IN( 
+SELECT DP.Phase_number FROM Distribution_Phase DP WHERE (SELECT DATEDIFF(month, DP.Start_Date, DP.End_Date) > 3 )
+)
+
+)*/
