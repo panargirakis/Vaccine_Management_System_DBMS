@@ -1,19 +1,35 @@
+DROP TABLE "ASSOCIATED_WITH" CASCADE CONSTRAINTS;
+DROP TABLE "DISTRIBUTION_LOCATION" CASCADE CONSTRAINTS;
+DROP TABLE "PEOPLE" CASCADE CONSTRAINTS;
+DROP TABLE "HEALTHCARE_STAFF" CASCADE CONSTRAINTS;
+DROP TABLE "ADMINISTERS" CASCADE CONSTRAINTS;
+DROP TABLE "APPOINTMENTS" CASCADE CONSTRAINTS;
+DROP TABLE "HEALTH_INSURANCE" CASCADE CONSTRAINTS;
+DROP TABLE "DIAGNOSED" CASCADE CONSTRAINTS;
+DROP TABLE "DISTRIBUTION_PHASE" CASCADE CONSTRAINTS;
+DROP TABLE "VACCINE_TYPE" CASCADE CONSTRAINTS;
+DROP TABLE "SIDE_EFFECTS" CASCADE CONSTRAINTS;
+DROP TABLE "HAS_SIDE_EFFECT" CASCADE CONSTRAINTS;
+DROP TABLE "ADDRESS" CASCADE CONSTRAINTS;
+DROP TABLE "SUPPLIES" CASCADE CONSTRAINTS;
+DROP TABLE "LOCATED" CASCADE CONSTRAINTS;
+DROP TABLE "COMORBIDITIES" CASCADE CONSTRAINTS;
+DROP TABLE "VACCINE_COMPANIES" CASCADE CONSTRAINTS;
+
 /*----------------Create Table Vaccine_Type ------------------------*/
 CREATE TABLE Vaccine_Type(
 Vaccine_ID CHAR(20),
 Vaccine_Name CHAR(20),
 Number_Of_Doses INT,
-Quantity REAL,
-Allergies CHAR(20),
 
 PRIMARY KEY(Vaccine_ID),
 UNIQUE(Vaccine_Name)
 );
 
 
-INSERT INTO Vaccine_Type VALUES('01','Pfizer','2','0.3','anaphylaxis');
-INSERT INTO Vaccine_Type VALUES('02','Moderna','2','0.5','A1');
-INSERT INTO Vaccine_Type VALUES('03','Johnson','1','0.5','A2');
+INSERT INTO Vaccine_Type VALUES('1','Pfizer','2');
+INSERT INTO Vaccine_Type VALUES('2','Moderna','2');
+INSERT INTO Vaccine_Type VALUES('3','Johnson','1');
 
 select * from Vaccine_Type;
 
@@ -23,13 +39,13 @@ side_effect_id CHAR(10),
 side_effect CHAR(50),
 PRIMARY KEY (side_effect_id));
 
-INSERT INTO Side_Effects VALUES('01','Headache');
-INSERT INTO Side_Effects VALUES('02','Swelling');
-INSERT INTO Side_Effects VALUES('03','Fever');
-INSERT INTO Side_Effects VALUES('04','Muscle_Pain');
-INSERT INTO Side_Effects VALUES('05','Chills');
+INSERT INTO Side_Effects VALUES('1','Headache'); /* Remove proceeding zeroes */
+INSERT INTO Side_Effects VALUES('2','Swelling');
+INSERT INTO Side_Effects VALUES('3','Fever');
+INSERT INTO Side_Effects VALUES('4','Muscle_Pain');
+INSERT INTO Side_Effects VALUES('5','Chills');
 
-select * from Side_Effects;
+select * from Side_Effects; /* Remove this */
 
 /*----------------has_side_effect ------------------------*/
 Create Table has_side_effect(
@@ -39,21 +55,21 @@ PRIMARY KEY (side_effect_id, Vaccine_ID),
 Foreign Key (side_effect_id) REFERENCES Side_Effects (side_effect_id),
 Foreign Key (Vaccine_ID) REFERENCES Vaccine_Type (Vaccine_ID));
 
-INSERT INTO has_side_effect VALUES('01','01');
-INSERT INTO has_side_effect VALUES('02','01');
-INSERT INTO has_side_effect VALUES('03','01');
-INSERT INTO has_side_effect VALUES('04','01');
-INSERT INTO has_side_effect VALUES('05','01');
-INSERT INTO has_side_effect VALUES('01','02');
-INSERT INTO has_side_effect VALUES('02','02');
-INSERT INTO has_side_effect VALUES('03','02');
-INSERT INTO has_side_effect VALUES('04','02');
-INSERT INTO has_side_effect VALUES('05','02');
-INSERT INTO has_side_effect VALUES('01','03');
-INSERT INTO has_side_effect VALUES('02','03');
-INSERT INTO has_side_effect VALUES('03','03');
-INSERT INTO has_side_effect VALUES('04','03');
-INSERT INTO has_side_effect VALUES('05','03');
+INSERT INTO has_side_effect VALUES('1','1');
+INSERT INTO has_side_effect VALUES('2','1');
+INSERT INTO has_side_effect VALUES('3','1');
+INSERT INTO has_side_effect VALUES('4','1');
+INSERT INTO has_side_effect VALUES('5','1');
+INSERT INTO has_side_effect VALUES('1','2');
+INSERT INTO has_side_effect VALUES('2','2');
+INSERT INTO has_side_effect VALUES('3','2');
+INSERT INTO has_side_effect VALUES('4','2');
+INSERT INTO has_side_effect VALUES('5','2');
+INSERT INTO has_side_effect VALUES('1','3');
+INSERT INTO has_side_effect VALUES('2','3');
+INSERT INTO has_side_effect VALUES('3','3');
+INSERT INTO has_side_effect VALUES('4','3');
+INSERT INTO has_side_effect VALUES('5','3');
 
 select * from has_side_effect;
 
@@ -94,6 +110,10 @@ INSERT INTO Address VALUES('1','235', 'East 42nd Street', 'New York', 'NY', 'USA
 INSERT INTO Address VALUES('2','200', 'Technology Square', 'Cambridge', 'MA', 'USA', '02139');
 INSERT INTO Address VALUES('3','1', 'Johnson And Johnson Plaza', 'New Brunswick', 'NJ','USA', '08933');
 
+INSERT INTO Address VALUES('4', NULL, '100 Institute Road', 'Worcester', 'MA', 'USA', '01609');
+INSERT INTO Address VALUES('5', NULL, '85 East Concord Street', 'Boston', 'MA', 'USA', '02118');
+INSERT INTO Address VALUES('6', NULL, '17 Corinth St', 'Roslindale', 'MA', 'USA', '02131');
+
 select * from  Address;
 
 
@@ -109,9 +129,9 @@ Foreign Key(Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID),
 Foreign Key(Company_ID) REFERENCES Vaccine_Companies(Company_ID)
 );
 
-INSERT INTO Supplies VALUES('01','P11');
-INSERT INTO Supplies VALUES('02','M22');
-INSERT INTO Supplies VALUES('03','JJ33');
+INSERT INTO Supplies VALUES('1','P11');
+INSERT INTO Supplies VALUES('2','M22');
+INSERT INTO Supplies VALUES('3','JJ33');
 
 
 select * from Supplies ;
@@ -144,6 +164,14 @@ CREATE TABLE Comorbidities(
   PRIMARY KEY (Disease_ID)
 );
 
+INSERT INTO Comorbidities VALUES('1', 'COPD', '5');
+INSERT INTO Comorbidities VALUES('2', 'Asthma', '3');
+INSERT INTO Comorbidities VALUES('3', 'Interstitial Lung Disease', '5');
+INSERT INTO Comorbidities VALUES('4', 'Cystic Fibrosis', '4');
+INSERT INTO Comorbidities VALUES('5', 'Cancer', '3');
+INSERT INTO Comorbidities VALUES('6', 'Heart Failure', '3');
+
+
 CREATE TABLE Distribution_Phase(
   Phase_number CHAR(20),
   Description VARCHAR2(4000),
@@ -152,6 +180,14 @@ CREATE TABLE Distribution_Phase(
   PRIMARY KEY (Phase_number)
 );
 
+/* Make sure at least one has more than 3 months of duration */
+
+INSERT INTO Distribution_Phase VALUES('1', 'This phase includes health care personnel (paid and unpaid), long-term care residents, first responders, congregate care settings, home-based health care workers and health care workers doing non-COVID-facing care.', To_DATE ('2020-12-01', 'yyyy-mm-dd'), To_DATE ('2021-02-01', 'yyyy-mm-dd'));
+
+INSERT INTO Distribution_Phase VALUES('2', 'This phase includes people who are 55 or older, people with 2 or more certain medical conditions, people who live or work in low income and affordable senior housing, K-12 educators, K-12 school staff, and child care workers and certain workers.', To_DATE ('2021-2-2', 'yyyy-mm-dd'), To_DATE ('2021-4-18', 'yyyy-mm-dd'));
+
+INSERT INTO Distribution_Phase VALUES('3', 'This phase includes everyone.', To_DATE ('2021-4-18', 'yyyy-mm-dd'), To_DATE('2022-1-1', 'yyyy-mm-dd'));
+
 CREATE TABLE associated_with(
   Disease_ID CHAR(20),
   Phase_number CHAR(20),
@@ -159,6 +195,13 @@ CREATE TABLE associated_with(
   FOREIGN KEY (Disease_ID) REFERENCES Comorbidities(Disease_ID),
   FOREIGN KEY (Phase_number) REFERENCES Distribution_Phase(Phase_number)
 );
+
+INSERT INTO associated_with VALUES('1', '1');
+INSERT INTO associated_with VALUES('3', '1');
+INSERT INTO associated_with VALUES('4', '1');
+INSERT INTO associated_with VALUES('2', '2');
+INSERT INTO associated_with VALUES('5', '2');
+INSERT INTO associated_with VALUES('6', '2');
 
 CREATE TABLE Distribution_Location(
   Location_ID CHAR(20),
@@ -169,6 +212,9 @@ CREATE TABLE Distribution_Location(
   FOREIGN KEY (Located) REFERENCES Address(Address_ID)
 );
 
+INSERT INTO Distribution_Location VALUES('1', 'WPI', 100, '4');
+INSERT INTO Distribution_Location VALUES('2', 'Boston Medical Center', 2000, '5');
+INSERT INTO Distribution_Location VALUES('3', 'Roslindale COVID-19 Vaccination Site', 50, '6');
 
 
 Create table People(
@@ -222,6 +268,18 @@ CREATE TABLE Appointments(
   FOREIGN KEY (Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID)
 );
 
+INSERT INTO Appointments VALUES ('1', To_DATE('2020-12-10', 'yyyy-mm-dd'), '2', '1', NULL, '1');
+INSERT INTO Appointments VALUES ('2', To_DATE('2020-12-10', 'yyyy-mm-dd'), '2', '1', NULL, '1');
+INSERT INTO Appointments VALUES ('3', To_DATE('2020-12-16', 'yyyy-mm-dd'), '3', '1', NULL, '2');
+
+INSERT INTO Appointments VALUES ('4', To_DATE('2021-03-01', 'yyyy-mm-dd'), '3', '2', NULL, '1');
+INSERT INTO Appointments VALUES ('5', To_DATE('2021-03-02', 'yyyy-mm-dd'), '3', '2', NULL, '1');
+INSERT INTO Appointments VALUES ('6', To_DATE('2021-03-03', 'yyyy-mm-dd'), '3', '2', NULL, '2');
+
+INSERT INTO Appointments VALUES ('7', To_DATE('2021-05-10', 'yyyy-mm-dd'), '1', '3', NULL, '3');
+INSERT INTO Appointments VALUES ('8', To_DATE('2021-05-10', 'yyyy-mm-dd'), '1', '3', NULL, '3');
+INSERT INTO Appointments VALUES ('9', To_DATE('2021-07-16', 'yyyy-mm-dd'), '1', '3', NULL, '3');
+
 Create table Health_Insurance (
 Insurance_Number CHAR(25),
 SSN CHAR(9) NOT NULL,
@@ -239,4 +297,3 @@ Disease_ID CHAR(20),
 PRIMARY KEY (SSN, Disease_ID),
 Foreign key (SSN) REFERENCES People (SSN),
 Foreign key (Disease_ID) REFERENCES Comorbidities (Disease_ID));
-
