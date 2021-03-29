@@ -256,7 +256,7 @@ insert into People Values ('951753825', 'Aubrey West', 'teacher', 'awest1', 'pas
 insert into People Values ('123456789', 'Jane Doe', 'nurse', 'jdoe1', 'password1', 'jdoe1@gmail.com', 50, '4', '1');
 insert into People Values ('987654321', 'John Doe', 'physician', 'jdoe2', 'password2', 'jdoe2@gmail.com', 55, '5', '1');
 insert into People Values ('111111111', 'Ben Johnson', 'volunteer', 'bjohnson1', 'password3', 'bjohnson1@gmail.com', 60, '6', '1');
-insert into People Values ('222222222', 'Peter Smith', 'nursing student', 'psmith1', , 'password4', 'psmith1@gmail.com', 25, '6', '1');
+insert into People Values ('222222222', 'Peter Smith', 'nursing student', 'psmith1', 'password4', 'psmith1@gmail.com', 25, '6', '1');
 insert into People Values ('333333333', 'Jack Black', 'nurse', 'jblack1', 'password5', 'jblack1@gmail.com', 35, '8', '1');
 insert into People Values ('444444444', 'Tom Johnston', 'pharmacist', 'tjohnston1', 'password6', 'tjohnston1@gmail.com', 45, '9', '1');
 insert into People Values ('555555555', 'Bill Smithers', 'nurse', 'bsmithers1', 'password7', 'bsmithers1@gmail.com', 40, '10', '1');
