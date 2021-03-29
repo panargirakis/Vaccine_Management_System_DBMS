@@ -188,11 +188,39 @@ Unique (email_address),
 Foreign key (address_id) REFERENCES Address (address_id),
 Foreign key (phase_number) REFERENCES Distribution_Phase (phase_number));
 
+/* NICK: need to insert more people, and more attributes for each person still */                                                    
+                                                          
+insert into People Values ('123456789', 'Jane Doe', 'nurse', 'jdoe1');
+insert into People Values ('987654321', 'John Doe', 'physician', 'jdoe2');
+insert into People Values ('111111111', 'Ben Johnson', 'volunteer', 'bjohnson1');
+insert into People Values ('222222222', 'Peter Smith', 'nursing student', 'psmith1');
+insert into People Values ('333333333', 'Jack Black', 'nurse', 'jblack1');
+insert into People Values ('444444444', 'Tom Johnston', 'pharmacist', 'tjohnston1');
+insert into People Values ('555555555', 'Bill Smithers', 'nurse', 'bsmithers1');
+insert into People Values ('666666666', 'Jan Moon', 'physician', 'jmoon1')
+insert into People Values ('777777777', 'Jeff Frost', 'retired physician', 'jfrost1');
+insert into People Values ('888888888', 'Jim Blake', 'dentist', jblake1');
+insert into People Values ('999999999', 'Nick Jones', 'nurse', 'njones1');
+insert into People Values ('135791357', 'Jennifer Trent', 'pharmacist', 'jtrent1');                                                          
+
 Create table Healthcare_Staff(
 SSN CHAR(9),
 Job_Title CHAR(50),
 PRIMARY KEY (SSN),
 Foreign key (SSN) REFERENCES People (SSN) ON DELETE CASCADE);
+                                                          
+insert into Healthcare_Staff Values ('123456789', 'nurse');
+insert into Healthcare_Staff Values ('987654321', 'physician');
+insert into Healthcare_Staff Values ('111111111', 'volunteer');
+insert into Healthcare_Staff Values ('222222222', 'nursing student');
+insert into Healthcare_Staff Values ('333333333', 'nurse');
+insert into Healthcare_Staff Values ('444444444', 'pharmacist');
+insert into Healthcare_Staff Values ('555555555', 'nurse');
+insert into Healthcare_Staff Values ('666666666', 'physician')
+insert into Healthcare_Staff Values ('777777777', 'retired physician');
+insert into Healthcare_Staff Values ('888888888', 'dentist');
+insert into Healthcare_Staff Values ('999999999', 'nurse');
+insert into Healthcare_Staff Values ('135791357', 'pharmacist');                                                          
 
 
 /*----------------Create Table Administers ------------------------*/
