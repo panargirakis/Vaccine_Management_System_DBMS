@@ -279,7 +279,7 @@ insert into Healthcare_Staff Values ('222222222', 'nursing student');
 insert into Healthcare_Staff Values ('333333333', 'nurse');
 insert into Healthcare_Staff Values ('444444444', 'pharmacist');
 insert into Healthcare_Staff Values ('555555555', 'nurse');
-insert into Healthcare_Staff Values ('666666666', 'physician')
+insert into Healthcare_Staff Values ('666666666', 'physician');
 insert into Healthcare_Staff Values ('777777777', 'retired physician');
 insert into Healthcare_Staff Values ('888888888', 'dentist');
 insert into Healthcare_Staff Values ('999999999', 'nurse');
