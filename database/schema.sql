@@ -10,15 +10,28 @@ PRIMARY KEY(Vaccine_ID),
 UNIQUE(Vaccine_Name)
 );
 
+
+INSERT INTO Vaccine_Type VALUES('01','Pfizer','2','0.3','anaphylaxis');
+INSERT INTO Vaccine_Type VALUES('02','Moderna','2','0.5','A1');
+INSERT INTO Vaccine_Type VALUES('03','Johnson','1','0.5','A2');
+
 select * from Vaccine_Type;
 
-
+/*----------------Create Table Side_Effects ------------------------*/
 Create Table Side_Effects (
 side_effect_id CHAR(10),
 side_effect CHAR(50),
 PRIMARY KEY (side_effect_id));
 
+INSERT INTO Side_Effects VALUES('01','Headache');
+INSERT INTO Side_Effects VALUES('02','Swelling');
+INSERT INTO Side_Effects VALUES('03','Fever');
+INSERT INTO Side_Effects VALUES('04','Muscle_Pain');
+INSERT INTO Side_Effects VALUES('05','Chills');
 
+select * from Side_Effects;
+
+/*----------------has_side_effect ------------------------*/
 Create Table has_side_effect(
 side_effect_id CHAR(10),
 Vaccine_ID CHAR(20),
@@ -26,7 +39,23 @@ PRIMARY KEY (side_effect_id, Vaccine_ID),
 Foreign Key (side_effect_id) REFERENCES Side_Effects (side_effect_id),
 Foreign Key (Vaccine_ID) REFERENCES Vaccine_Type (Vaccine_ID));
 
+INSERT INTO has_side_effect VALUES('01','01');
+INSERT INTO has_side_effect VALUES('02','01');
+INSERT INTO has_side_effect VALUES('03','01');
+INSERT INTO has_side_effect VALUES('04','01');
+INSERT INTO has_side_effect VALUES('05','01');
+INSERT INTO has_side_effect VALUES('01','02');
+INSERT INTO has_side_effect VALUES('02','02');
+INSERT INTO has_side_effect VALUES('03','02');
+INSERT INTO has_side_effect VALUES('04','02');
+INSERT INTO has_side_effect VALUES('05','02');
+INSERT INTO has_side_effect VALUES('01','03');
+INSERT INTO has_side_effect VALUES('02','03');
+INSERT INTO has_side_effect VALUES('03','03');
+INSERT INTO has_side_effect VALUES('04','03');
+INSERT INTO has_side_effect VALUES('05','03');
 
+select * from has_side_effect;
 
 /*----------------Create Table Vaccine_Companies ------------------------*/
 
@@ -39,6 +68,10 @@ Phone CHAR(10),
 
 PRIMARY KEY(Company_ID)
 );
+
+INSERT INTO Vaccine_Companies VALUES('P11','Pfizer-BioNTech','John','john1111@gmail.com', '2222222222');
+INSERT INTO Vaccine_Companies VALUES('M22','ModernaTX','Amy','amy111@gmail.com', '1212121212');
+INSERT INTO Vaccine_Companies VALUES('JJ33','Johnson','George', 'george111@gmail.com', '5544554455');
 
 select * from Vaccine_Companies;
 
@@ -57,9 +90,11 @@ Zip_Code CHAR(50),
 PRIMARY KEY(Address_ID)
 );
 
+INSERT INTO Address VALUES('1','235', 'East 42nd Street', 'New York', 'NY', 'USA', '10017');
+INSERT INTO Address VALUES('2','200', 'Technology Square', 'Cambridge', 'MA', 'USA', '02139');
+INSERT INTO Address VALUES('3','1', 'Johnson And Johnson Plaza', 'New Brunswick', 'NJ','USA', '08933');
+
 select * from  Address;
-
-
 
 
 /*----------------Create Table Supplies ------------------------*/
@@ -73,6 +108,10 @@ PRIMARY KEY(Vaccine_ID, Company_ID),
 Foreign Key(Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID),
 Foreign Key(Company_ID) REFERENCES Vaccine_Companies(Company_ID)
 );
+
+INSERT INTO Supplies VALUES('01','P11');
+INSERT INTO Supplies VALUES('02','M22');
+INSERT INTO Supplies VALUES('03','JJ33');
 
 
 select * from Supplies ;
@@ -89,10 +128,14 @@ Foreign Key(Address_ID) REFERENCES Address(Address_ID),
 Foreign Key(Company_ID) REFERENCES Vaccine_Companies(Company_ID)
 );
 
+
+INSERT INTO Located VALUES('1','P11');
+INSERT INTO Located VALUES('2','M22');
+INSERT INTO Located VALUES('3','JJ33');
+
 select * from Located;
 
-/*---------------------------------------*/
-
+/*-------------------------------------------*/
 
 CREATE TABLE Comorbidities(
   Disease_ID CHAR(20),
