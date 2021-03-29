@@ -4,16 +4,15 @@ Vaccine_ID CHAR(20),
 Vaccine_Name CHAR(20),
 Number_Of_Doses INT,
 Quantity REAL,
-Allergies CHAR(20),
 
 PRIMARY KEY(Vaccine_ID),
 UNIQUE(Vaccine_Name)
 );
 
 
-INSERT INTO Vaccine_Type VALUES('01','Pfizer','2','0.3','anaphylaxis');
-INSERT INTO Vaccine_Type VALUES('02','Moderna','2','0.5','A1');
-INSERT INTO Vaccine_Type VALUES('03','Johnson','1','0.5','A2');
+INSERT INTO Vaccine_Type VALUES('01','Pfizer','2','0.3');
+INSERT INTO Vaccine_Type VALUES('02','Moderna','2','0.5');
+INSERT INTO Vaccine_Type VALUES('03','Johnson','1','0.5');
 
 select * from Vaccine_Type;
 
