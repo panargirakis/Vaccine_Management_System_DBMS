@@ -15,6 +15,7 @@ DROP TABLE "SUPPLIES" CASCADE CONSTRAINTS;
 DROP TABLE "LOCATED" CASCADE CONSTRAINTS;
 DROP TABLE "COMORBIDITIES" CASCADE CONSTRAINTS;
 DROP TABLE "VACCINE_COMPANIES" CASCADE CONSTRAINTS;
+DROP TABLE "HEALTH_INSURANCE" CASCADE CONSTRAINTS;
 
 /*----------------Create Table Vaccine_Type ------------------------*/
 CREATE TABLE Vaccine_Type(
@@ -336,21 +337,21 @@ PRIMARY KEY (Insurance_Number),
 Unique (SSN),
 Foreign key (SSN) REFERENCES People (SSN));
 
-insert into Health_Insurance Values ('12345', '147258369', 'BCBS', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
-insert into Health_Insurance Values ('67899', '741852963', 'BCBS', 'T', TO_DATE('01 Jan 2022', 'DD MON YYYY');
-insert into Health_Insurance Values ('98765', '951753825', 'BCBS', 'T', TO_DATE('01 Jan 2023', 'DD MON YYYY');
-insert into Health_Insurance Values ('14785', '123456789', 'BCBS', 'T', TO_DATE('01 Jan 2028', 'DD MON YYYY');
-insert into Health_Insurance Values ('11111', '987654321', 'BCBS', 'T', TO_DATE('01 Jan 2025', 'DD MON YYYY');
-insert into Health_Insurance Values ('22222', '111111111', 'BCBS', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
-insert into Health_Insurance Values ('33333', '222222222', 'BCBS', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
-insert into Health_Insurance Values ('44444', '333333333', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
-insert into Health_Insurance Values ('55555', '444444444', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
-insert into Health_Insurance Values ('66666', '555555555', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
-insert into Health_Insurance Values ('77777', '666666666', 'Tufts', 'T', TO_DATE('01 Jan 2022', 'DD MON YYYY');
-insert into Health_Insurance Values ('88888', '777777777', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
-insert into Health_Insurance Values ('99999', '888888888', 'Tufts', 'T', TO_DATE('01 Jan 2022', 'DD MON YYYY');
-insert into Health_Insurance Values ('10101', '999999999', 'Harvard Pilgrim', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
-insert into Health_Insurance Values ('20202', '135791357', 'Harvard Pilgrim', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY');
+insert into Health_Insurance Values ('12345', '147258369', 'BCBS', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY'));
+insert into Health_Insurance Values ('67899', '741852963', 'BCBS', 'T', TO_DATE('01 Jan 2022', 'DD MON YYYY'));
+insert into Health_Insurance Values ('98765', '951753825', 'BCBS', 'T', TO_DATE('01 Jan 2023', 'DD MON YYYY'));
+insert into Health_Insurance Values ('14785', '123456789', 'BCBS', 'T', TO_DATE('01 Jan 2028', 'DD MON YYYY'));
+insert into Health_Insurance Values ('11111', '987654321', 'BCBS', 'T', TO_DATE('01 Jan 2025', 'DD MON YYYY'));
+insert into Health_Insurance Values ('22222', '111111111', 'BCBS', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY'));
+insert into Health_Insurance Values ('33333', '222222222', 'BCBS', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY'));
+insert into Health_Insurance Values ('44444', '333333333', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY'));
+insert into Health_Insurance Values ('55555', '444444444', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY'));
+insert into Health_Insurance Values ('66666', '555555555', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY'));
+insert into Health_Insurance Values ('77777', '666666666', 'Tufts', 'T', TO_DATE('01 Jan 2022', 'DD MON YYYY'));
+insert into Health_Insurance Values ('88888', '777777777', 'Tufts', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY'));
+insert into Health_Insurance Values ('99999', '888888888', 'Tufts', 'T', TO_DATE('01 Jan 2022', 'DD MON YYYY'));
+insert into Health_Insurance Values ('10101', '999999999', 'Harvard Pilgrim', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY'));
+insert into Health_Insurance Values ('20202', '135791357', 'Harvard Pilgrim', 'T', TO_DATE('01 Jan 2024', 'DD MON YYYY'));
 
 
 Create table Diagnosed (
