@@ -249,24 +249,22 @@ Unique (email_address),
 Foreign key (address_id) REFERENCES Address (address_id),
 Foreign key (phase_number) REFERENCES Distribution_Phase (phase_number));
 
-/* NEED to insert the distribution phase number foreign key to each person here */
-
-insert into People Values ('147258369', 'Joe Wild', 'contractor', 'jwild1', 'password13', 'jwild1@gmail.com', 52, '15');
-insert into People Values ('741852963', 'Jim Hendrix', 'musician', 'jhendrix1', 'password14', 'jhendrix1@gmail.com', 32, '16');
-insert into People Values ('951753825', 'Aubrey West', 'teacher', 'awest1', 'password0', 'awest1@gmail.com', 34, '17');
-
-insert into People Values ('123456789', 'Jane Doe', 'nurse', 'jdoe1', 'password1', 'jdoe1@gmail.com', 50, '4');
-insert into People Values ('987654321', 'John Doe', 'physician', 'jdoe2', 'password2', 'jdoe2@gmail.com', 55, '5');
-insert into People Values ('111111111', 'Ben Johnson', 'volunteer', 'bjohnson1', 'password3', 'bjohnson1@gmail.com', 60, '6');
-insert into People Values ('222222222', 'Peter Smith', 'nursing student', 'psmith1', , 'password4', 'psmith1@gmail.com', 25, '6');
-insert into People Values ('333333333', 'Jack Black', 'nurse', 'jblack1', 'password5', 'jblack1@gmail.com', 35, '8');
-insert into People Values ('444444444', 'Tom Johnston', 'pharmacist', 'tjohnston1', 'password6', 'tjohnston1@gmail.com', 45, '9');
-insert into People Values ('555555555', 'Bill Smithers', 'nurse', 'bsmithers1', 'password7', 'bsmithers1@gmail.com', 40, '10');
-insert into People Values ('666666666', 'Jan Moon', 'physician', 'jmoon1', 'password8', 'jmoon1@gmail.com', 55, '11');
-insert into People Values ('777777777', 'Jeff Frost', 'retired physician', 'jfrost1', 'password9', 'jfrost1@gmail.com', 70, '12');
-insert into People Values ('888888888', 'Jim Blake', 'dentist', 'jblake1', 'password10', 'jblake1@gmail.com', 38, '13');
-insert into People Values ('999999999', 'Nick Jones', 'nurse', 'njones1', 'password11', 'njones1@gmail.com', 27, '7');
-insert into People Values ('135791357', 'Jennifer Trent', 'pharmacist', 'jtrent1', 'password12', 'jtrent1@gmail.com', 40, '14');
+insert into People Values ('147258369', 'Joe Wild', 'contractor', 'jwild1', 'password13', 'jwild1@gmail.com', 52, '15', '3');
+insert into People Values ('741852963', 'Jim Hendrix', 'musician', 'jhendrix1', 'password14', 'jhendrix1@gmail.com', 32, '16', '3');
+insert into People Values ('951753825', 'Aubrey West', 'teacher', 'awest1', 'password0', 'awest1@gmail.com', 34, '17', '2');
+                                                          
+insert into People Values ('123456789', 'Jane Doe', 'nurse', 'jdoe1', 'password1', 'jdoe1@gmail.com', 50, '4', '1');
+insert into People Values ('987654321', 'John Doe', 'physician', 'jdoe2', 'password2', 'jdoe2@gmail.com', 55, '5', '1');
+insert into People Values ('111111111', 'Ben Johnson', 'volunteer', 'bjohnson1', 'password3', 'bjohnson1@gmail.com', 60, '6', '1');
+insert into People Values ('222222222', 'Peter Smith', 'nursing student', 'psmith1', , 'password4', 'psmith1@gmail.com', 25, '6', '1');
+insert into People Values ('333333333', 'Jack Black', 'nurse', 'jblack1', 'password5', 'jblack1@gmail.com', 35, '8', '1');
+insert into People Values ('444444444', 'Tom Johnston', 'pharmacist', 'tjohnston1', 'password6', 'tjohnston1@gmail.com', 45, '9', '1');
+insert into People Values ('555555555', 'Bill Smithers', 'nurse', 'bsmithers1', 'password7', 'bsmithers1@gmail.com', 40, '10', '1');
+insert into People Values ('666666666', 'Jan Moon', 'physician', 'jmoon1', 'password8', 'jmoon1@gmail.com', 55, '11', '1');
+insert into People Values ('777777777', 'Jeff Frost', 'retired physician', 'jfrost1', 'password9', 'jfrost1@gmail.com', 70, '12', '1');
+insert into People Values ('888888888', 'Jim Blake', 'dentist', 'jblake1', 'password10', 'jblake1@gmail.com', 38, '13', '1');
+insert into People Values ('999999999', 'Nick Jones', 'nurse', 'njones1', 'password11', 'njones1@gmail.com', 27, '7', '1');
+insert into People Values ('135791357', 'Jennifer Trent', 'pharmacist', 'jtrent1', 'password12', 'jtrent1@gmail.com', 40, '14', '1'); 
 
 Create table Healthcare_Staff(
 SSN CHAR(9),
@@ -360,3 +358,13 @@ Disease_ID CHAR(20),
 PRIMARY KEY (SSN, Disease_ID),
 Foreign key (SSN) REFERENCES People (SSN),
 Foreign key (Disease_ID) REFERENCES Comorbidities (Disease_ID));
+                                                   
+insert into Diagnosed Values ('111111111', '1');
+insert into Diagnosed Values ('111111111', '2');
+insert into Diagnosed Values ('111111111', '3');
+insert into Diagnosed Values ('222222222', '4');
+insert into Diagnosed Values ('222222222', '5');
+insert into Diagnosed Values ('222222222', '6');
+insert into Diagnosed Values ('333333333', '4');
+insert into Diagnosed Values ('444444444', '5');
+insert into Diagnosed Values ('555555555', '6');
