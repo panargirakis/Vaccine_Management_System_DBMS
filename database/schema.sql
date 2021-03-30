@@ -298,6 +298,18 @@ FOREIGN KEY(SSN) REFERENCES Healthcare_Staff(SSN),
 FOREIGN KEY(Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID)
 );
 
+insert into Administers Values ('123456789', '1');
+insert into Administers Values ('987654321', '1');
+insert into Administers Values ('111111111', '2');
+insert into Administers Values ('222222222', '2');
+insert into Administers Values ('333333333', '3');
+insert into Administers Values ('444444444', '3');
+insert into Administers Values ('555555555', '3');
+insert into Administers Values ('666666666', '1');
+insert into Administers Values ('777777777', '2');
+insert into Administers Values ('888888888', '1');
+insert into Administers Values ('999999999', '2');
+insert into Administers Values ('135791357', '3');
 
 CREATE TABLE Appointments(
   Appt_ID CHAR(20),
