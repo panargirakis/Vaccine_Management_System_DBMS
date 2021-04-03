@@ -62,3 +62,42 @@ SELECT DP.Phase_number FROM Distribution_Phase DP WHERE (SELECT DATEDIFF(month, 
 )
 
 )*/
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ /* NEW QUERIES --NICK */
+
+/* Find the user associated with a username and password */
+
+/* need this to take an input username and password from UI */
+SELECT DISTINCT P.SSN, P.Name
+FROM People P
+WHERE P.username='jwild1' AND P.password='password13';
+
+/* Find all available appointments by distribution location (support intersection with 6, 7) */
+SELECT DISTINCT A.appt_id, A.appt_date, T1.location_name
+FROM Appointments A, ((SELECT DISTINCT DL.location_id, DL.location_name FROM Distribution_Location DL WHERE DL.location_name='WPI')T1) /* make 'WPI' a variable input */
+WHERE A.located=T1.location_id;
+
+/* List all comorbidities */
+SELECT DISTINCT C.Disease_Name
+FROM Comorbidities C;
+
+/* Find an appointment where the given search string matches the date OR time OR Distribution Location OR Vaccine Type */
+SELECT DISTINCT A.appt_id, A.appt_date, T1.location_name
+FROM Appointments A, ((SELECT DISTINCT DL.location_id, DL.location_name FROM Distribution_Location DL WHERE DL.location_name='WPI')T1), ((SELECT DISTINCT V.vaccine_id, V.vaccine_name 
+FROM Vaccine_Type V WHERE V.vaccine_name='Pfizer')T2)
+WHERE A.located=T1.location_id OR A.vaccine_id=T2.vaccine_id OR A.appt_date='10-DEC-20';
+
+/* make 'WPI', 'Pfizer', '10-DEC-20' as variable inputs */
