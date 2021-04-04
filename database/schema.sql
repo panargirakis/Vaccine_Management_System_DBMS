@@ -15,7 +15,7 @@ DROP TABLE "SUPPLIES" CASCADE CONSTRAINTS;
 DROP TABLE "LOCATED" CASCADE CONSTRAINTS;
 DROP TABLE "COMORBIDITIES" CASCADE CONSTRAINTS;
 DROP TABLE "VACCINE_COMPANIES" CASCADE CONSTRAINTS;
-DROP TABLE "HEALTH_INSURANCE" CASCADE CONSTRAINTS;
+
 
 /*----------------Create Table Vaccine_Type ------------------------*/
 CREATE TABLE Vaccine_Type(
@@ -32,7 +32,6 @@ INSERT INTO Vaccine_Type VALUES('1','Pfizer','2');
 INSERT INTO Vaccine_Type VALUES('2','Moderna','2');
 INSERT INTO Vaccine_Type VALUES('3','Johnson','1');
 
-select * from Vaccine_Type;
 
 /*----------------Create Table Side_Effects ------------------------*/
 Create Table Side_Effects (
@@ -46,7 +45,6 @@ INSERT INTO Side_Effects VALUES('3','Fever');
 INSERT INTO Side_Effects VALUES('4','Muscle_Pain');
 INSERT INTO Side_Effects VALUES('5','Chills');
 
-select * from Side_Effects; /* Remove this */
 
 /*----------------has_side_effect ------------------------*/
 Create Table has_side_effect(
@@ -72,7 +70,6 @@ INSERT INTO has_side_effect VALUES('3','3');
 INSERT INTO has_side_effect VALUES('4','3');
 INSERT INTO has_side_effect VALUES('5','3');
 
-select * from has_side_effect;
 
 /*----------------Create Table Vaccine_Companies ------------------------*/
 
@@ -90,7 +87,6 @@ INSERT INTO Vaccine_Companies VALUES('P11','Pfizer-BioNTech','John','john1111@gm
 INSERT INTO Vaccine_Companies VALUES('M22','ModernaTX','Amy','amy111@gmail.com', '1212121212');
 INSERT INTO Vaccine_Companies VALUES('JJ33','Johnson','George', 'george111@gmail.com', '5544554455');
 
-select * from Vaccine_Companies;
 
 /*----------------Create Table Address ------------------------*/
 
@@ -129,7 +125,6 @@ INSERT INTO Address VALUES('18', NULL, '100 Institute Road', 'Worcester', 'MA', 
 INSERT INTO Address VALUES('19', NULL, '85 East Concord Street', 'Boston', 'MA', 'USA', '02118');
 INSERT INTO Address VALUES('20', NULL, '17 Corinth St', 'Roslindale', 'MA', 'USA', '02131');
 
-select * from  Address;
 
 
 /*----------------Create Table Supplies ------------------------*/
@@ -149,8 +144,6 @@ INSERT INTO Supplies VALUES('2','M22');
 INSERT INTO Supplies VALUES('3','JJ33');
 
 
-select * from Supplies ;
-
 /*----------------Create Table Located ------------------------*/
 
 CREATE TABLE Located(
@@ -168,7 +161,7 @@ INSERT INTO Located VALUES('1','P11');
 INSERT INTO Located VALUES('2','M22');
 INSERT INTO Located VALUES('3','JJ33');
 
-select * from Located;
+
 
 /*-------------------------------------------*/
 
@@ -202,6 +195,8 @@ INSERT INTO Distribution_Phase VALUES('1', 'This phase includes health care pers
 INSERT INTO Distribution_Phase VALUES('2', 'This phase includes people who are 55 or older, people with 2 or more certain medical conditions, people who live or work in low income and affordable senior housing, K-12 educators, K-12 school staff, and child care workers and certain workers.', To_DATE ('2021-2-2', 'yyyy-mm-dd'), To_DATE ('2021-4-18', 'yyyy-mm-dd'));
 
 INSERT INTO Distribution_Phase VALUES('3', 'This phase includes everyone.', To_DATE ('2021-4-18', 'yyyy-mm-dd'), To_DATE('2022-1-1', 'yyyy-mm-dd'));
+
+
 
 CREATE TABLE associated_with(
   Disease_ID CHAR(20),
@@ -265,6 +260,8 @@ insert into People Values ('777777777', 'Jeff Frost', 'retired physician', 'jfro
 insert into People Values ('888888888', 'Jim Blake', 'dentist', 'jblake1', 'password10', 'jblake1@gmail.com', 38, '13', '1');
 insert into People Values ('999999999', 'Nick Jones', 'nurse', 'njones1', 'password11', 'njones1@gmail.com', 27, '7', '1');
 insert into People Values ('135791357', 'Jennifer Trent', 'pharmacist', 'jtrent1', 'password12', 'jtrent1@gmail.com', 40, '14', '1'); 
+
+
 
 Create table Healthcare_Staff(
 SSN CHAR(9),
@@ -336,6 +333,8 @@ INSERT INTO Appointments VALUES ('6', To_DATE('2021-03-03', 'yyyy-mm-dd'), '3', 
 INSERT INTO Appointments VALUES ('7', To_DATE('2021-05-10', 'yyyy-mm-dd'), '1', '3', NULL, '3');
 INSERT INTO Appointments VALUES ('8', To_DATE('2021-05-10', 'yyyy-mm-dd'), '1', '3', NULL, '3');
 INSERT INTO Appointments VALUES ('9', To_DATE('2021-07-16', 'yyyy-mm-dd'), '1', '3', NULL, '3');
+
+
 
 Create table Health_Insurance (
 Insurance_Number CHAR(25),
