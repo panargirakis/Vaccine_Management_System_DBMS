@@ -247,7 +247,7 @@ Foreign key (phase_number) REFERENCES Distribution_Phase (phase_number));
 insert into People Values ('147258369', 'Joe Wild', 'contractor', 'jwild1', 'password13', 'jwild1@gmail.com', 52, '15', '3');
 insert into People Values ('741852963', 'Jim Hendrix', 'musician', 'jhendrix1', 'password14', 'jhendrix1@gmail.com', 32, '16', '3');
 insert into People Values ('951753825', 'Aubrey West', 'teacher', 'awest1', 'password0', 'awest1@gmail.com', 34, '17', '2');
-                                                          
+
 insert into People Values ('123456789', 'Jane Doe', 'nurse', 'jdoe1', 'password1', 'jdoe1@gmail.com', 50, '4', '1');
 insert into People Values ('987654321', 'John Doe', 'physician', 'jdoe2', 'password2', 'jdoe2@gmail.com', 55, '5', '1');
 insert into People Values ('111111111', 'Ben Johnson', 'volunteer', 'bjohnson1', 'password3', 'bjohnson1@gmail.com', 60, '6', '1');
@@ -259,7 +259,7 @@ insert into People Values ('666666666', 'Jan Moon', 'physician', 'jmoon1', 'pass
 insert into People Values ('777777777', 'Jeff Frost', 'retired physician', 'jfrost1', 'password9', 'jfrost1@gmail.com', 70, '12', '1');
 insert into People Values ('888888888', 'Jim Blake', 'dentist', 'jblake1', 'password10', 'jblake1@gmail.com', 38, '13', '1');
 insert into People Values ('999999999', 'Nick Jones', 'nurse', 'njones1', 'password11', 'njones1@gmail.com', 27, '7', '1');
-insert into People Values ('135791357', 'Jennifer Trent', 'pharmacist', 'jtrent1', 'password12', 'jtrent1@gmail.com', 40, '14', '1'); 
+insert into People Values ('135791357', 'Jennifer Trent', 'pharmacist', 'jtrent1', 'password12', 'jtrent1@gmail.com', 40, '14', '1');
 
 
 
@@ -322,15 +322,15 @@ CREATE TABLE Appointments(
   FOREIGN KEY (Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID)
 );
 
-INSERT INTO Appointments VALUES ('1', To_DATE('2020-12-10', 'yyyy-mm-dd'), '2', '1', NULL, '1');
-INSERT INTO Appointments VALUES ('2', To_DATE('2020-12-10', 'yyyy-mm-dd'), '2', '1', NULL, '1');
-INSERT INTO Appointments VALUES ('3', To_DATE('2020-12-16', 'yyyy-mm-dd'), '3', '1', NULL, '2');
+INSERT INTO Appointments VALUES ('1', To_DATE('2020-12-10', 'yyyy-mm-dd'), '2', '1', 123456789, '1');
+INSERT INTO Appointments VALUES ('2', To_DATE('2020-12-10', 'yyyy-mm-dd'), '2', '1', 555555555, '1');
+INSERT INTO Appointments VALUES ('3', To_DATE('2020-12-16', 'yyyy-mm-dd'), '3', '1', 999999999, '2');
 
 INSERT INTO Appointments VALUES ('4', To_DATE('2021-03-01', 'yyyy-mm-dd'), '3', '2', NULL, '1');
-INSERT INTO Appointments VALUES ('5', To_DATE('2021-03-02', 'yyyy-mm-dd'), '3', '2', NULL, '1');
+INSERT INTO Appointments VALUES ('5', To_DATE('2021-03-02', 'yyyy-mm-dd'), '3', '2', 777777777, '1');
 INSERT INTO Appointments VALUES ('6', To_DATE('2021-03-03', 'yyyy-mm-dd'), '3', '2', NULL, '2');
 
-INSERT INTO Appointments VALUES ('7', To_DATE('2021-05-10', 'yyyy-mm-dd'), '1', '3', NULL, '3');
+INSERT INTO Appointments VALUES ('7', To_DATE('2021-05-10', 'yyyy-mm-dd'), '1', '3', 741852963, '3');
 INSERT INTO Appointments VALUES ('8', To_DATE('2021-05-10', 'yyyy-mm-dd'), '1', '3', NULL, '3');
 INSERT INTO Appointments VALUES ('9', To_DATE('2021-07-16', 'yyyy-mm-dd'), '1', '3', NULL, '3');
 
@@ -369,7 +369,7 @@ Disease_ID CHAR(20),
 PRIMARY KEY (SSN, Disease_ID),
 Foreign key (SSN) REFERENCES People (SSN),
 Foreign key (Disease_ID) REFERENCES Comorbidities (Disease_ID));
-                                                   
+
 insert into Diagnosed Values ('111111111', '1');
 insert into Diagnosed Values ('111111111', '2');
 insert into Diagnosed Values ('111111111', '3');
