@@ -1,10 +1,11 @@
 
-/* 4 -- List out people with health insurance that has COVID coverage */
+/* ALL OLD QURIES */
+/* 4 -- List out people with health insurance that has COVID coverage 
 SELECT DISTINCT P.name
 FROM People P NATURAL JOIN Health_Insurance HI
 WHERE HI.covid_coverage = 'T' OR HI.covid_coverage = 't';
 
-/* 5 -- List out health insurance number of people eligible for a distribution phase which has three or more comorbidities associated with it */
+/* 5 -- List out health insurance number of people eligible for a distribution phase which has three or more comorbidities associated with it 
 SELECT DISTINCT HI.Insurance_Number
 FROM Health_Insurance HI, ((SELECT DISTINCT P.phase_number FROM People P)
 INTERSECT
@@ -13,16 +14,16 @@ FROM Distribution_Phase DP NATURAL JOIN associated_with AW
 GROUP BY DP.phase_number
 HAVING count(AW.Disease_ID) >= 3));
 
-/* 6 -- List out all vaccine types supplied by a vaccine company which is located at a given address (denoted with x currently) */
+/* 6 -- List out all vaccine types supplied by a vaccine company which is located at a given address (denoted with x currently) 
 SELECT DISTINCT VT.Vaccine_ID, VT.Vaccine_Name
 FROM Vaccine_Type VT, (SELECT * FROM Address A NATURAL JOIN Located L)
-WHERE A.address_id = x; 
+WHERE A.address_id = x; */
 
 
-/*----- SANIKA: QUERIES------------- */
+/*----- SANIKA: QUERIES------------- 
 
-/* 3-- List out people eligible for a distribution phase which has three or more comorbidities associated with it. */
-SELECT P.SSN, P.name
+3-- List out people eligible for a distribution phase which has three or more comorbidities associated with it. 
+/*SELECT P.SSN, P.name
 FROM People P
 WHERE P.SSN IN(
 SELECT A.Phase_number
@@ -30,7 +31,7 @@ FROM associated_with A
 GROUP BY A.Phase_number
 HAVING COUNT(DISTINCT A.Disease_ID) >= 3);
 
-/* 7-- List out names and SSN of all healthcare people administering vaccine types supplied by a given vaccine company. */
+/* 7-- List out names and SSN of all healthcare people administering vaccine types supplied by a given vaccine company. 
 SELECT P.SSN, P.name
 FROM People P
 WHERE P.SSN IN(
@@ -41,7 +42,7 @@ SELECT S.Vaccine_ID
 FROM Supplies S
 WHERE S.Company_ID IN((SELECT C.Company_ID FROM Vaccine_Companies C WHERE C.Company_Name = 'ModernaTX'))));
 
-/*9-- List out all the appointments having vaccine types supplied by a given vaccine company. */
+9-- List out all the appointments having vaccine types supplied by a given vaccine company. 
 SELECT AP.Appt_ID
 FROM Appointments AP
 WHERE AP.Vaccine_ID IN(
@@ -50,7 +51,7 @@ FROM Supplies S
 WHERE S.Company_ID IN(
 (SELECT C.Company_ID FROM Vaccine_Companies C WHERE C.Company_Name = 'ModernaTX')))
 
-/*8.-- List out all people scheduling an appointment for a distribution phase with 3 months of duration. -S */
+8.-- List out all people scheduling an appointment for a distribution phase with 3 months of duration. -S */
 /*SELECT P.SSN, P.name
 FROM People P
 WHERE P.SSN IN(
@@ -65,22 +66,11 @@ SELECT DP.Phase_number FROM Distribution_Phase DP WHERE (SELECT DATEDIFF(month, 
 
  
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- /* NEW QUERIES --NICK */
+ /*-------------------------------- NEW QUERIES --NICK------------------------------ */
 
 /* Find the user associated with a username and password */
 
-/* need this to take an input username and password from UI */
+/*/* need this to take an input username and password from UI */
 SELECT DISTINCT P.SSN, P.Name
 FROM People P
 WHERE P.username='jwild1' AND P.password='password13';
@@ -101,3 +91,25 @@ FROM Vaccine_Type V WHERE V.vaccine_name='Pfizer')T2)
 WHERE A.located=T1.location_id OR A.vaccine_id=T2.vaccine_id OR A.appt_date='10-DEC-20';
 
 /* make 'WPI', 'Pfizer', '10-DEC-20' as variable inputs */
+
+
+ /* NEW QUERIES --SANIKA */
+ /*Select the date, location and vaccine type of all past appointments for a person. QUESTION: How to denote past appointment in table? Should we add flag? Or Add 2 appointments by 1 person. Add their SSN to table*/ 
+ /* Logic: select appointments by a given user. Find latest appointment by sorting date. Subtract lastest appointment from all appointments. Display rest of the appointmnets. */
+ 
+ /*Find all available appointments by date/time - NOTE: There is no time attribute in appoitment table. but there is TIME filter on UI. This problem needs to be fixed */ 
+SELECT DISTINCT A.appt_id, A.appt_date
+FROM Appointments A
+WHERE A.appt_date = To_DATE('2020-12-10', 'yyyy-mm-dd'); /* Date input: 10 December*/
+
+ 
+/*Find all available appointments by vaccine type- S*/
+SELECT DISTINCT A.appt_id, A.appt_date, T.Vaccine_Name    
+FROM Appointments A,((SELECT DISTINCT V.Vaccine_ID, V.vaccine_Name FROM Vaccine_Type V WHERE V.Vaccine_Name = 'Pfizer')T) /* Vaccine Type: Pfizer*/
+WHERE A.Vaccine_ID = T.Vaccine_ID;
+
+/*Find all available appointments by vaccine type and Date- S*/
+SELECT DISTINCT A.appt_id, A.appt_date, T.Vaccine_Name    
+FROM Appointments A,((SELECT DISTINCT V.Vaccine_ID, V.vaccine_Name FROM Vaccine_Type V WHERE V.Vaccine_Name = 'Pfizer')T) /* Vaccine Type: Pfizer and date: 10 december*/
+WHERE A.Vaccine_ID = T.Vaccine_ID AND A.appt_date = To_DATE('2020-12-10', 'yyyy-mm-dd');
+
