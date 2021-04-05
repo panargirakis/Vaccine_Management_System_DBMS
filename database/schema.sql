@@ -322,17 +322,17 @@ CREATE TABLE Appointments(
   FOREIGN KEY (Vaccine_ID) REFERENCES Vaccine_Type(Vaccine_ID)
 );
 
-INSERT INTO Appointments VALUES ('1', To_DATE('2020-12-10', 'yyyy-mm-dd'), '2', '1', 123456789, '1');
-INSERT INTO Appointments VALUES ('2', To_DATE('2020-12-10', 'yyyy-mm-dd'), '2', '1', 555555555, '1');
-INSERT INTO Appointments VALUES ('3', To_DATE('2020-12-16', 'yyyy-mm-dd'), '3', '1', 999999999, '2');
+INSERT INTO Appointments VALUES ('1', To_DATE('2020-12-10 10:00:00', 'yyyy-mm-dd HH24:MI:SS'), '2', '1', 123456789, '1');
+INSERT INTO Appointments VALUES ('2', To_DATE('2020-12-10 11:00:00', 'yyyy-mm-dd HH24:MI:SS'), '2', '1', 555555555, '1');
+INSERT INTO Appointments VALUES ('3', To_DATE('2020-12-16 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), '3', '1', 999999999, '2');
 
-INSERT INTO Appointments VALUES ('4', To_DATE('2021-03-01', 'yyyy-mm-dd'), '3', '2', NULL, '1');
-INSERT INTO Appointments VALUES ('5', To_DATE('2021-03-02', 'yyyy-mm-dd'), '3', '2', 777777777, '1');
-INSERT INTO Appointments VALUES ('6', To_DATE('2021-03-03', 'yyyy-mm-dd'), '3', '2', NULL, '2');
+INSERT INTO Appointments VALUES ('4', To_DATE('2021-03-01 13:00:00', 'yyyy-mm-dd HH24:MI:SS'), '3', '2', NULL, '1');
+INSERT INTO Appointments VALUES ('5', To_DATE('2021-03-02 14:00:00', 'yyyy-mm-dd HH24:MI:SS'), '3', '2', 777777777, '1');
+INSERT INTO Appointments VALUES ('6', To_DATE('2021-03-03 15:00:00', 'yyyy-mm-dd HH24:MI:SS'), '3', '2', NULL, '2');
 
-INSERT INTO Appointments VALUES ('7', To_DATE('2021-05-10', 'yyyy-mm-dd'), '1', '3', 741852963, '3');
-INSERT INTO Appointments VALUES ('8', To_DATE('2021-05-10', 'yyyy-mm-dd'), '1', '3', NULL, '3');
-INSERT INTO Appointments VALUES ('9', To_DATE('2021-07-16', 'yyyy-mm-dd'), '1', '3', NULL, '3');
+INSERT INTO Appointments VALUES ('7', To_DATE('2021-05-10 16:00:00', 'yyyy-mm-dd HH24:MI:SS'), '1', '3', 741852963, '3');
+INSERT INTO Appointments VALUES ('8', To_DATE('2021-05-10 09:00:00', 'yyyy-mm-dd HH24:MI:SS'), '1', '3', NULL, '3');
+INSERT INTO Appointments VALUES ('9', To_DATE('2021-07-16 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), '1', '3', NULL, '3');
 
 
 
