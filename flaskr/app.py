@@ -3,6 +3,7 @@ import os
 import cx_Oracle
 import sys
 import db_info
+from queries import *
 
 """
 Before running, set these environment variables:
@@ -138,9 +139,17 @@ def index():
 def show_username(id):
     connection = pool.acquire()
     cursor = connection.cursor()
-    cursor.execute("select username from people where ssn = :idbv", [id])
+    cursor.execute("select username from people where ssn = :req_id", [id])
     r = cursor.fetchone()
     return (r[0] if r else "Unknown user id")
+
+@app.route('/user/<int:id>/appointments')
+def show_upcoming_appointments(id):
+    connection = pool.acquire()
+    cursor = connection.cursor()
+    cursor.execute(find_appt_by_person, [id])
+    r = cursor.fetchone()
+    return (str(r) if r else "User does not have any upcoming appointments")
 
 
 ################################################################################
