@@ -49,5 +49,5 @@ find_appt_by_person = \
 "FROM Appointments ap INNER JOIN Distribution_Location dl ON ap.Located = dl.location_id " \
 "INNER JOIN Address ad ON ad.Address_ID = dl.Located " \
 "INNER JOIN Vaccine_Type vt ON vt.Vaccine_ID = ap.Vaccine_ID " \
-"WHERE ap.SSN = :ssn AND ap.Appt_date > SYSDATE;"
+"WHERE ap.SSN = :ssn AND ap.Appt_date > SYSDATE"
 
