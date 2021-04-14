@@ -1,4 +1,5 @@
 
+
 /* ALL OLD QURIES */
 /* 4 -- List out people with health insurance that has COVID coverage
 SELECT DISTINCT P.name
@@ -94,10 +95,10 @@ WHERE A.located=T1.location_id OR A.vaccine_id=T2.vaccine_id OR A.appt_date='10-
 
 
  /* NEW QUERIES --SANIKA */
- /*Select the date, location and vaccine type of all past appointments for a person. QUESTION: How to denote past appointment in table? Should we add flag? Or Add 2 appointments by 1 person. Add their SSN to table*/
- /* Logic: select appointments by a given user. Find latest appointment by sorting date. Subtract lastest appointment from all appointments. Display rest of the appointmnets. */
-
- /*Find all available appointments by date/time - NOTE: There is no time attribute in appoitment table. but there is TIME filter on UI. This problem needs to be fixed */
+ /*Select the date, location and vaccine type of all past appointments for a person. QUESTION: How to denote past appointment in table? Should we add flag? Or Add 2 appointments by 1 person. Add their SSN to table*/ 
+ /* Logic: select appointments by a given user. Find latest appointment by sorting date. */
+ 
+ /*Find all available appointments by date/time - NOTE: There is no time attribute in appoitment table. but there is TIME filter on UI. This problem needs to be fixed */ 
 SELECT DISTINCT A.appt_id, A.appt_date
 FROM Appointments A
 WHERE A.appt_date = To_DATE('2020-12-10', 'yyyy-mm-dd'); /* Date input: 10 December*/
