@@ -157,6 +157,9 @@ def show_upcoming_appointments(id):
     return (str(query_results) if query_results else "User does not have any upcoming appointments")
 
 
+def get_db_cursor():
+    return pool.acquire().cursor()
+
 ################################################################################
 #
 # Initialization is done once at startup time
