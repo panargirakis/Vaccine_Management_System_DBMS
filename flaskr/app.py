@@ -19,7 +19,10 @@ Before running, set these environment variables:
 # or LD_LIBRARY_PATH.  cx_Oracle installation instructions are at:
 # https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
 if sys.platform.startswith("darwin"):
-    cx_Oracle.init_oracle_client(lib_dir=os.environ.get("HOME") + "/instantclient_19_3")
+    try:
+        cx_Oracle.init_oracle_client(lib_dir=os.environ.get("HOME") + "/instantclient_19_3")
+    except Exception:
+        cx_Oracle.init_oracle_client(lib_dir=os.environ.get("HOME") + "/Downloads" + "/instantclient_19_8")
 elif sys.platform.startswith("win32"):
     cx_Oracle.init_oracle_client(lib_dir=r"c:\oracle\instantclient_19_8")
 
@@ -148,8 +151,10 @@ def show_upcoming_appointments(id):
     connection = pool.acquire()
     cursor = connection.cursor()
     cursor.execute(find_appt_by_person, [id])
-    r = cursor.fetchone()
-    return (str(r) if r else "User does not have any upcoming appointments")
+    query_results = cursor.fetchone()
+
+    # populate form
+    return (str(query_results) if query_results else "User does not have any upcoming appointments")
 
 
 ################################################################################
