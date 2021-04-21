@@ -4,6 +4,7 @@ import cx_Oracle
 import sys
 import db_info
 from queries import *
+import auth
 
 """
 Before running, set these environment variables:
@@ -109,8 +110,9 @@ def start_pool():
 #   http://127.0.0.1:8080/user/1
 #
 
-
 app = Flask(__name__)
+# Start a pool of connections
+pool = start_pool()
 
 
 # Display a welcome message on the 'home' page
@@ -165,8 +167,9 @@ def get_db_cursor():
 # Initialization is done once at startup time
 #
 if __name__ == '__main__':
-    # Start a pool of connections
-    pool = start_pool()
+    app.register_blueprint(auth.bp)
+
+    app.config.from_mapping(SECRET_KEY='dev')
 
     # Start a webserver
     app.run(port=int(os.environ.get('PORT', '8080')))
