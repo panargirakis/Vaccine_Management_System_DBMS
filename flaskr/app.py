@@ -5,6 +5,7 @@ import sys
 import db_info
 from queries import *
 import auth
+from db import DB
 
 """
 Before running, set these environment variables:
@@ -111,8 +112,6 @@ def start_pool():
 #
 
 app = Flask(__name__)
-# Start a pool of connections
-pool = start_pool()
 
 
 # Display a welcome message on the 'home' page
@@ -142,25 +141,20 @@ def index():
 # Show the username for a given id
 @app.route('/user/<int:id>')
 def show_username(id):
-    connection = pool.acquire()
-    cursor = connection.cursor()
+    cursor = DB.get_instance()
     cursor.execute("select username from people where ssn = :req_id", [id])
     r = cursor.fetchone()
     return (r[0] if r else "Unknown user id")
 
+
 @app.route('/user/<int:id>/appointments')
 def show_upcoming_appointments(id):
-    connection = pool.acquire()
-    cursor = connection.cursor()
+    cursor = DB.get_instance()
     cursor.execute(find_appt_by_person, [id])
     query_results = cursor.fetchone()
 
     # populate form
     return (str(query_results) if query_results else "User does not have any upcoming appointments")
-
-
-def get_db_cursor():
-    return pool.acquire().cursor()
 
 ################################################################################
 #
@@ -170,6 +164,8 @@ if __name__ == '__main__':
     app.register_blueprint(auth.bp)
 
     app.config.from_mapping(SECRET_KEY='dev')
+
+    DB.get_instance()
 
     # Start a webserver
     app.run(port=int(os.environ.get('PORT', '8080')))

@@ -5,7 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-import app
+from db import DB
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -45,11 +45,12 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db = app.get_db_cursor()
+        cursor = DB.get_instance()
         error = None
-        user1 = db.execute(
-            'SELECT * FROM People WHERE username = :username', [username]
-        ).fetchone()
+        cursor.execute(
+            "SELECT * FROM people WHERE username = :username", [username]
+        )
+        user1 = cursor.fetchone()
 
         if user1 is None:
             error = 'Incorrect username.'
@@ -76,7 +77,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user1 = None
     else:
-        g.user1 = app.get_db_cursor().execute(
+        g.user1 = DB.get_instance().execute(
             'SELECT * FROM user1 WHERE id = ?', (user_id,)
         ).fetchone()
 
@@ -120,7 +121,7 @@ def register():
         job_title = request.form['Job_Title']
         phase_number = 'idk'
         covid_coverage = request.form['covid_coverage']
-        db = app.get_db_cursor()
+        cursor = DB.get_instance()
         error = None
 
         if not username:
@@ -135,24 +136,24 @@ def register():
             error = 'SSN is required'
         elif not address:
             error = 'Address is required'
-        elif db.execute(
-            'SELECT * FROM People WHERE ssn = ?', (ssn,)
+        elif cursor.execute(
+            'SELECT * FROM People WHERE ssn = ?', (ssn)
         ).fetchone() is not None:
             error = 'User {} is already registered.'.format(ssn)
 
         if error is None:
             #db.execute('SELECT address_id FROM Address WHERE street = ?', (address,))
-            db.execute(
+            cursor.execute(
                 'INSERT INTO People (ssn, name, occupation, username, password, email_address, age, address_id, phase_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
                 (ssn, name, occupation, username, generate_password_hash(password), email_address, age, address, phase_number))
-            db.execute('INSERT INTO Health_Insurance (Insurance_Number, ssn, Insurance_Company, covid_coverage, expiration_date) VALUES (?, ?, ?, ?, ?)',
+            cursor.execute('INSERT INTO Health_Insurance (Insurance_Number, ssn, Insurance_Company, covid_coverage, expiration_date) VALUES (?, ?, ?, ?, ?)',
             (insurance_number, ssn, insurance_company, covid_coverage, exp_date))
 
             if healthcare_worker:
-                db.execute('INSERT INTO Healthcare_Staff (SSN, Job_Title), VALUES (?, ?)',
+                cursor.execute('INSERT INTO Healthcare_Staff (SSN, Job_Title), VALUES (?, ?)',
                            (ssn, job_title))
 
-            db.commit()
+            cursor.commit()
             return redirect(url_for('auth.login'))
 
         flash(error)
