@@ -19,8 +19,8 @@ DROP TABLE "VACCINE_COMPANIES" CASCADE CONSTRAINTS;
 
 /*----------------Create Table Vaccine_Type ------------------------*/
 CREATE TABLE Vaccine_Type(
-Vaccine_ID CHAR(20),
-Vaccine_Name CHAR(20),
+Vaccine_ID VARCHAR(20),
+Vaccine_Name VARCHAR(20),
 Number_Of_Doses INT,
 
 PRIMARY KEY(Vaccine_ID),
@@ -35,8 +35,8 @@ INSERT INTO Vaccine_Type VALUES('3','Johnson','1');
 
 /*----------------Create Table Side_Effects ------------------------*/
 Create Table Side_Effects (
-side_effect_id CHAR(10),
-side_effect CHAR(50),
+side_effect_id VARCHAR(10),
+side_effect VARCHAR(50),
 PRIMARY KEY (side_effect_id));
 
 INSERT INTO Side_Effects VALUES('1','Headache'); /* Remove proceeding zeroes */
@@ -48,8 +48,8 @@ INSERT INTO Side_Effects VALUES('5','Chills');
 
 /*----------------has_side_effect ------------------------*/
 Create Table has_side_effect(
-side_effect_id CHAR(10),
-Vaccine_ID CHAR(20),
+side_effect_id VARCHAR(10),
+Vaccine_ID VARCHAR(20),
 PRIMARY KEY (side_effect_id, Vaccine_ID),
 Foreign Key (side_effect_id) REFERENCES Side_Effects (side_effect_id),
 Foreign Key (Vaccine_ID) REFERENCES Vaccine_Type (Vaccine_ID));
@@ -74,11 +74,11 @@ INSERT INTO has_side_effect VALUES('5','3');
 /*----------------Create Table Vaccine_Companies ------------------------*/
 
 CREATE TABLE Vaccine_Companies(
-Company_ID CHAR(20),
-Company_Name CHAR(20),
-Contact_Name CHAR(20),
-Contact_Email CHAR(20),
-Phone CHAR(10),
+Company_ID VARCHAR(20),
+Company_Name VARCHAR(20),
+Contact_Name VARCHAR(20),
+Contact_Email VARCHAR(20),
+Phone VARCHAR(10),
 
 PRIMARY KEY(Company_ID)
 );
@@ -91,13 +91,13 @@ INSERT INTO Vaccine_Companies VALUES('JJ33','Johnson','George', 'george111@gmail
 /*----------------Create Table Address ------------------------*/
 
 CREATE TABLE Address(
-Address_ID CHAR(20),
-Apartment CHAR(50),
-Street CHAR(50),
-City CHAR(50),
-State CHAR(50),
-Country CHAR(50),
-Zip_Code CHAR(50),
+Address_ID VARCHAR(20),
+Apartment VARCHAR(50),
+Street VARCHAR(50),
+City VARCHAR(50),
+State VARCHAR(50),
+Country VARCHAR(50),
+Zip_Code VARCHAR(50),
 
 
 PRIMARY KEY(Address_ID)
@@ -130,8 +130,8 @@ INSERT INTO Address VALUES('20', NULL, '17 Corinth St', 'Roslindale', 'MA', 'USA
 /*----------------Create Table Supplies ------------------------*/
 
 CREATE TABLE Supplies(
-Vaccine_ID CHAR(20),
-Company_ID CHAR(20),
+Vaccine_ID VARCHAR(20),
+Company_ID VARCHAR(20),
 
 PRIMARY KEY(Vaccine_ID, Company_ID),
 
@@ -147,8 +147,8 @@ INSERT INTO Supplies VALUES('3','JJ33');
 /*----------------Create Table Located ------------------------*/
 
 CREATE TABLE Located(
-Address_ID CHAR(20),
-Company_ID CHAR(20),
+Address_ID VARCHAR(20),
+Company_ID VARCHAR(20),
 
 PRIMARY KEY(Address_ID, Company_ID),
 
@@ -166,8 +166,8 @@ INSERT INTO Located VALUES('3','JJ33');
 /*-------------------------------------------*/
 
 CREATE TABLE Comorbidities(
-  Disease_ID CHAR(20),
-  Disease_name CHAR(50),
+  Disease_ID VARCHAR(20),
+  Disease_name VARCHAR(50),
   Severity REAL,
   PRIMARY KEY (Disease_ID)
 );
@@ -181,7 +181,7 @@ INSERT INTO Comorbidities VALUES('6', 'Heart Failure', '3');
 
 
 CREATE TABLE Distribution_Phase(
-  Phase_number CHAR(20),
+  Phase_number VARCHAR(20),
   Description VARCHAR2(4000),
   Start_date DATE,
   End_date DATE,
@@ -199,8 +199,8 @@ INSERT INTO Distribution_Phase VALUES('3', 'This phase includes everyone.', To_D
 
 
 CREATE TABLE associated_with(
-  Disease_ID CHAR(20),
-  Phase_number CHAR(20),
+  Disease_ID VARCHAR(20),
+  Phase_number VARCHAR(20),
   PRIMARY KEY (Disease_ID, Phase_number),
   FOREIGN KEY (Disease_ID) REFERENCES Comorbidities(Disease_ID),
   FOREIGN KEY (Phase_number) REFERENCES Distribution_Phase(Phase_number)
@@ -214,10 +214,10 @@ INSERT INTO associated_with VALUES('5', '2');
 INSERT INTO associated_with VALUES('6', '2');
 
 CREATE TABLE Distribution_Location(
-  Location_ID CHAR(20),
-  Location_name CHAR(50),
+  Location_ID VARCHAR(20),
+  Location_name VARCHAR(50),
   Capacity REAL,
-  Located CHAR(20) NOT NULL,
+  Located VARCHAR(20) NOT NULL,
   PRIMARY KEY (Location_ID),
   FOREIGN KEY (Located) REFERENCES Address(Address_ID)
 );
@@ -228,15 +228,15 @@ INSERT INTO Distribution_Location VALUES('3', 'Roslindale COVID-19 Vaccination S
 
 
 Create table People(
-SSN CHAR(9),
-name CHAR(50),
-occupation CHAR(50),
-username CHAR(15),
-password CHAR(15),
-email_address CHAR(25),
+SSN VARCHAR(9),
+name VARCHAR(50),
+occupation VARCHAR(50),
+username VARCHAR(15),
+password VARCHAR(15),
+email_address VARCHAR(25),
 age REAL,
-address_id CHAR(20) NOT NULL,
-phase_number CHAR(20) NOT NULL,
+address_id VARCHAR(20) NOT NULL,
+phase_number VARCHAR(20) NOT NULL,
 PRIMARY KEY (SSN),
 Unique(username),
 Unique (password),
@@ -264,8 +264,8 @@ insert into People Values ('135791357', 'Jennifer Trent', 'pharmacist', 'jtrent1
 
 
 Create table Healthcare_Staff(
-SSN CHAR(9),
-Job_Title CHAR(50),
+SSN VARCHAR(9),
+Job_Title VARCHAR(50),
 PRIMARY KEY (SSN),
 Foreign key (SSN) REFERENCES People (SSN) ON DELETE CASCADE);
 
@@ -286,8 +286,8 @@ insert into Healthcare_Staff Values ('135791357', 'pharmacist');
 /*----------------Create Table Administers ------------------------*/
 
 CREATE TABLE Administers(
-SSN CHAR(9),
-Vaccine_ID CHAR(20),
+SSN VARCHAR(9),
+Vaccine_ID VARCHAR(20),
 
 PRIMARY KEY(SSN, Vaccine_ID),
 
@@ -309,12 +309,12 @@ insert into Administers Values ('999999999', '2');
 insert into Administers Values ('135791357', '3');
 
 CREATE TABLE Appointments(
-  Appt_ID CHAR(20),
+  Appt_ID VARCHAR(20),
   Appt_date DATE,
-  Located CHAR(20) NOT NULL,
-  is_part_of CHAR(20) NOT NULL,
-  SSN CHAR(9),
-  Vaccine_ID CHAR(20),
+  Located VARCHAR(20) NOT NULL,
+  is_part_of VARCHAR(20) NOT NULL,
+  SSN VARCHAR(9),
+  Vaccine_ID VARCHAR(20),
   PRIMARY KEY (Appt_ID),
   FOREIGN KEY (Located) REFERENCES Distribution_Location(Location_ID),
   FOREIGN KEY (is_part_of) REFERENCES Distribution_Phase(Phase_number),
@@ -337,10 +337,10 @@ INSERT INTO Appointments VALUES ('9', To_DATE('2021-07-16 12:00:00', 'yyyy-mm-dd
 
 
 Create table Health_Insurance (
-Insurance_Number CHAR(25),
-SSN CHAR(9) NOT NULL,
-Insurance_Company CHAR(25),
-covid_coverage CHAR(1),
+Insurance_Number VARCHAR(25),
+SSN VARCHAR(9) NOT NULL,
+Insurance_Company VARCHAR(25),
+covid_coverage VARCHAR(1),
 expiration_date DATE,
 PRIMARY KEY (Insurance_Number),
 Unique (SSN),
@@ -364,8 +364,8 @@ insert into Health_Insurance Values ('20202', '135791357', 'Harvard Pilgrim', 'T
 
 
 Create table Diagnosed (
-SSN CHAR(9),
-Disease_ID CHAR(20),
+SSN VARCHAR(9),
+Disease_ID VARCHAR(20),
 PRIMARY KEY (SSN, Disease_ID),
 Foreign key (SSN) REFERENCES People (SSN),
 Foreign key (Disease_ID) REFERENCES Comorbidities (Disease_ID));
