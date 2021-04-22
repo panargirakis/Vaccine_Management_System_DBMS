@@ -48,7 +48,7 @@ def login():
         cursor = DB.get_instance()
         error = None
         cursor.execute(
-            "SELECT * FROM people WHERE username = :username", [username]
+            "SELECT ssn, password FROM people WHERE username = :username", [username]
         )
         user1 = cursor.fetchone()
 
@@ -56,12 +56,12 @@ def login():
             error = 'Incorrect username.'
             print(user1)
             print(username)
-        elif not check_password_hash(user1['password'], password):
+        elif not user1[1] == password:
             error = 'Incorrect password.'
 
         if error is None:
             session.clear()
-            session['user_id'] = user1['ssn']
+            session['user_id'] = user1[0]
             # return redirect(url_for('index'))
             return redirect(url_for('auth.register'))
 
@@ -78,7 +78,7 @@ def load_logged_in_user():
         g.user1 = None
     else:
         g.user1 = DB.get_instance().execute(
-            'SELECT * FROM user1 WHERE id = ?', (user_id,)
+            'SELECT * FROM people WHERE ssn = :u_ssn', [user_id]
         ).fetchone()
 
 
