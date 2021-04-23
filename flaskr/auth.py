@@ -6,6 +6,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import DB
+from queries import *
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -51,19 +52,21 @@ def login():
             "SELECT ssn, password FROM people WHERE username = :username", [username]
         )
         user1 = cursor.fetchone()
+        # print(user1)
 
         if user1 is None:
             error = 'Incorrect username.'
-            print(user1)
-            print(username)
+            # print(user1)
+            # print(username)
         elif not user1[1] == password:
             error = 'Incorrect password.'
 
         if error is None:
             session.clear()
             session['user_id'] = user1[0]
+            print(user1)
             # return redirect(url_for('index'))
-            return redirect(url_for('auth.register'))
+            return redirect(url_for('auth.register')) # redirect to y profile page here
 
         flash(error)
 
@@ -114,34 +117,42 @@ def register():
         username = request.form['username']
         password = request.form['password']
         comorbidities = request.form['comorbidities']
-        insurance_company = request.form['Insurance_Company']
-        insurance_number = request.form['Insurance_Number']
-        exp_date = request.form['expiration_date']
+        insurance_company = request.form['insurance_company']
+        insurance_number = request.form['insurance_number']
+        exp_date = request.form['exp_date']
         healthcare_worker = request.form['healthcare_worker']
-        job_title = request.form['Job_Title']
+        job_title = request.form['job_title']
         phase_number = 'idk'
         covid_coverage = request.form['covid_coverage']
+
         cursor = DB.get_instance()
         error = None
 
         if not username:
             error = 'Username is required.'
+            # print(error)
         elif not password:
             error = 'Password is required.'
+            # print(error)
         # elif not name:
         #     error = 'Name is required'
         # elif not age:
         #     error = 'Age is required'
         elif not ssn:
             error = 'SSN is required'
+            # print(error)
         elif not address:
             error = 'Address is required'
+            print(error)
         elif cursor.execute(
-            'SELECT * FROM People WHERE ssn = ?', (ssn)
+            find_ssn_name_for_cred, [username, password]
         ).fetchone() is not None:
             error = 'User {} is already registered.'.format(ssn)
 
         if error is None:
+            print(username)
+            print(ssn)
+            print(comorbidities)
             #db.execute('SELECT address_id FROM Address WHERE street = ?', (address,))
             cursor.execute(
                 'INSERT INTO People (ssn, name, occupation, username, password, email_address, age, address_id, phase_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
