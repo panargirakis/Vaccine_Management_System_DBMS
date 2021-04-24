@@ -214,14 +214,18 @@ def phase_eligibility():
         age = cursor.fetchone()
         output4 = 'Age: ' + str(age[0])
 
-        # cursor.execute("SELECT DISTINCT D.Disease_ID FROM Diagnosed D" \
-        #                "WHERE D.ssn= :ssn", [user_id])
-        # did = cursor.fetchall()
+        try:
+            cursor.execute("SELECT DISTINCT D.Disease_ID FROM Diagnosed D" \
+                           "WHERE D.ssn= :ssn", [user_id])
+            did = cursor.fetchall()
+            did = did[0]
+            print(did)
+            cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did])
 
-        cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C" )
-
-        comorbidities = cursor.fetchall()
-        output5 = 'Comorbidities: ' + str(comorbidities)
+            comorbidities = cursor.fetchall()
+            output5 = 'Comorbidities: ' + str(comorbidities)
+        except Exception:
+            output5 = 'No comorbidities'
     elif str(phase[0][0]) == '3':
         output3 = ''
         output4 = ''
