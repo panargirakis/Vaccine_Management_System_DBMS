@@ -90,7 +90,7 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return "Successfully logged out"
+    return redirect(url_for('auth.login'))
 
 
 def login_required(view):
@@ -145,7 +145,7 @@ def register():
             # print(error)
         elif not address:
             error = 'Address is required'
-            print(error)
+            # print(error)
         elif cursor.execute(
             find_ssn_name_for_cred, [username, password]
         ).fetchone() is not None:
