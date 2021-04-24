@@ -8,6 +8,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from db import DB
 from queries import *
 
+from datetime import datetime
+
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
@@ -52,7 +54,7 @@ def login():
             "SELECT ssn, password FROM people WHERE username = :username", [username]
         )
         user1 = cursor.fetchone()
-        # print(user1)
+        # ssn = user1[0]
 
         if user1 is None:
             error = 'Incorrect username.'
@@ -64,7 +66,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user1[0]
-            print(user1)
+            # print(ssn)
             # return redirect(url_for('index'))
             return redirect(url_for('auth.register')) # redirect to y profile page here
 
@@ -88,7 +90,7 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return "Successfully logged out"
 
 
 def login_required(view):
@@ -171,6 +173,73 @@ def register():
 
     return render_template('auth/register.html')
 #
+
+
+@bp.route('/phase_eligibility')#, methods=('GET', 'POST'))
+def phase_eligibility():
+    user_id = session.get('user_id')
+    cursor = DB.get_instance()
+    cursor.execute("SELECT DISTINCT P.phase_number FROM People P " \
+                        "WHERE P.ssn= :ssn", [user_id])
+    phase = cursor.fetchall()
+
+    cursor.execute("SELECT DISTINCT DP.Start_date FROM Distribution_Phase DP " \
+                        "WHERE DP.Phase_number= :phase_number", [str(phase[0][0])])
+    phase_start = cursor.fetchall()
+    phase_start = phase_start[0][0].strftime("%m/%d/%Y, %H:%M:%S")
+
+    output = "You are eligible for phase: " + phase[0][0]
+    output1 = "Phase starts on: " + phase_start
+    output2 = "Factors influencing your eligibility: "
+
+    cursor.execute("SELECT DISTINCT DP.Description FROM Distribution_Phase DP " \
+                   "WHERE DP.Phase_number= :phase_number", [str(phase[0][0])])
+    description = cursor.fetchall()
+
+    if str(phase[0][0]) == '1':
+        cursor.execute("SELECT DISTINCT P.occupation FROM People P " \
+                       "WHERE P.ssn= :ssn", [user_id])
+        occupation = cursor.fetchone()
+        output3 = 'Occupation: ' + str(occupation[0])
+        output4 = 'Age: ' + 'N/A'
+        output5 = 'Comorbidities: ' + 'N/A'
+    elif str(phase[0][0]) == '2':
+        cursor.execute("SELECT DISTINCT P.occupation FROM People P " \
+                       "WHERE P.ssn= :ssn", [user_id])
+        occupation = cursor.fetchone()
+        output3 = 'Occupation: ' + str(occupation[0])
+
+        cursor.execute("SELECT DISTINCT P.age FROM People P " \
+                       "WHERE P.ssn= :ssn", [user_id])
+        age = cursor.fetchone()
+        output4 = 'Age: ' + str(age[0])
+
+        # cursor.execute("SELECT DISTINCT D.Disease_ID FROM Diagnosed D" \
+        #                "WHERE D.ssn= :ssn", [user_id])
+        # did = cursor.fetchall()
+
+        cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C" )
+
+        comorbidities = cursor.fetchall()
+        output5 = 'Comorbidities: ' + str(comorbidities)
+    elif str(phase[0][0]) == '3':
+        output3 = ''
+        output4 = ''
+        output5 = ''
+
+    output6 = 'Description: ' + description[0][0]
+
+    return render_template('auth/phase_eligibility.html', output=[output, output1, output2, output3, output4, output5, output6])
+
+
+
+
+
+
+
+
+
+
 #
 # @bp.route('/login', methods=('GET', 'POST'))
 # def login():
