@@ -185,7 +185,12 @@ def register():
             address_id = str(max_add_id + 1)
 
             # get appropriate phase number for new user
-            phase_number = '2'
+            if healthcare_worker == 'on':
+                phase_number = '1'
+            elif float(age) > 55 or len(comorbidities) >= 2 or occupation == 'teacher':
+                phase_number = '2'
+            else:
+                phase_number = '3'
 
             if covid_coverage == 'on':
                 covid_coverage = 'T'
