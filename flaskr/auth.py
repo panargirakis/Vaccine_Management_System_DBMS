@@ -123,9 +123,9 @@ def register():
         insurance_company = request.form['insurance_company']
         insurance_number = request.form['insurance_number']
         exp_date = request.form['exp_date']
-        healthcare_worker = request.form['healthcare_worker']
+        healthcare_worker = request.form.get('healthcare_worker')
         job_title = request.form['job_title']
-        covid_coverage = request.form['covid_coverage']
+        covid_coverage = request.form.get('covid_coverage')
 
         cursor = DB.get_instance()
         error = None
@@ -179,6 +179,8 @@ def register():
                 covid_coverage = 'T'
             else:
                 covid_coverage = 'F'
+
+            print(covid_coverage)
 
             cursor.execute(
                 'INSERT INTO People (ssn, name, occupation, username, password, email_address, age, address_id, phase_number) VALUES (:ssn, :name, :occupation, :username, :password, :email_address, :age, :address_id, :phase_number)',
