@@ -1,0 +1,59 @@
+
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Schedule Appointments{% endblock %}</h1>
+    <style>
+    #future_appt {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    #future_appt td, #future_appt th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    }
+
+    #future_appt tr:nth-child(even){background-color: #f2f2f2;}
+
+    #future_appt tr:hover {background-color: #ddd;}
+
+    #future_appt th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+    }
+
+    .topnav input[type=text] {
+    float: left;
+    padding: 6px;
+    border: solid;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="topnav">
+    <input type="text" placeholder="Date">
+    </div>
+
+
+  <table id="future_appt">
+
+  {%  for row in data %}
+      <tr>
+      {%  for cell in row %}
+          <td>
+          {{ cell }}
+          </td>
+      {% endfor %}
+      </tr>
+  {%  endfor %}
+  </table>
+{% endblock %}

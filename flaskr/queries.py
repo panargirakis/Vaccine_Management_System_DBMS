@@ -45,7 +45,7 @@ find_appt_by_dist_loc_and_date = \
 # Find future appointments for a person
 find_appt_by_person = \
 "SELECT ap.Appt_ID, TO_CHAR(ap.Appt_date, 'MM-DD-YYYY HH24:MI:SS'), dl.Location_name, " \
-"ad.Street, ad.Apartment, ad.City, ad.State, Ad.State, ad.Country, vt.Vaccine_Name " \
+"ad.Street, ad.Apartment, ad.City, ad.State, ad.Country, vt.Vaccine_Name " \
 "FROM Appointments ap INNER JOIN Distribution_Location dl ON ap.Located = dl.location_id " \
 "INNER JOIN Address ad ON ad.Address_ID = dl.Located " \
 "INNER JOIN Vaccine_Type vt ON vt.Vaccine_ID = ap.Vaccine_ID " \

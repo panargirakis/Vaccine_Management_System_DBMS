@@ -55,10 +55,12 @@ def show_username(id):
 def show_upcoming_appointments(id):
     cursor = DB.get_instance()
     cursor.execute(find_appt_by_person, [id])
-    query_results = cursor.fetchone()
+    # query_results = cursor.fetchone()
+    query_results = cursor.fetchall()
 
     # populate form
-    return (str(query_results) if query_results else "User does not have any upcoming appointments")
+    # return (str(query_results) if query_results else "User does not have any upcoming appointments")
+    return query_results
 
 ################################################################################
 #

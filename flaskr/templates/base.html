@@ -21,6 +21,8 @@
     {% else %}
       <li><a href="{{ url_for('auth.register') }}">Register</a>
       <li><a href="{{ url_for('auth.login') }}">Log In</a>
+      <li><a href="{{ url_for('auth.show_appt') }}">My_Appointments</a>
+        <li><a href="{{ url_for('auth.schedule_appt') }}">Schedule_Appointments</a>
     {% endif %}
   </ul>
 </nav>
