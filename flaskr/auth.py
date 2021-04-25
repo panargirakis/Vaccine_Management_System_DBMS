@@ -1,5 +1,5 @@
 import functools
-
+import random
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -157,13 +157,13 @@ def register():
         elif not street:
             error = 'Street is required'
         elif not city:
-            error = 'Street is required'
+            error = 'City is required'
         elif not state:
-            error = 'Street is required'
+            error = 'State is required'
         elif not country:
-            error = 'Street is required'
+            error = 'Country is required'
         elif not zip_code:
-            error = 'Street is required'
+            error = 'Zip Code is required'
 
         elif cursor.execute(
             find_ssn_name_for_cred, [username, password]
@@ -184,10 +184,12 @@ def register():
 
             address_id = str(max_add_id + 1)
 
+            comorbidities_list = []
+            comorbidities_list.append(comorbidities)
             # get appropriate phase number for new user
             if healthcare_worker == 'on':
                 phase_number = '1'
-            elif float(age) > 55 or len(comorbidities) >= 2 or occupation == 'teacher':
+            elif float(age) > 55 or len(comorbidities_list) >= 2 or occupation == 'teacher':
                 phase_number = '2'
             else:
                 phase_number = '3'
@@ -196,6 +198,11 @@ def register():
                 covid_coverage = 'T'
             else:
                 covid_coverage = 'F'
+
+            cursor.execute("SELECT DISTINCT C.Disease_ID FROM Comorbidities C WHERE C.Disease_name= :disease_name", [comorbidities])
+            did = cursor.fetchall()
+            did = did[0][0]
+
 
             cursor.execute('INSERT INTO Address (Address_ID, Apartment, Street, City, State, Country, Zip_Code) VALUES (:Address_ID, :Apartment, :Street, :City, :State, :Country, :Zip_Code)', (address_id, apartment, street, city, state, country, zip_code))
 
@@ -206,9 +213,14 @@ def register():
             cursor.execute("INSERT INTO Health_Insurance (Insurance_Number, ssn, Insurance_Company, covid_coverage, expiration_date) VALUES (:insurance_number, :ssn, :insurance_company, :covid_coverage, TO_DATE(:exp_date, 'DD MON YYYY'))",
             (insurance_number, ssn, insurance_company, covid_coverage, dtt))
 
+            cursor.execute('INSERT INTO Diagnosed (SSN, Disease_ID) VALUES (:ssn, :disease_id)', [ssn, did])
+
             if healthcare_worker == 'on' and job_title != '':
+                # randomly pick a vaccine they administer
+                vaccine_id = random.randint(1, 3)
                 cursor.execute('INSERT INTO Healthcare_Staff (ssn, job_title) VALUES (:ssn, :job_title)',
                            (ssn, job_title))
+                cursor.execute('INSERT INTO Administers (SSN, Vaccine_ID) VALUES (:ssn, :vaccine_id)', [ssn, vaccine_id])
             else:
                 pass
 
