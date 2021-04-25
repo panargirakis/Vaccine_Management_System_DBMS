@@ -110,6 +110,7 @@ def login_required(view):
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
+
         name = request.form['name']
         address = request.form['address']
         age = request.form['age']
@@ -124,7 +125,6 @@ def register():
         exp_date = request.form['exp_date']
         healthcare_worker = request.form['healthcare_worker']
         job_title = request.form['job_title']
-        phase_number = 'idk'
         covid_coverage = request.form['covid_coverage']
 
         cursor = DB.get_instance()
@@ -136,10 +136,14 @@ def register():
         elif not password:
             error = 'Password is required.'
             # print(error)
-        # elif not name:
-        #     error = 'Name is required'
-        # elif not age:
-        #     error = 'Age is required'
+        elif not name:
+            error = 'Name is required'
+        elif not insurance_company:
+            error = 'Insurance company is required'
+        elif not insurance_number:
+            error = 'Insurance number is required'
+        elif not exp_date:
+            error = 'Expiration Date of insurance is required'
         elif not ssn:
             error = 'SSN is required'
             # print(error)
@@ -149,24 +153,47 @@ def register():
         elif cursor.execute(
             find_ssn_name_for_cred, [username, password]
         ).fetchone() is not None:
-            error = 'User {} is already registered.'.format(ssn)
+            error = 'User {} is already registered.'.format(username)
 
         if error is None:
             print(username)
             print(ssn)
             print(comorbidities)
-            #db.execute('SELECT address_id FROM Address WHERE street = ?', (address,))
+            print(password)
+            print('job title' + job_title)
+            print(healthcare_worker)
+            print(type(healthcare_worker))
+            print(covid_coverage)
+            print(exp_date)
+
+            dt = datetime.strptime(exp_date, "%m/%d/%y") #, %H:%M:%S")
+            print(dt)
+            dtt = dt.strftime('%d %b %Y')
+            print(dtt)
+            print(type(dtt))
+
+            phase_number = '2'
+            address_id = '1'
+            if covid_coverage == 'on':
+                covid_coverage = 'T'
+            else:
+                covid_coverage = None
+
             cursor.execute(
-                'INSERT INTO People (ssn, name, occupation, username, password, email_address, age, address_id, phase_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                (ssn, name, occupation, username, generate_password_hash(password), email_address, age, address, phase_number))
-            cursor.execute('INSERT INTO Health_Insurance (Insurance_Number, ssn, Insurance_Company, covid_coverage, expiration_date) VALUES (?, ?, ?, ?, ?)',
-            (insurance_number, ssn, insurance_company, covid_coverage, exp_date))
+                'INSERT INTO People (ssn, name, occupation, username, password, email_address, age, address_id, phase_number) VALUES (:ssn, :name, :occupation, :username, :password, :email_address, :age, :address_id, :phase_number)',
+                (ssn, name, occupation, username, password, email_address, float(age), address_id, phase_number))
 
-            if healthcare_worker:
-                cursor.execute('INSERT INTO Healthcare_Staff (SSN, Job_Title), VALUES (?, ?)',
+            cursor.execute("INSERT INTO Health_Insurance (Insurance_Number, ssn, Insurance_Company, covid_coverage, expiration_date) VALUES (:insurance_number, :ssn, :insurance_company, :covid_coverage, TO_DATE(:exp_date, 'DD MON YYYY'))",
+            (insurance_number, ssn, insurance_company, covid_coverage, dtt))
+
+            if healthcare_worker == 'on' and job_title is not None:
+                cursor.execute('INSERT INTO Healthcare_Staff (ssn, job_title) VALUES (:ssn, :job_title)',
                            (ssn, job_title))
+            else:
+                pass
 
-            cursor.commit()
+            # DB.__instance.acquire().commit()
+
             return redirect(url_for('auth.login'))
 
         flash(error)
