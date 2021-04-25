@@ -112,7 +112,14 @@ def register():
     if request.method == 'POST':
 
         name = request.form['name']
-        address = request.form['address']
+
+        street = request.form['street']
+        city = request.form['city']
+        state = request.form['state']
+        country = request.form['country']
+        zip_code = request.form['zip_code']
+        apartment = request.form['apartment']
+
         age = request.form['age']
         email_address = request.form['email_address']
         occupation = request.form['occupation']
@@ -147,40 +154,45 @@ def register():
         elif not ssn:
             error = 'SSN is required'
             # print(error)
-        elif not address:
-            error = 'Address is required'
-            # print(error)
+        elif not street:
+            error = 'Street is required'
+        elif not city:
+            error = 'Street is required'
+        elif not state:
+            error = 'Street is required'
+        elif not country:
+            error = 'Street is required'
+        elif not zip_code:
+            error = 'Street is required'
+
         elif cursor.execute(
             find_ssn_name_for_cred, [username, password]
         ).fetchone() is not None:
             error = 'User {} is already registered.'.format(username)
 
         if error is None:
-            print(username)
-            print(ssn)
-            print(comorbidities)
-            print(password)
-            print('job title' + job_title)
-            print(healthcare_worker)
-            print(type(healthcare_worker))
-            print(covid_coverage)
-            print(exp_date)
-
             dt = datetime.strptime(exp_date, "%m/%d/%y") #, %H:%M:%S")
-            print(dt)
             dtt = dt.strftime('%d %b %Y')
-            print(dtt)
-            print(type(dtt))
 
+            # generate address id
+            cursor.execute("SELECT DISTINCT A.Address_ID FROM Address A")
+            address_ids = cursor.fetchall()
+            address_ids_list = []
+            for i in range(0,len(address_ids)):
+                address_ids_list.append(int(address_ids[i][0]))
+            max_add_id = max(address_ids_list)
+
+            address_id = str(max_add_id + 1)
+
+            # get appropriate phase number for new user
             phase_number = '2'
-            address_id = '1'
 
             if covid_coverage == 'on':
                 covid_coverage = 'T'
             else:
                 covid_coverage = 'F'
 
-            print(covid_coverage)
+            cursor.execute('INSERT INTO Address (Address_ID, Apartment, Street, City, State, Country, Zip_Code) VALUES (:Address_ID, :Apartment, :Street, :City, :State, :Country, :Zip_Code)', (address_id, apartment, street, city, state, country, zip_code))
 
             cursor.execute(
                 'INSERT INTO People (ssn, name, occupation, username, password, email_address, age, address_id, phase_number) VALUES (:ssn, :name, :occupation, :username, :password, :email_address, :age, :address_id, :phase_number)',
@@ -189,7 +201,7 @@ def register():
             cursor.execute("INSERT INTO Health_Insurance (Insurance_Number, ssn, Insurance_Company, covid_coverage, expiration_date) VALUES (:insurance_number, :ssn, :insurance_company, :covid_coverage, TO_DATE(:exp_date, 'DD MON YYYY'))",
             (insurance_number, ssn, insurance_company, covid_coverage, dtt))
 
-            if healthcare_worker == 'on' and job_title is not None:
+            if healthcare_worker == 'on' and job_title != '':
                 cursor.execute('INSERT INTO Healthcare_Staff (ssn, job_title) VALUES (:ssn, :job_title)',
                            (ssn, job_title))
             else:
