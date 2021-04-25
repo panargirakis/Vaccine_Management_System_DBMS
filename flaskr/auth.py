@@ -174,10 +174,11 @@ def register():
 
             phase_number = '2'
             address_id = '1'
+
             if covid_coverage == 'on':
                 covid_coverage = 'T'
             else:
-                covid_coverage = None
+                covid_coverage = 'F'
 
             cursor.execute(
                 'INSERT INTO People (ssn, name, occupation, username, password, email_address, age, address_id, phase_number) VALUES (:ssn, :name, :occupation, :username, :password, :email_address, :age, :address_id, :phase_number)',
