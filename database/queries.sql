@@ -114,6 +114,12 @@ SELECT DISTINCT A.appt_id, A.appt_date, T.Vaccine_Name
 FROM Appointments A,((SELECT DISTINCT V.Vaccine_ID, V.vaccine_Name FROM Vaccine_Type V WHERE V.Vaccine_Name = 'Pfizer')T) /* Vaccine Type: Pfizer and date: 10 december*/
 WHERE A.Vaccine_ID = T.Vaccine_ID AND A.appt_date = To_DATE('2020-12-10', 'yyyy-mm-dd');
 
+/* Show all available appointments */
+select a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name
+from appointments a, Distribution_Location dl, vaccine_type v
+where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id
+order by a.appt_id;
+
 
 /* Queries by Panos */
 
