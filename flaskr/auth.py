@@ -176,28 +176,23 @@ def register():
 def show_appt():
 
     user_id = session.get('user_id')
-    print(user_id)
+    #print(user_id)
     qres = app.show_upcoming_appointments(user_id)
     #qres = app.show_upcoming_appointments(741852963)
-    print(qres)
+    #print(qres)
     header = ("Appt Id", "Date & Time", "Location", "Street", "Apartment", "City", "State", "Country","Vaccine")
     return render_template('auth/show_appt.html', header=header, data=qres)
 
 
 @bp.route('/schedule_appt', methods=('GET', 'POST'))
 def schedule_appt():
-    data = (
-        ("sanika","CS","vaccine1"),
-        ("Nick","DS","vaccine2"),
-        ("Panos",'CS',"vaccine3"),
-    )
-    return render_template('auth/schedule_appt.html', data=data)
+    qres = app.show_available_appointments("WPI")
+    #print(qres)
+    header = ("Appt Id", "Date", "Location", "Schedule")
+    return render_template('auth/schedule_appt.html', data=qres, header=header)
 
 
-
-
-#
-#
+#------------------------------
 # @bp.route('/login', methods=('GET', 'POST'))
 # def login():
 #     if request.method == 'POST':

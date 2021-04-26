@@ -4,47 +4,78 @@
 {% block header %}
     <h1>{% block title %}Schedule Appointments{% endblock %}</h1>
     <style>
-    #future_appt {
+    #schedule_appt {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
     }
 
-    #future_appt td, #future_appt th {
+    #schedule_appt td, #schedule_appt th {
     border: 1px solid #ddd;
     padding: 8px;
     }
 
-    #future_appt tr:nth-child(even){background-color: #f2f2f2;}
+    #schedule_appt tr:nth-child(even){background-color: #f2f2f2;}
 
-    #future_appt tr:hover {background-color: #ddd;}
+    #schedule_appt tr:hover {background-color: #ddd;}
 
-    #future_appt th {
+    #schedule_appt th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #4CAF50;
+    background-color: royalblue;
     color: white;
     }
 
     .topnav input[type=text] {
     float: left;
-    padding: 6px;
+    padding: 8px;
     border: solid;
     margin-top: 8px;
     margin-right: 16px;
     font-size: 17px;
+    }
+
+    #filter{
+        background-color: darkgrey;
+        width: 70px;
     }
     </style>
 {% endblock %}
 
 {% block content %}
     <div class="topnav">
-    <input type="text" placeholder="Date">
+
+    <label for="Date">Date:</label>
+    <input type="date" id="date" name="date">
+
+    <label for="time">Time:</label>
+    <input type="time" id="time" name="time">
+
+    <label for="location">Location:</label>
+    <select name="location" id="location">
+    <option value="WPI">WPI</option>
+    <option value="Roslindale">Roslindale</option>
+        <option value="Boston_Medical_center">Boston Medical Center</option>
+    </select>
+
+    <label for="Vaccine Type">Vaccine Type:</label>
+    <select name="vctype" id="vctype">
+    <option value="Johnson">Johnson</option>
+    <option value="Moderna">Moderna</option>
+        <option value="Moderna">Pfizer</option>
+    </select>
+
+    <input type="button", value="Filter", id="filter">
+
     </div>
 
 
-  <table id="future_appt">
+  <table id="schedule_appt">
+
+  {%  for heading in header %}
+      <th> {{ heading }} </th>
+  {% endfor %}
 
   {%  for row in data %}
       <tr>
@@ -53,6 +84,7 @@
           {{ cell }}
           </td>
       {% endfor %}
+      <td> <input type="button", value="Schedule"></td>
       </tr>
   {%  endfor %}
   </table>

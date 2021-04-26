@@ -62,6 +62,14 @@ def show_upcoming_appointments(id):
     # return (str(query_results) if query_results else "User does not have any upcoming appointments")
     return query_results
 
+#@app.route('/user/<string:loc_name>/appointments')
+def show_available_appointments(name):
+    cursor = DB.get_instance()
+    cursor.execute(find_appt_by_dist_loc, ['WPI'])
+    # use find all available appointments query
+    query_results = cursor.fetchall()
+    return query_results
+
 ################################################################################
 #
 # Initialization is done once at startup time
