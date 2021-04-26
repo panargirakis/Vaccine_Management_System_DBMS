@@ -20,13 +20,34 @@
   <form method="post">
     <div class="form-group">
       <label for="name">Name</label>
-
       <input name="name" id="name" required>
-      <label for="address">Address</label>
-      <input name="address" id="address" required>
+
       <label for="age">Age</label>
       <input name="age" id="age" required>
     </div>
+
+    <div class="form-group">
+      <label for="street">Street</label>
+      <input name="street" id="street" required>
+
+      <label for="city">City</label>
+      <input name="city" id="city" required>
+
+      <label for="state">State</label>
+      <input name="state" id="state" required>
+
+      <label for="country">Country</label>
+      <input name="country" id="country" required>
+    </div>
+    <div>
+      <label for="zip_code">Zip Code</label>
+      <input name="zip_code" id="zip_code" required>
+
+      <label for="apartment">Apartment</label>
+      <input name="apartment" id="apartment">
+    </div>
+
+
 
     <div class="form-group">
       <label for="email_address">Email Address</label>
@@ -68,12 +89,14 @@
 
     <div class="form-group">
       <label class="checkbox" for="covid_coverage">My Insurance Covers the Covid-19 Vaccine?  Yes</label>
-        <input type="checkbox" name="covid_coverage" id="covid_coverage">
+<!--      <input type="hidden" name="covid_coverage" value="0">-->
+      <input type="checkbox" name="covid_coverage" id="covid_coverage" >
     </div>
 
 <!--    <form action="">-->
     <div class="form-row">
       <label for="healthcare_worker" class = "auto-length">Are you a healthcare worker?  Yes</label>
+<!--        <input type="hidden" name="healthcare_worker" value="0">-->
         <input type="checkbox" name="healthcare_worker" id="healthcare_worker">
       <label for="job_title">Job Title</label>
         <input type="text" name="job_title" id="job_title">

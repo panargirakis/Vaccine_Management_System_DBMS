@@ -6,7 +6,9 @@ import db_info
 from queries import *
 import auth
 from db import DB
-
+from flask import (
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
+)
 """
 Before running, set these environment variables:
 
@@ -21,7 +23,8 @@ app = Flask(__name__)
 # Display a welcome message on the 'home' page
 @app.route('/')
 def index():
-    return "Welcome to the demo app"
+    return redirect(url_for('auth.login'))
+
 
 
 # Add a new username
