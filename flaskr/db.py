@@ -28,7 +28,10 @@ class DB:
         """ Static access method. """
         if DB.__instance == None:
             DB()
-        return DB.__instance.acquire().cursor()
+
+        connection = DB.__instance.acquire()
+        connection.autocommit = True
+        return connection.cursor()
 
     def __init__(self):
         """ Virtually private constructor. """
