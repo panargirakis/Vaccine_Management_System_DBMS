@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import DB
 from queries import *
+import app
 
 from datetime import datetime
 
@@ -68,7 +69,7 @@ def login():
             session['user_id'] = user1[0]
             # print(ssn)
             # return redirect(url_for('index'))
-            return redirect(url_for('auth.register')) # redirect to y profile page here
+            return redirect(url_for('auth.register')) # redirect to y show_appt page here
 
         flash(error)
 
@@ -233,7 +234,6 @@ def register():
     return render_template('auth/register.html')
 #
 
-
 @bp.route('/phase_eligibility')#, methods=('GET', 'POST'))
 def phase_eligibility():
     user_id = session.get('user_id')
@@ -296,12 +296,28 @@ def phase_eligibility():
 
 
 
+@bp.route('/show_appt', methods=('GET', 'POST'))
+def show_appt():
+
+    user_id = session.get('user_id')
+    #print(user_id)
+    qres = app.show_upcoming_appointments(user_id)
+    #qres = app.show_upcoming_appointments(741852963)
+    #print(qres)
+    header = ("Appt Id", "Date & Time", "Location", "Street", "Apartment", "City", "State", "Country","Vaccine")
+    return render_template('auth/show_appt.html', header=header, data=qres)
 
 
+@bp.route('/schedule_appt', methods=('GET', 'POST'))
+def schedule_appt():
+    #qres = app.show_available_appointments("WPI")
+    qres = app.show_available_appointments()
+    print(qres)
+    header = ("Date", "Location", "Phase", "Vaccine_Type","Schedule")
+    return render_template('auth/schedule_appt.html', data=qres, header=header)
 
 
-
-
+#------------------------------
 
 #
 # @bp.route('/login', methods=('GET', 'POST'))

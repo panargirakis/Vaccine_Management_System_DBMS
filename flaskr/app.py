@@ -58,10 +58,21 @@ def show_username(id):
 def show_upcoming_appointments(id):
     cursor = DB.get_instance()
     cursor.execute(find_appt_by_person, [id])
-    query_results = cursor.fetchone()
+    # query_results = cursor.fetchone()
+    query_results = cursor.fetchall()
 
     # populate form
-    return (str(query_results) if query_results else "User does not have any upcoming appointments")
+    # return (str(query_results) if query_results else "User does not have any upcoming appointments")
+    return query_results
+
+#@app.route('/user/<string:loc_name>/appointments')
+def show_available_appointments():
+    cursor = DB.get_instance()
+    #cursor.execute(find_appt_by_dist_loc, ['WPI'])
+    cursor.execute(all_available_appointments)
+    # use find all available appointments query
+    query_results = cursor.fetchall()
+    return query_results
 
 ################################################################################
 #

@@ -1,4 +1,5 @@
 
+
 /* ALL OLD QURIES */
 /* 4 -- List out people with health insurance that has COVID coverage
 SELECT DISTINCT P.name
@@ -94,10 +95,10 @@ WHERE A.located=T1.location_id OR A.vaccine_id=T2.vaccine_id OR A.appt_date='10-
 
 
  /* NEW QUERIES --SANIKA */
- /*Select the date, location and vaccine type of all past appointments for a person. QUESTION: How to denote past appointment in table? Should we add flag? Or Add 2 appointments by 1 person. Add their SSN to table*/
- /* Logic: select appointments by a given user. Find latest appointment by sorting date. Subtract lastest appointment from all appointments. Display rest of the appointmnets. */
-
- /*Find all available appointments by date/time - NOTE: There is no time attribute in appoitment table. but there is TIME filter on UI. This problem needs to be fixed */
+ /*Select the date, location and vaccine type of all past appointments for a person. QUESTION: How to denote past appointment in table? Should we add flag? Or Add 2 appointments by 1 person. Add their SSN to table*/ 
+ /* Logic: select appointments by a given user. Find latest appointment by sorting date. */
+ 
+ /*Find all available appointments by date/time - NOTE: There is no time attribute in appoitment table. but there is TIME filter on UI. This problem needs to be fixed */ 
 SELECT DISTINCT A.appt_id, A.appt_date
 FROM Appointments A
 WHERE A.appt_date = To_DATE('2020-12-10', 'yyyy-mm-dd'); /* Date input: 10 December*/
@@ -112,6 +113,12 @@ WHERE A.Vaccine_ID = T.Vaccine_ID;
 SELECT DISTINCT A.appt_id, A.appt_date, T.Vaccine_Name
 FROM Appointments A,((SELECT DISTINCT V.Vaccine_ID, V.vaccine_Name FROM Vaccine_Type V WHERE V.Vaccine_Name = 'Pfizer')T) /* Vaccine Type: Pfizer and date: 10 december*/
 WHERE A.Vaccine_ID = T.Vaccine_ID AND A.appt_date = To_DATE('2020-12-10', 'yyyy-mm-dd');
+
+/* Show all available appointments */
+select a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name
+from appointments a, Distribution_Location dl, vaccine_type v
+where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id
+order by a.appt_id;
 
 
 /* Queries by Panos */
