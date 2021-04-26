@@ -63,9 +63,10 @@ def show_upcoming_appointments(id):
     return query_results
 
 #@app.route('/user/<string:loc_name>/appointments')
-def show_available_appointments(name):
+def show_available_appointments():
     cursor = DB.get_instance()
-    cursor.execute(find_appt_by_dist_loc, ['WPI'])
+    #cursor.execute(find_appt_by_dist_loc, ['WPI'])
+    cursor.execute(all_available_appointments)
     # use find all available appointments query
     query_results = cursor.fetchall()
     return query_results

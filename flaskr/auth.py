@@ -186,9 +186,10 @@ def show_appt():
 
 @bp.route('/schedule_appt', methods=('GET', 'POST'))
 def schedule_appt():
-    qres = app.show_available_appointments("WPI")
-    #print(qres)
-    header = ("Appt Id", "Date", "Location", "Schedule")
+    #qres = app.show_available_appointments("WPI")
+    qres = app.show_available_appointments()
+    print(qres)
+    header = ("Date", "Location", "Phase", "Vaccine_Type","Schedule")
     return render_template('auth/schedule_appt.html', data=qres, header=header)
 
 

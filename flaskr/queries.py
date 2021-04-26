@@ -51,8 +51,10 @@ find_appt_by_person = \
 "INNER JOIN Vaccine_Type vt ON vt.Vaccine_ID = ap.Vaccine_ID " \
 "WHERE ap.SSN = :ssn AND ap.Appt_date > SYSDATE"
 
-find_all_available_appointments = \
-"select a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name"\
-"from appointments a, Distribution_Location dl, vaccine_type v"\
-"where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id"\
-"order by a.appt_id"
+# find_all_available_appointments = \
+# "select a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name"\
+# "from appointments a, Distribution_Location dl, vaccine_type v"\
+# "where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id"\
+# "order by a.appt_id"
+
+all_available_appointments = "select a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name from appointments a, Distribution_Location dl, vaccine_type v where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id order by a.appt_id"
