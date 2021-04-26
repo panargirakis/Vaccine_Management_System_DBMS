@@ -57,4 +57,5 @@ find_appt_by_person = \
 # "where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id"\
 # "order by a.appt_id"
 
+# Find all available appointments
 all_available_appointments = "select a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name from appointments a, Distribution_Location dl, vaccine_type v where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id order by a.appt_id"
