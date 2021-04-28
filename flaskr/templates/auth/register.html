@@ -41,14 +41,18 @@
       <input name="city" id="city" class="form-control" required>
         </div>
 
-        <div  class="col-md-4">
-      <label for="state">State</label>
-      <input name="state" id="state" class="form-control" required>
+          <div  class="col-md-4">
+      <label for="country">Country</label>
+      <select name="country" id="country" class="selectpicker" data-live-search="true" required>
+          {% for c in countries %}
+            <option value="{{ c }}" SELECTED>{{ c }}</option>
+          {% endfor %}
+      </select>
         </div>
 
         <div  class="col-md-4">
-      <label for="country">Country</label>
-      <input name="country" id="country" class="form-control" required>
+      <label for="state">State</label>
+      <input name="state" id="state" class="form-control" required>
         </div>
     </div>
 

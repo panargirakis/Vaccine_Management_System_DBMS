@@ -3,6 +3,7 @@ import random
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
+import pycountry
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import DB
@@ -232,7 +233,8 @@ def register():
     cursor = DB.get_instance()
     all_comorbidities = cursor.execute(find_all_comorbidities).fetchall()
 
-    return render_template('auth/register.html', all_comorbidities=all_comorbidities)
+    return render_template('auth/register.html', all_comorbidities=all_comorbidities,
+                           countries=[c.name for c in list(pycountry.countries)])
 #
 
 @bp.route('/phase_eligibility')#, methods=('GET', 'POST'))
