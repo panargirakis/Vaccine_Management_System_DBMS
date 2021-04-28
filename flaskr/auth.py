@@ -231,7 +231,10 @@ def register():
 
         flash(error)
 
-    return render_template('auth/register.html')
+    cursor = DB.get_instance()
+    all_comorbidities = cursor.execute(find_all_comorbidities).fetchall()
+
+    return render_template('auth/register.html', all_comorbidities=all_comorbidities)
 #
 
 @bp.route('/phase_eligibility')#, methods=('GET', 'POST'))

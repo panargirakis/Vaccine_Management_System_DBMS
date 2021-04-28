@@ -67,14 +67,9 @@
 
       <label class="sr-only" for="comorbidities">Comorbidities</label>
       <select name="comorbidities" id="comorbidities" class="selectpicker" data-live-search="true" multiple>
-{#      <select multiple class="form-control" id="comorbidities" name="comorbidities">#}
-                <option selected>None</option>
-                <option>COPD</option>
-                <option>Asthma</option>
-                <option>Interstitial Lung Disease</option>
-                <option>Cystic Fibrosis</option>
-                <option>Cancer</option>
-                <option>Heart Failure</option>
+          {% for o in all_comorbidities %}
+            <option value="{{ o[0] }}" SELECTED>{{ o[0] }}</option>
+          {% endfor %}
       </select>
 
     </div>
