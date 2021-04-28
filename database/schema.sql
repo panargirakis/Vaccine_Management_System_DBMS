@@ -103,27 +103,27 @@ Zip_Code VARCHAR(50),
 PRIMARY KEY(Address_ID)
 );
 
-INSERT INTO Address VALUES('1','235', 'East 42nd Street', 'New York', 'NY', 'USA', '10017');
-INSERT INTO Address VALUES('2','200', 'Technology Square', 'Cambridge', 'MA', 'USA', '02139');
-INSERT INTO Address VALUES('3','1', 'Johnson And Johnson Plaza', 'New Brunswick', 'NJ','USA', '08933');
-INSERT INTO Address VALUES('4', NULL, '4 Mirick Rd', 'Princeton', 'MA', 'USA', '01541');
-INSERT INTO Address VALUES('5', NULL, '5 N Sturbridge Rd', 'Charlton', 'MA', 'USA', '01507');
-INSERT INTO Address VALUES('6', NULL, '6 Mount Auburn St', 'Watertown', 'MA', 'USA', '02427');
-INSERT INTO Address VALUES('7', NULL, '7 Neilson Rd', 'New Salem', 'MA', 'USA', '03155');
-INSERT INTO Address VALUES('8', NULL, '88 Reservoir Rd', 'Coventry', 'RI', 'USA', '02816');
-INSERT INTO Address VALUES('9', NULL, '101 Gaulin Ave', 'Woonsocket', 'RI', 'USA', '02895');
-INSERT INTO Address VALUES('10', NULL, '200 Aldrich St', 'Wyoming', 'RI', 'USA', '02898');
-INSERT INTO Address VALUES('11', NULL, '17 Morril Ln', 'Providence', 'RI', 'USA', '02904');
-INSERT INTO Address VALUES('12', NULL, '25 Conifer Rd', 'Rindge', 'NH', 'USA', '03461');
-INSERT INTO Address VALUES('13', NULL, '23 Wentworth Ave', 'Plaistow', 'NH', 'USA', '03865');
-INSERT INTO Address VALUES('14', NULL, '20 Varney Point Rd', 'Gilford', 'NH', 'USA', '03249');
-INSERT INTO Address VALUES('15', NULL, '41 Hixville Rd', 'North Dartmouth', 'MA', 'USA', '02747');
-INSERT INTO Address VALUES('16', NULL, '1000 Clark St', 'New Bedford', 'MA', 'USA', '02740');
-INSERT INTO Address VALUES('17', NULL, '26 Main St', 'Acushnet', 'MA', 'USA', '02743');
+INSERT INTO Address VALUES('1','235', 'East 42nd Street', 'New York', 'NY', 'United States', '10017');
+INSERT INTO Address VALUES('2','200', 'Technology Square', 'Cambridge', 'MA', 'United States', '02139');
+INSERT INTO Address VALUES('3','1', 'Johnson And Johnson Plaza', 'New Brunswick', 'NJ','United States', '08933');
+INSERT INTO Address VALUES('4', NULL, '4 Mirick Rd', 'Princeton', 'MA', 'United States', '01541');
+INSERT INTO Address VALUES('5', NULL, '5 N Sturbridge Rd', 'Charlton', 'MA', 'United States', '01507');
+INSERT INTO Address VALUES('6', NULL, '6 Mount Auburn St', 'Watertown', 'MA', 'United States', '02427');
+INSERT INTO Address VALUES('7', NULL, '7 Neilson Rd', 'New Salem', 'MA', 'United States', '03155');
+INSERT INTO Address VALUES('8', NULL, '88 Reservoir Rd', 'Coventry', 'RI', 'United States', '02816');
+INSERT INTO Address VALUES('9', NULL, '101 Gaulin Ave', 'Woonsocket', 'RI', 'United States', '02895');
+INSERT INTO Address VALUES('10', NULL, '200 Aldrich St', 'Wyoming', 'RI', 'United States', '02898');
+INSERT INTO Address VALUES('11', NULL, '17 Morril Ln', 'Providence', 'RI', 'United States', '02904');
+INSERT INTO Address VALUES('12', NULL, '25 Conifer Rd', 'Rindge', 'NH', 'United States', '03461');
+INSERT INTO Address VALUES('13', NULL, '23 Wentworth Ave', 'Plaistow', 'NH', 'United States', '03865');
+INSERT INTO Address VALUES('14', NULL, '20 Varney Point Rd', 'Gilford', 'NH', 'United States', '03249');
+INSERT INTO Address VALUES('15', NULL, '41 Hixville Rd', 'North Dartmouth', 'MA', 'United States', '02747');
+INSERT INTO Address VALUES('16', NULL, '1000 Clark St', 'New Bedford', 'MA', 'United States', '02740');
+INSERT INTO Address VALUES('17', NULL, '26 Main St', 'Acushnet', 'MA', 'United States', '02743');
 
-INSERT INTO Address VALUES('18', NULL, '100 Institute Road', 'Worcester', 'MA', 'USA', '01609');
-INSERT INTO Address VALUES('19', NULL, '85 East Concord Street', 'Boston', 'MA', 'USA', '02118');
-INSERT INTO Address VALUES('20', NULL, '17 Corinth St', 'Roslindale', 'MA', 'USA', '02131');
+INSERT INTO Address VALUES('18', NULL, '100 Institute Road', 'Worcester', 'MA', 'United States', '01609');
+INSERT INTO Address VALUES('19', NULL, '85 East Concord Street', 'Boston', 'MA', 'United States', '02118');
+INSERT INTO Address VALUES('20', NULL, '17 Corinth St', 'Roslindale', 'MA', 'United States', '02131');
 
 
 
