@@ -98,7 +98,6 @@ def load_logged_in_user():
             'INNER JOIN DIAGNOSED D on C.DISEASE_ID = D.DISEASE_ID '
             'INNER JOIN PEOPLE P on D.SSN = P.SSN '
             'WHERE P.SSN = :user_id', [user_id]).fetchall()])
-        print()
 
 
 @bp.route('/logout')
