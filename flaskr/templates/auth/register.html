@@ -66,7 +66,8 @@
       <input type="password" name="password" id="password" required>
 
       <label class="sr-only" for="comorbidities">Comorbidities</label>
-      <select multiple class="form-control" id="comorbidities" name="comorbidities">
+      <select name="comorbidities" id="comorbidities" class="selectpicker" data-live-search="true" multiple>
+{#      <select multiple class="form-control" id="comorbidities" name="comorbidities">#}
                 <option selected>None</option>
                 <option>COPD</option>
                 <option>Asthma</option>
@@ -108,6 +109,5 @@
     <div class="form-group">
       <input type="submit" value="Register">
     </div>
-
   </form>
 {% endblock %}
