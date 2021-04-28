@@ -18,91 +18,145 @@
 
 {% block content %}
   <form method="post">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input name="name" id="name" required>
+    <div class="form-group row">
+        <div  class="col-md-4">
+            <label for="name">Name</label>
+            <input name="name" id="name"  class="form-control" required>
+        </div>
 
+        <div  class="col-md-1">
       <label for="age">Age</label>
-      <input name="age" id="age" required>
+      <input name="age" id="age" class="form-control" required>
+        </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group row">
+        <div  class="col-md-4">
       <label for="street">Street</label>
-      <input name="street" id="street" required>
+      <input name="street" id="street" class="form-control" required>
+        </div>
 
+        <div  class="col-md-4">
       <label for="city">City</label>
-      <input name="city" id="city" required>
+      <input name="city" id="city" class="form-control" required>
+        </div>
 
+        <div  class="col-md-4">
       <label for="state">State</label>
-      <input name="state" id="state" required>
+      <input name="state" id="state" class="form-control" required>
+        </div>
 
+        <div  class="col-md-4">
       <label for="country">Country</label>
-      <input name="country" id="country" required>
+      <input name="country" id="country" class="form-control" required>
+        </div>
     </div>
-    <div>
+
+    <div class="form-group row">
+        <div  class="col-md-4">
       <label for="zip_code">Zip Code</label>
-      <input name="zip_code" id="zip_code" required>
+      <input name="zip_code" id="zip_code" class="form-control" required>
+        </div>
 
+        <div  class="col-md-4">
       <label for="apartment">Apartment</label>
-      <input name="apartment" id="apartment">
+      <input name="apartment" id="apartment" class="form-control">
+        </div>
     </div>
 
 
 
-    <div class="form-group">
+    <div class="form-group row">
+        <div  class="col-md-4">
       <label for="email_address">Email Address</label>
-      <input name="email_address" id="email_address" required>
+      <input name="email_address" id="email_address" class="form-control" required>
+        </div>
+
+        <div  class="col-md-4">
       <label for="occupation">Occupation</label>
-      <input name="occupation" id="occupation" required>
+      <input name="occupation" id="occupation" class="form-control" required>
+        </div>
+
+        <div  class="col-md-4">
       <label for="ssn">SSN</label>
-      <input name="ssn" id="ssn">
+      <input name="ssn" id="ssn" class="form-control" required>
+        </div>
     </div>
 
 
-    <div class="form-group">
+    <div class="form-group row">
+    <div  class="col-md-4">
       <label for="username">Username</label>
-      <input name="username" id="username" required>
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password" required>
+      <input name="username" id="username" class="form-control" required>
+    </div>
 
-      <label class="sr-only" for="comorbidities">Comorbidities</label>
+    <div  class="col-md-4">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" class="form-control" required>
+    </div>
+
+    <div  class="col-md-6">
+      <label for="comorbidities">Comorbidities</label>
       <select name="comorbidities" id="comorbidities" class="selectpicker" data-live-search="true" multiple>
           {% for o in all_comorbidities %}
             <option value="{{ o[0] }}" SELECTED>{{ o[0] }}</option>
           {% endfor %}
       </select>
+    </div>
 
     </div>
-    <div class="form-group">
+    <div class="form-group row">
+        <div  class="col-md-4">
       <label for="insurance_company">Insurance Company</label>
-      <input name="insurance_company" id="insurance_company" required>
+      <input name="insurance_company" id="insurance_company" class="form-control" required>
+        </div>
+
+        <div  class="col-md-4">
       <label for="insurance_number">Insurance Number</label>
-      <input name="insurance_number" id="insurance_number" required>
+      <input name="insurance_number" id="insurance_number" class="form-control" required>
+        </div>
+
+        <div  class="col-md-4">
       <label for="exp_date">Exp. Date</label>
-      <input name="exp_date" id="exp_date" required>
+      <input name="exp_date" id="exp_date" class="form-control" required>
+        </div>
 
     </div>
 
-    <div class="form-group">
-      <label class="checkbox" for="covid_coverage">My Insurance Covers the Covid-19 Vaccine?  Yes</label>
-<!--      <input type="hidden" name="covid_coverage" value="0">-->
-      <input type="checkbox" name="covid_coverage" id="covid_coverage" >
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="covid_coverage" id="covid_coverage">
+      <label class="form-check-label" for="covid_coverage">
+        My Insurance Covers the Covid-19 Vaccine
+      </label>
     </div>
+  </div>
 
 <!--    <form action="">-->
-    <div class="form-row">
-      <label for="healthcare_worker" class = "auto-length">Are you a healthcare worker?  Yes</label>
-<!--        <input type="hidden" name="healthcare_worker" value="0">-->
-        <input type="checkbox" name="healthcare_worker" id="healthcare_worker">
+    <div class="form-group row">
+        <div  class="col-md-4">
+            <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="healthcare_worker" id="healthcare_worker">
+      <label class="form-check-label" for="healthcare_worker">
+        I am a healthcare worker
+      </label>
+            </div>
+        </div>
+
+
+        <div  class="col-md-4">
       <label for="job_title">Job Title</label>
-        <input type="text" name="job_title" id="job_title">
+        <input type="text" name="job_title" id="job_title" class="form-control">
+        </div>
 
     </div>
 
 <!--    </form>-->
 
     <div class="form-group">
-      <input type="submit" value="Register">
+        <div class="col-md-5">
+            <input type="submit" value="Register" class="form-control">
+        </div>
     </div>
   </form>
 {% endblock %}
