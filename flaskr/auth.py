@@ -84,9 +84,20 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = DB.get_instance().execute(
-            'SELECT * FROM people WHERE ssn = :u_ssn', [user_id]
+        cursor = DB.get_instance()
+        g.user = cursor.execute(
+            'SELECT * FROM PEOPLE P '
+            'LEFT JOIN ADDRESS A2 on P.ADDRESS_ID = A2.ADDRESS_ID '
+            'LEFT JOIN HEALTH_INSURANCE HI on P.SSN = HI.SSN '
+            'LEFT JOIN HEALTHCARE_STAFF HS on P.SSN = HS.SSN '
+            'WHERE P.SSN = :u_ssn', [user_id]
         ).fetchone()
+
+        g.user.append(cursor.execute(
+            'SELECT C.DISEASE_NAME FROM COMORBIDITIES C '
+            'INNER JOIN DIAGNOSED D on C.DISEASE_ID = D.DISEASE_ID '
+            'INNER JOIN PEOPLE P on D.SSN = P.SSN '
+            'WHERE P.SSN = :user_id'), [user_id])
 
 
 @bp.route('/logout')
