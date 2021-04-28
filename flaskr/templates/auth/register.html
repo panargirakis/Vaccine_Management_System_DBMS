@@ -11,15 +11,20 @@
 
 
 {% extends 'base.html' %}
+{% block title %}
+    {% if g.user %}
+        My Profile
+    {% else %}
+        Register
+    {% endif %}
+{% endblock %}
 
 {% block header %}
-    {% block title %}
-        {% if g.user %}
-            <h1>My Profile</h1>
-        {% else %}
-            <h1>Register</h1>
-        {% endif %}
-    {% endblock %}
+    {% if g.user %}
+        <h1>My Profile</h1>
+    {% else %}
+        <h1>Register</h1>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
