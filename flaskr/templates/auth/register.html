@@ -13,7 +13,13 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Register{% endblock %}</h1>
+    {% block title %}
+        {% if g.user %}
+            <h1>My Profile</h1>
+        {% else %}
+            <h1>Register</h1>
+        {% endif %}
+    {% endblock %}
 {% endblock %}
 
 {% block content %}
@@ -45,7 +51,7 @@
       <label for="country">Country</label>
       <select name="country" id="country" class="selectpicker" data-live-search="true" required>
           {% for c in countries %}
-            <option value="{{ c }}" SELECTED>{{ c }}</option>
+            <option value="{{ c }}">{{ c }}</option>
           {% endfor %}
       </select>
         </div>
@@ -105,7 +111,7 @@
       <label for="comorbidities">Comorbidities</label>
       <select name="comorbidities" id="comorbidities" class="selectpicker" data-live-search="true" multiple>
           {% for o in all_comorbidities %}
-            <option value="{{ o[0] }}" SELECTED>{{ o[0] }}</option>
+            <option value="{{ o[0] }}">{{ o[0] }}</option>
           {% endfor %}
       </select>
     </div>
@@ -161,7 +167,11 @@
 
     <div class="form-group">
         <div class="col-md-5">
-            <input type="submit" value="Register" class="form-control">
+            {% if g.user %}
+                <input type="submit" value="Save Changes" class="form-control">
+            {% else %}
+                <input type="submit" value="Register" class="form-control">
+            {% endif %}
         </div>
     </div>
   </form>
