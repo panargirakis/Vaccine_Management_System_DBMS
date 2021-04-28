@@ -81,9 +81,9 @@ def load_logged_in_user():
     user_id = session.get('user_id')
 
     if user_id is None:
-        g.user1 = None
+        g.user = None
     else:
-        g.user1 = DB.get_instance().execute(
+        g.user = DB.get_instance().execute(
             'SELECT * FROM people WHERE ssn = :u_ssn', [user_id]
         ).fetchone()
 
@@ -97,7 +97,7 @@ def logout():
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.user1 is None:
+        if g.user is None:
             return redirect(url_for('auth.login'))
 
         return view(**kwargs)
