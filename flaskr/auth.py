@@ -127,7 +127,7 @@ def register():
         ssn = request.form['ssn']
         username = request.form['username']
         password = request.form['password']
-        comorbidities = request.form['comorbidities']
+        comorbidities = request.form.getlist('comorbidities')
         insurance_company = request.form['insurance_company']
         insurance_number = request.form['insurance_number']
         exp_date = request.form['exp_date']
@@ -185,12 +185,10 @@ def register():
 
             address_id = str(max_add_id + 1)
 
-            comorbidities_list = []
-            comorbidities_list.append(comorbidities)
             # get appropriate phase number for new user
             if healthcare_worker == 'on':
                 phase_number = '1'
-            elif float(age) > 55 or len(comorbidities_list) >= 2 or occupation == 'teacher':
+            elif float(age) > 55 or len(comorbidities) >= 2 or occupation == 'teacher':
                 phase_number = '2'
             else:
                 phase_number = '3'
