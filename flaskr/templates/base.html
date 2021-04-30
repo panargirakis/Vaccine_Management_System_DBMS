@@ -24,6 +24,7 @@
 <nav>
   <h1>COVID-19 Vaccine Management</h1>
   <ul>
+
     {% if g.user %}
       <li><span>{{ g.user['username'] }}</span>
       <li><a href="{{ url_for('auth.register') }}">My Profile</a>

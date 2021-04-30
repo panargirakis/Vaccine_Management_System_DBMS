@@ -100,6 +100,7 @@ def load_logged_in_user():
             'WHERE P.SSN = :user_id', [user_id]).fetchall()])
 
 
+
 @bp.route('/logout')
 def logout():
     session.clear()
@@ -184,7 +185,7 @@ def register():
             error = 'User {} is already registered.'.format(username)
 
         if error is None:
-            dt = datetime.strptime(exp_date, "%m/%d/%y") #, %H:%M:%S")
+            dt = datetime.strptime(exp_date, "%Y-%m-%d") #, %H:%M:%S")
             dtt = dt.strftime('%d %b %Y')
 
             # generate address id
@@ -292,7 +293,7 @@ def phase_eligibility():
                            "WHERE D.ssn= :ssn", [user_id])
             did = cursor.fetchall()
             did = did[0]
-            print(did)
+            # print(did)
             cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did])
 
             comorbidities = cursor.fetchall()
@@ -317,16 +318,26 @@ def show_appt():
     #print(user_id)
     qres = app.show_upcoming_appointments(user_id)
     #qres = app.show_upcoming_appointments(741852963)
-    #print(qres)
+    try:
+        if str(qres[0][8]) == 'Johnson':
+            vacc_out = "No further appointments needed!"
+        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres[0])<2:
+            vacc_out = "Be sure to schedule your second appointment!"
+        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres[0])==2:
+            vacc_out = "All appointments scheduled."
+    except Exception:
+
+        vacc_out = "Please schedule your first vaccine appointment."
+
     header = ("Appt Id", "Date & Time", "Location", "Street", "Apartment", "City", "State", "Country","Vaccine")
-    return render_template('auth/show_appt.html', header=header, data=qres)
+    return render_template('auth/show_appt.html', header=header, data=qres, output=vacc_out)
 
 
 @bp.route('/schedule_appt', methods=('GET', 'POST'))
 def schedule_appt():
     #qres = app.show_available_appointments("WPI")
     qres = app.show_available_appointments()
-    print(qres)
+    # print(qres)
     header = ("Date", "Location", "Phase", "Vaccine_Type","Schedule")
     return render_template('auth/schedule_appt.html', data=qres, header=header)
 
