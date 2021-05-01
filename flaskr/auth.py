@@ -261,8 +261,14 @@ def register():
     cursor = DB.get_instance()
     all_comorbidities = cursor.execute(find_all_comorbidities).fetchall()
 
+    states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA",
+              "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+              "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+              "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+              "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
+
     return render_template('auth/register.html', all_comorbidities=all_comorbidities,
-                           countries=[c.name for c in list(pycountry.countries)])
+                           countries=[c.name for c in list(pycountry.countries)], states=states)
 #
 
 @bp.route('/phase_eligibility')#, methods=('GET', 'POST'))
