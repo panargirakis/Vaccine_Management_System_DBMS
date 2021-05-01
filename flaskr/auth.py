@@ -308,9 +308,9 @@ def phase_eligibility():
             cursor.execute("SELECT DISTINCT D.Disease_ID FROM Diagnosed D WHERE D.ssn= :ssn", [user_id])
             did = cursor.fetchall()
             # did = did
-            print(did)
-            print(len(did))
-            print(did[1][0])
+            # print(did)
+            # print(len(did))
+            # print(did[1][0])
             # cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did])
             com_list = []
             for i in range(0, len(did)):
