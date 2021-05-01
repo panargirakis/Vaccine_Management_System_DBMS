@@ -148,6 +148,15 @@ def register():
         job_title = request.form['job_title']
         covid_coverage = request.form.get('covid_coverage')
 
+        # print(covid_coverage)
+        # print(exp_date)
+        # print(job_title)
+        # print(ssn)
+        # print(comorbidities)
+        # print(comorbidities[0])
+        # print(country)
+        # print()
+
         cursor = DB.get_instance()
         error = None
 
@@ -211,10 +220,6 @@ def register():
             else:
                 covid_coverage = 'F'
 
-            cursor.execute("SELECT DISTINCT C.Disease_ID FROM Comorbidities C WHERE C.Disease_name= :disease_name", [comorbidities])
-            did = cursor.fetchall()
-            did = did[0][0]
-
 
             cursor.execute('INSERT INTO Address (Address_ID, Apartment, Street, City, State, Country, Zip_Code) VALUES (:Address_ID, :Apartment, :Street, :City, :State, :Country, :Zip_Code)', (address_id, apartment, street, city, state, country, zip_code))
 
@@ -225,7 +230,18 @@ def register():
             cursor.execute("INSERT INTO Health_Insurance (Insurance_Number, ssn, Insurance_Company, covid_coverage, expiration_date) VALUES (:insurance_number, :ssn, :insurance_company, :covid_coverage, TO_DATE(:exp_date, 'DD MON YYYY'))",
             (insurance_number, ssn, insurance_company, covid_coverage, dtt))
 
-            cursor.execute('INSERT INTO Diagnosed (SSN, Disease_ID) VALUES (:ssn, :disease_id)', [ssn, did])
+            # cursor.execute('INSERT INTO Diagnosed (SSN, Disease_ID) VALUES (:ssn, :disease_id)', [ssn, did])
+
+            # did_list = []
+            for i in range(0, len(comorbidities)):
+                cursor.execute("SELECT DISTINCT C.Disease_ID FROM Comorbidities C WHERE C.Disease_name= :disease_name",
+                               [comorbidities[i]])
+                did = cursor.fetchall()
+                # did_list.append(did)
+                # print(did)
+                did = did[0][0]
+                # print(did)
+                cursor.execute('INSERT INTO Diagnosed (SSN, Disease_ID) VALUES (:ssn, :disease_id)', [ssn, did])
 
             if healthcare_worker == 'on' and job_title != '':
                 # randomly pick a vaccine they administer
@@ -289,16 +305,29 @@ def phase_eligibility():
         output4 = 'Age: ' + str(age[0])
 
         try:
-            cursor.execute("SELECT DISTINCT D.Disease_ID FROM Diagnosed D" \
-                           "WHERE D.ssn= :ssn", [user_id])
+            cursor.execute("SELECT DISTINCT D.Disease_ID FROM Diagnosed D WHERE D.ssn= :ssn", [user_id])
             did = cursor.fetchall()
-            did = did[0]
-            # print(did)
-            cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did])
+            # did = did
+            print(did)
+            print(len(did))
+            print(did[1][0])
+            # cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did])
+            com_list = []
+            for i in range(0, len(did)):
+                cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did[i][0]])
+                # cursor.execute("SELECT DISTINCT C.Disease_ID FROM Comorbidities C WHERE C.Disease_name= :disease_name", [comorbidities[i]])
+                com = cursor.fetchall()
+                com_list.append(com[0][0])
+                # print(did)
+                # did = did[0][0]
+                # print(did)
+                # cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did])
 
-            comorbidities = cursor.fetchall()
-            output5 = 'Comorbidities: ' + str(comorbidities)
+            # comorbidities = cursor.fetchall()
+            listToStr = ', '.join([str(elem) for elem in com_list])
+            output5 = 'Comorbidities: ' + listToStr # str(comorbidities[0][0])
         except Exception:
+            print("exception")
             output5 = 'No comorbidities'
     elif str(phase[0][0]) == '3':
         output3 = ''
