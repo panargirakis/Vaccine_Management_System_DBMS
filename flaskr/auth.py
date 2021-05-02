@@ -3,6 +3,7 @@ import random
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
+import pycountry
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import DB
@@ -81,11 +82,23 @@ def load_logged_in_user():
     user_id = session.get('user_id')
 
     if user_id is None:
-        g.user1 = None
+        g.user = None
     else:
-        g.user1 = DB.get_instance().execute(
-            'SELECT * FROM people WHERE ssn = :u_ssn', [user_id]
-        ).fetchone()
+        cursor = DB.get_instance()
+        g.user = list(cursor.execute(
+            'SELECT * FROM PEOPLE P '
+            'LEFT JOIN ADDRESS A2 on P.ADDRESS_ID = A2.ADDRESS_ID '
+            'LEFT JOIN HEALTH_INSURANCE HI on P.SSN = HI.SSN '
+            'LEFT JOIN HEALTHCARE_STAFF HS on P.SSN = HS.SSN '
+            'WHERE P.SSN = :u_ssn', [user_id]
+        ).fetchone())
+
+        g.user.append([x[0] for x in cursor.execute(
+            'SELECT C.DISEASE_NAME FROM COMORBIDITIES C '
+            'INNER JOIN DIAGNOSED D on C.DISEASE_ID = D.DISEASE_ID '
+            'INNER JOIN PEOPLE P on D.SSN = P.SSN '
+            'WHERE P.SSN = :user_id', [user_id]).fetchall()])
+
 
 
 @bp.route('/logout')
@@ -97,7 +110,7 @@ def logout():
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.user1 is None:
+        if g.user is None:
             return redirect(url_for('auth.login'))
 
         return view(**kwargs)
@@ -127,7 +140,7 @@ def register():
         ssn = request.form['ssn']
         username = request.form['username']
         password = request.form['password']
-        comorbidities = request.form['comorbidities']
+        comorbidities = request.form.getlist('comorbidities')
         insurance_company = request.form['insurance_company']
         insurance_number = request.form['insurance_number']
         exp_date = request.form['exp_date']
@@ -172,7 +185,7 @@ def register():
             error = 'User {} is already registered.'.format(username)
 
         if error is None:
-            dt = datetime.strptime(exp_date, "%m/%d/%y") #, %H:%M:%S")
+            dt = datetime.strptime(exp_date, "%Y-%m-%d") #, %H:%M:%S")
             dtt = dt.strftime('%d %b %Y')
 
             # generate address id
@@ -185,12 +198,10 @@ def register():
 
             address_id = str(max_add_id + 1)
 
-            comorbidities_list = []
-            comorbidities_list.append(comorbidities)
             # get appropriate phase number for new user
             if healthcare_worker == 'on':
                 phase_number = '1'
-            elif float(age) > 55 or len(comorbidities_list) >= 2 or occupation == 'teacher':
+            elif float(age) > 55 or len(comorbidities) >= 2 or occupation == 'teacher':
                 phase_number = '2'
             else:
                 phase_number = '3'
@@ -231,7 +242,11 @@ def register():
 
         flash(error)
 
-    return render_template('auth/register.html')
+    cursor = DB.get_instance()
+    all_comorbidities = cursor.execute(find_all_comorbidities).fetchall()
+
+    return render_template('auth/register.html', all_comorbidities=all_comorbidities,
+                           countries=[c.name for c in list(pycountry.countries)])
 #
 
 @bp.route('/phase_eligibility')#, methods=('GET', 'POST'))
@@ -278,7 +293,7 @@ def phase_eligibility():
                            "WHERE D.ssn= :ssn", [user_id])
             did = cursor.fetchall()
             did = did[0]
-            print(did)
+            # print(did)
             cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did])
 
             comorbidities = cursor.fetchall()
@@ -303,16 +318,26 @@ def show_appt():
     #print(user_id)
     qres = app.show_upcoming_appointments(user_id)
     #qres = app.show_upcoming_appointments(741852963)
-    #print(qres)
+    try:
+        if str(qres[0][8]) == 'Johnson':
+            vacc_out = "No further appointments needed!"
+        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres[0])<2:
+            vacc_out = "Be sure to schedule your second appointment!"
+        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres[0])==2:
+            vacc_out = "All appointments scheduled."
+    except Exception:
+
+        vacc_out = "Please schedule your first vaccine appointment."
+
     header = ("Appt Id", "Date & Time", "Location", "Street", "Apartment", "City", "State", "Country","Vaccine")
-    return render_template('auth/show_appt.html', header=header, data=qres)
+    return render_template('auth/show_appt.html', header=header, data=qres, output=vacc_out)
 
 
 @bp.route('/schedule_appt', methods=('GET', 'POST'))
 def schedule_appt():
     #qres = app.show_available_appointments("WPI")
     qres = app.show_available_appointments()
-    print(qres)
+    # print(qres)
     header = ("Date", "Location", "Phase", "Vaccine_Type","Schedule")
     return render_template('auth/schedule_appt.html', data=qres, header=header)
 
