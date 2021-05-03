@@ -387,15 +387,15 @@ def schedule_appt():
     print("SSN:",ssn)
 
     print("request page")
-    qres = app.show_available_appointments()
-    qres = [(i, ) + qres[i] for i in range(len(qres))]
-    print(qres)
+    available_appointments = app.show_available_appointments()
+    available_appointments = [(i, ) + available_appointments[i] for i in range(len(available_appointments))]
+    print(available_appointments)
 
     # print(qres)
     header = ("Sr No.", "Date", "Location", "Phase", "Vaccine_Type", "Schedule")
     if request.method == 'POST':
         print("post", request.form)
-        for row in qres:
+        for row in available_appointments:
             try:
                 if request.form[f'schedule{row[0]}'] == "Schedule":
                     print("FOUND", row)
@@ -411,7 +411,7 @@ def schedule_appt():
         # cursor = DB.get_instance()
         # print("hello")
 
-    return render_template('auth/schedule_appt.html', data=qres, header=header)
+    return render_template('auth/schedule_appt.html', data=available_appointments, header=header)
 
 
 #------------------------------
