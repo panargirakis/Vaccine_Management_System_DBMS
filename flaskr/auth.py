@@ -367,13 +367,50 @@ def show_appt():
     header = ("Appt Id", "Date & Time", "Location", "Street", "Apartment", "City", "State", "Country","Vaccine")
     return render_template('auth/show_appt.html', header=header, data=qres, output=vacc_out)
 
+#
+# @bp.route('/schedule_appt', methods=('GET', 'POST'))
+# def schedule_appt():
+#     #qres = app.show_available_appointments("WPI")
+#     qres = app.show_available_appointments()
+#     print(qres)
+#     header = ("Date", "Location", "Phase", "Vaccine_Type","Schedule")
+#     return render_template('auth/schedule_appt.html', data=qres, header=header)
 
 @bp.route('/schedule_appt', methods=('GET', 'POST'))
 def schedule_appt():
-    #qres = app.show_available_appointments("WPI")
+    # get user's ssn
+    user_id = session.get('user_id')
+    cursor = DB.get_instance()
+    cursor.execute("SELECT DISTINCT P.ssn FROM People P " \
+                   "WHERE P.ssn= :ssn", [user_id])
+    ssn = cursor.fetchall()
+    print("SSN:",ssn)
+
+    print("request page")
     qres = app.show_available_appointments()
+    qres = [(i, ) + qres[i] for i in range(len(qres))]
+    print(qres)
+
     # print(qres)
-    header = ("Date", "Location", "Phase", "Vaccine_Type","Schedule")
+    header = ("Sr No.", "Date", "Location", "Phase", "Vaccine_Type", "Schedule")
+    if request.method == 'POST':
+        print("post", request.form)
+        for row in qres:
+            try:
+                if request.form[f'schedule{row[0]}'] == "Schedule":
+                    print("FOUND", row)
+                    # get appt id in database
+                    # insert ssn to appt table
+                    # cursor.execute(
+                    #     'INSERT INTO Address (Address_ID, Apartment, Street, City, State, Country, Zip_Code) VALUES (:Address_ID, :Apartment, :Street, :City, :State, :Country, :Zip_Code)',
+                    #     (address_id, apartment, street, city, state, country, zip_code))
+                    return render_template('auth/schedule_appt.html', data=[row], header=header)
+            except Exception as e:
+                pass
+
+        # cursor = DB.get_instance()
+        # print("hello")
+
     return render_template('auth/schedule_appt.html', data=qres, header=header)
 
 
