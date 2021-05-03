@@ -411,7 +411,14 @@ def schedule_appt():
         # cursor = DB.get_instance()
         # print("hello")
 
-    return render_template('auth/schedule_appt.html', data=available_appointments, header=header)
+    avail_loc = [x[2] for x in available_appointments]  # get all available locations
+    avail_loc = list(set(avail_loc))  # remove duplicates
+
+    vacc_types = [x[4] for x in available_appointments]
+    vacc_types = list(set(vacc_types))
+
+    return render_template('auth/schedule_appt.html', data=available_appointments, header=header, avail_loc=avail_loc,
+                           vacc_types=vacc_types)
 
 
 #------------------------------

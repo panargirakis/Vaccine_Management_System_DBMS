@@ -51,16 +51,18 @@
 
     <label for="location">Location:</label>
     <select name="location" id="location">
-    <option value="WPI">WPI</option>
-    <option value="Roslindale">Roslindale</option>
-        <option value="Boston_Medical_center">Boston Medical Center</option>
+        <option value="Nothing selected" selected>-</option>
+        {% for loc in avail_loc %}
+          <option value="{{ loc }}">{{ loc }} </option>
+        {% endfor %}
     </select>
 
     <label for="Vaccine Type">Vaccine Type:</label>
     <select name="vctype" id="vctype">
-    <option value="Johnson">Johnson</option>
-    <option value="Moderna">Moderna</option>
-        <option value="Moderna">Pfizer</option>
+    <option value="Nothing selected" selected>-</option>
+        {% for vc in vacc_types %}
+          <option value="{{ vc }}">{{ vc }} </option>
+        {% endfor %}
     </select>
 
     <input type="button", value="Filter", id="filter">
