@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Check My Phase Eligibility{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form>
+
+    <p>{{ output[0] }}</p>
+    <p>{{ output[6] }}</p>
+    <p>{{ output[1] }}</p>
+    <p>{{ output[2] }}</p>
+    <p>{{ output[3] }}</p>
+    <p>{{ output[4] }}</p>
+    <p>{{ output[5] }}</p>
+
+
+  </form>
+{% endblock %}

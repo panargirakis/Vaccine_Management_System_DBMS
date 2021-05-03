@@ -16,8 +16,8 @@ if sys.platform.startswith("darwin"):
     except Exception:
         cx_Oracle.init_oracle_client(lib_dir=os.environ.get("HOME") + "/Downloads" + "/instantclient_19_8")
 elif sys.platform.startswith("win32"):
-    # cx_Oracle.init_oracle_client(lib_dir=r"c:\oracle\instantclient_19_10")
-    cx_Oracle.init_oracle_client(lib_dir=r"C:\Users\sanik\Downloads\oracle\instantclient_19_10")
+    cx_Oracle.init_oracle_client(lib_dir=r"c:\oracle\instantclient_19_10")
+    # cx_Oracle.init_oracle_client(lib_dir=r"C:\Users\sanik\Downloads\oracle\instantclient_19_10")
 
 
 class DB:
@@ -28,7 +28,10 @@ class DB:
         """ Static access method. """
         if DB.__instance == None:
             DB()
-        return DB.__instance.acquire().cursor()
+
+        connection = DB.__instance.acquire()
+        connection.autocommit = True
+        return connection.cursor()
 
     def __init__(self):
         """ Virtually private constructor. """
