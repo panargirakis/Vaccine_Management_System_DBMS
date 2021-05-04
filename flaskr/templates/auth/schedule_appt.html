@@ -102,6 +102,11 @@
 
     <script>
     function search_func() {
+      document.getElementById("date").value = '';
+      document.getElementById("location").selectedIndex = 0;
+      document.getElementById("vctype").selectedIndex = 0;
+      $('.selectpicker').selectpicker("refresh");
+
       // Declare variables
       var input, filter, table, tr, td, i, txtValue;
       input = document.getElementById("search");
