@@ -358,13 +358,15 @@ def show_appt():
     # print(qres_past[0])
 
     # Prompt for vaccination shots.
+    vacc_out = ""
     try:
         if str(qres[0][8]) == 'Johnson':
             vacc_out = "No further appointments needed!"
-        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres[0])<2:
+        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres) < 2:
             vacc_out = "Be sure to schedule your second appointment!"
-        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres[0])==2:
+        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres) == 2:
             vacc_out = "All appointments scheduled."
+
     except Exception:
 
         vacc_out = "Please schedule your first vaccine appointment."
