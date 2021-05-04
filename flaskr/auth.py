@@ -349,10 +349,15 @@ def phase_eligibility():
 @bp.route('/show_appt', methods=('GET', 'POST'))
 def show_appt():
 
+    # Get past and upcoming appointments
     user_id = session.get('user_id')
     #print(user_id)
     qres = app.show_upcoming_appointments(user_id)
-    #qres = app.show_upcoming_appointments(741852963)
+    qres_past = app.show_past_appointments(user_id)
+    # print(qres[0])
+    # print(qres_past[0])
+
+    # Prompt for vaccination shots.
     try:
         if str(qres[0][8]) == 'Johnson':
             vacc_out = "No further appointments needed!"
@@ -364,59 +369,56 @@ def show_appt():
 
         vacc_out = "Please schedule your first vaccine appointment."
 
+    # Header for appointment table
     header = ("Appt Id", "Date & Time", "Location", "Street", "Apartment", "City", "State", "Country","Vaccine")
+
+    # Get past appointments: Past appointment button
+    if request.method == 'POST':
+        print("post", request.form)
+        if request.form['Show Past Appointments'] == "Show Past Appointments":
+            return render_template('auth/show_appt.html', header=header, data=qres_past)
+
     return render_template('auth/show_appt.html', header=header, data=qres, output=vacc_out)
 
-#
-# @bp.route('/schedule_appt', methods=('GET', 'POST'))
-# def schedule_appt():
-#     #qres = app.show_available_appointments("WPI")
-#     qres = app.show_available_appointments()
-#     print(qres)
-#     header = ("Date", "Location", "Phase", "Vaccine_Type","Schedule")
-#     return render_template('auth/schedule_appt.html', data=qres, header=header)
 
 @bp.route('/schedule_appt', methods=('GET', 'POST'))
 def schedule_appt():
     # get user's ssn
     user_id = session.get('user_id')
-    cursor = DB.get_instance()
-    cursor.execute("SELECT DISTINCT P.ssn FROM People P " \
-                   "WHERE P.ssn= :ssn", [user_id])
-    ssn = cursor.fetchall()
-    print("SSN:",ssn)
 
-    print("request page")
+    cursor = DB.get_instance()
     cursor.execute(available_appointments_by_user_eligibility, [user_id])
     available_appointments = cursor.fetchall()
-    available_appointments = [(i, ) + available_appointments[i] for i in range(len(available_appointments))]
-    print(available_appointments)
-
-    # print(qres)
-    header = ("Sr No.", "Date", "Location", "Phase", "Vaccine_Type", "Schedule")
-    if request.method == 'POST':
-        print("post", request.form)
-        for row in available_appointments:
-            try:
-                if request.form[f'schedule{row[0]}'] == "Schedule":
-                    print("FOUND", row)
-                    # get appt id in database
-                    # insert ssn to appt table
-                    # cursor.execute(
-                    #     'INSERT INTO Address (Address_ID, Apartment, Street, City, State, Country, Zip_Code) VALUES (:Address_ID, :Apartment, :Street, :City, :State, :Country, :Zip_Code)',
-                    #     (address_id, apartment, street, city, state, country, zip_code))
-                    return render_template('auth/schedule_appt.html', data=[row], header=header)
-            except Exception as e:
-                pass
-
-        # cursor = DB.get_instance()
-        # print("hello")
 
     avail_loc = [x[2] for x in available_appointments]  # get all available locations
     avail_loc = list(set(avail_loc))  # remove duplicates
 
     vacc_types = [x[4] for x in available_appointments]
     vacc_types = list(set(vacc_types))
+
+    # print(qres)
+    header = ("Appt_Id", "Date", "Location", "Phase", "Vaccine_Type", "Schedule")
+    if request.method == 'POST':
+        # print("post", request.form)
+        for row in available_appointments:
+            try:
+                if request.form[f'schedule{row[0]}'] == "Schedule":
+                    #print("FOUND", row)
+
+                    # get appt id
+                    #print(str(row[0]))
+                    cursor.execute(
+                        "UPDATE Appointments SET SSN=%s WHERE Appt_Id='%s'" % (
+                        user_id,str(row[0])))
+
+                    print("successfully added")
+                    #break
+                    return render_template('auth/schedule_appt_success.html', data=[row], header=header,
+                                           avail_loc=avail_loc, vacc_types=vacc_types)
+
+            except Exception as e:
+                pass
+
 
     return render_template('auth/schedule_appt.html', data=available_appointments, header=header, avail_loc=avail_loc,
                            vacc_types=vacc_types)
