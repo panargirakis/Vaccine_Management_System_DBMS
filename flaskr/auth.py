@@ -358,13 +358,15 @@ def show_appt():
     # print(qres_past[0])
 
     # Prompt for vaccination shots.
+    vacc_out = ""
     try:
         if str(qres[0][8]) == 'Johnson':
             vacc_out = "No further appointments needed!"
-        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres[0])<2:
+        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres) < 2:
             vacc_out = "Be sure to schedule your second appointment!"
-        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres[0])==2:
+        elif (str(qres[0][8]) == 'Moderna' or str(qres[0][8]) == 'Pfizer') and len(qres) == 2:
             vacc_out = "All appointments scheduled."
+
     except Exception:
 
         vacc_out = "Please schedule your first vaccine appointment."
@@ -385,22 +387,22 @@ def show_appt():
 def schedule_appt():
     # get user's ssn
     user_id = session.get('user_id')
+
     cursor = DB.get_instance()
-    cursor.execute("SELECT DISTINCT P.ssn FROM People P " \
-                   "WHERE P.ssn= :ssn", [user_id])
-    ssn = cursor.fetchall()
-    ssn_tuple = ssn[0]
-    ssn_str = str(ssn_tuple[0])
-    #print("SSN:",ssn_str)
+    cursor.execute(available_appointments_by_user_eligibility, [user_id])
+    available_appointments = cursor.fetchall()
 
-    # get avaialble appointments
-    qres = app.show_available_appointments()
-    #print(qres)
+    avail_loc = [x[2] for x in available_appointments]  # get all available locations
+    avail_loc = list(set(avail_loc))  # remove duplicates
 
+    vacc_types = [x[4] for x in available_appointments]
+    vacc_types = list(set(vacc_types))
+
+    # print(qres)
     header = ("Appt_Id", "Date", "Location", "Phase", "Vaccine_Type", "Schedule")
     if request.method == 'POST':
-        #print("post", request.form)
-        for row in qres:
+        # print("post", request.form)
+        for row in available_appointments:
             try:
                 if request.form[f'schedule{row[0]}'] == "Schedule":
                     #print("FOUND", row)
@@ -409,16 +411,19 @@ def schedule_appt():
                     #print(str(row[0]))
                     cursor.execute(
                         "UPDATE Appointments SET SSN=%s WHERE Appt_Id='%s'" % (
-                        ssn_str,str(row[0])))
+                        user_id,str(row[0])))
 
                     print("successfully added")
                     #break
-                    return render_template('auth/schedule_appt_success.html', data=[row], header=header)
+                    return render_template('auth/schedule_appt_success.html', data=[row], header=header,
+                                           avail_loc=avail_loc, vacc_types=vacc_types)
 
             except Exception as e:
                 pass
 
-    return render_template('auth/schedule_appt.html', data=qres, header=header)
+
+    return render_template('auth/schedule_appt.html', data=available_appointments, header=header, avail_loc=avail_loc,
+                           vacc_types=vacc_types)
 
 
 #------------------------------
