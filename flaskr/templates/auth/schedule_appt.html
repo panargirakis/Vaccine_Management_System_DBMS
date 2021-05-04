@@ -151,6 +151,8 @@
       table = document.getElementById("table_body");
       tr = table.getElementsByTagName("tr");
 
+      document.getElementById("search").value = '';
+
       // Loop through all table rows, and hide those who don't match the search query
       for (i = 0; i < tr.length; i++) {
         tds = tr[i].getElementsByTagName("td");
