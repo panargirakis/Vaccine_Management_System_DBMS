@@ -387,7 +387,8 @@ def schedule_appt():
     print("SSN:",ssn)
 
     print("request page")
-    available_appointments = app.show_available_appointments()
+    cursor.execute(available_appointments_by_user_eligibility, [user_id])
+    available_appointments = cursor.fetchall()
     available_appointments = [(i, ) + available_appointments[i] for i in range(len(available_appointments))]
     print(available_appointments)
 

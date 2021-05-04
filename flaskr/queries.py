@@ -59,3 +59,9 @@ find_appt_by_person = \
 
 # Find all available appointments
 all_available_appointments = "select a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name from appointments a, Distribution_Location dl, vaccine_type v where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id order by a.appt_id"
+
+available_appointments_by_user_eligibility = \
+    "select distinct a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name " \
+    "from appointments a, Distribution_Location dl, vaccine_type v, people p " \
+    "where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id " \
+    "AND a.is_part_of = (select phase_number from people where SSN = :u_ssn)"
