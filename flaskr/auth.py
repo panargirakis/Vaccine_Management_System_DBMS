@@ -412,8 +412,8 @@ def schedule_appt():
                         ssn_str,str(row[0])))
 
                     print("successfully added")
-                    break
-                    #return render_template('auth/schedule_appt_success.html', data=[row], header=header)
+                    #break
+                    return render_template('auth/schedule_appt_success.html', data=[row], header=header)
 
             except Exception as e:
                 pass
