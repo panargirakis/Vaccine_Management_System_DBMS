@@ -44,12 +44,12 @@
 
             <label for="date" class="col my-auto">Date:</label>
          <div  class="col my-auto">
-            <input type="date" id="date" name="date" class="form-control my-auto">
+            <input type="date" id="date" name="date" class="form-control my-auto" onchange="apply_filters()">
         </div>
 
             <label for="location" class="col my-auto"> Location:</label>
         <div  class="col my-auto">
-            <select name="location" id="location" class="selectpicker" data-live-search="true">
+            <select name="location" id="location" class="selectpicker" data-live-search="true" onchange="apply_filters()">
                 <option value="Nothing selected" selected>-</option>
                 {% for loc in avail_loc %}
                   <option value="{{ loc }}">{{ loc }} </option>
@@ -59,7 +59,7 @@
 
             <label for="vctype" class="col my-auto">Vaccine Type:</label>
         <div  class="col my-auto">
-            <select name="vctype" id="vctype" class="selectpicker" data-live-search="true">
+            <select name="vctype" id="vctype" class="selectpicker" data-live-search="true" onchange="apply_filters()">
             <option value="Nothing selected" selected>-</option>
                 {% for vc in vacc_types %}
                   <option value="{{ vc }}">{{ vc }} </option>
@@ -135,6 +135,57 @@
       document.getElementById("vctype").selectedIndex = 0;
       $('.selectpicker').selectpicker("refresh");
       search_func();
+    }
+    </script>
+
+    <script>
+    function apply_filters() {
+      // Declare variables
+      var table, tr, td, i, txtValue;
+      var dateElt = document.getElementById("date");
+      var date = dateElt.value.toUpperCase();
+      var locElt = document.getElementById("location");
+      var loc = locElt.value.toUpperCase();
+      var vcElt = document.getElementById("vctype");
+      var vctype = vcElt.value.toUpperCase();
+      table = document.getElementById("table_body");
+      tr = table.getElementsByTagName("tr");
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        tds = tr[i].getElementsByTagName("td");
+        tr[i].style.display = "";
+
+        if (dateElt.value !== dateElt.defaultValue) {
+            td = tds[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (!(txtValue.toUpperCase().indexOf(date) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        if (locElt.selectedIndex !== 0) {
+            td = tds[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (!(txtValue.toUpperCase().indexOf(loc) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        if (vcElt.selectedIndex !== 0) {
+            td = tds[4];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (!(txtValue.toUpperCase().indexOf(vctype) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+      }
     }
     </script>
 {% endblock %}
