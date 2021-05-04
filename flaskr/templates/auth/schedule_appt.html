@@ -36,40 +36,40 @@
     font-size: 17px;
     }
 
-    #filter{
-        background-color: #cccccc;
-        width: 70px;
-    }
     </style>
 {% endblock %}
 
 {% block content %}
-    <div class="input-group">
+    <div class="form-row">
 
-        <label for="Date" class="col my-auto">Date:</label>
-     <div  class="col my-auto">
-        <input type="date" id="date" name="date" class="form-control my-auto">
-    </div>
+            <label for="date" class="col my-auto">Date:</label>
+         <div  class="col my-auto">
+            <input type="date" id="date" name="date" class="form-control my-auto">
+        </div>
 
-        <label for="location" class="col my-auto"> Location:</label>
-    <div  class="col my-auto">
-        <select name="location" id="location" class="selectpicker" data-live-search="true">
+            <label for="location" class="col my-auto"> Location:</label>
+        <div  class="col my-auto">
+            <select name="location" id="location" class="selectpicker" data-live-search="true">
+                <option value="Nothing selected" selected>-</option>
+                {% for loc in avail_loc %}
+                  <option value="{{ loc }}">{{ loc }} </option>
+                {% endfor %}
+            </select>
+        </div>
+
+            <label for="vctype" class="col my-auto">Vaccine Type:</label>
+        <div  class="col my-auto">
+            <select name="vctype" id="vctype" class="selectpicker" data-live-search="true">
             <option value="Nothing selected" selected>-</option>
-            {% for loc in avail_loc %}
-              <option value="{{ loc }}">{{ loc }} </option>
-            {% endfor %}
-        </select>
-    </div>
+                {% for vc in vacc_types %}
+                  <option value="{{ vc }}">{{ vc }} </option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <label for="vctype" class="col my-auto">Vaccine Type:</label>
-    <div  class="col my-auto">
-        <select name="vctype" id="vctype" class="selectpicker" data-live-search="true">
-        <option value="Nothing selected" selected>-</option>
-            {% for vc in vacc_types %}
-              <option value="{{ vc }}">{{ vc }} </option>
-            {% endfor %}
-        </select>
-    </div>
+        <div  class="col my-auto">
+            <button id="clear" type="button" class="btn btn-light" onclick="clearAll()">Clear</button>
+        </div>
 
     </div>
 
@@ -123,6 +123,18 @@
             }
         }
       }
+    }
+    </script>
+
+    <script>
+    function clearAll() {
+      // Declare variables
+      document.getElementById("search").value = '';
+      document.getElementById("date").value = '';
+      document.getElementById("location").selectedIndex = 0;
+      document.getElementById("vctype").selectedIndex = 0;
+      $('.selectpicker').selectpicker("refresh");
+      search_func();
     }
     </script>
 {% endblock %}
