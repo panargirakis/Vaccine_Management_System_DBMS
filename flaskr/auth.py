@@ -413,6 +413,8 @@ def schedule_appt():
 
                     print("successfully added")
                     break
+                    #return render_template('auth/schedule_appt_success.html', data=[row], header=header)
+
             except Exception as e:
                 pass
 
