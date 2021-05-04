@@ -54,7 +54,7 @@ def show_username(id):
     return (r[0] if r else "Unknown user id")
 
 
-@app.route('/user/<int:id>/appointments')
+
 def show_upcoming_appointments(id):
     cursor = DB.get_instance()
     cursor.execute(find_appt_by_person, [id])
@@ -65,7 +65,7 @@ def show_upcoming_appointments(id):
     # return (str(query_results) if query_results else "User does not have any upcoming appointments")
     return query_results
 
-@app.route('/user/<int:id>/appointments')
+
 def show_past_appointments(id):
     cursor = DB.get_instance()
     cursor.execute(find_past_appt_by_person, [id])
@@ -76,7 +76,7 @@ def show_past_appointments(id):
     # return (str(query_results) if query_results else "User does not have any upcoming appointments")
     return query_results
 
-#@app.route('/user/<string:loc_name>/appointments')
+
 def show_available_appointments():
     cursor = DB.get_instance()
     #cursor.execute(find_appt_by_dist_loc, ['WPI'])

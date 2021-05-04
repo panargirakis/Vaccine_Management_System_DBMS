@@ -354,8 +354,8 @@ def show_appt():
     #print(user_id)
     qres = app.show_upcoming_appointments(user_id)
     qres_past = app.show_past_appointments(user_id)
-    print(qres[0])
-    print(qres_past[0])
+    # print(qres[0])
+    # print(qres_past[0])
 
     # Prompt for vaccination shots.
     try:
