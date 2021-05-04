@@ -44,33 +44,37 @@
 {% endblock %}
 
 {% block content %}
-    <div class="topnav">
+    <div class="input-group">
 
-    <label for="Date">Date:</label>
-    <input type="date" id="date" name="date">
+        <label for="Date" class="col my-auto">Date:</label>
+     <div  class="col my-auto">
+        <input type="date" id="date" name="date" class="form-control my-auto">
+    </div>
 
-    <label for="location">Location:</label>
-    <select name="location" id="location">
+        <label for="location" class="col my-auto"> Location:</label>
+    <div  class="col my-auto">
+        <select name="location" id="location" class="selectpicker" data-live-search="true">
+            <option value="Nothing selected" selected>-</option>
+            {% for loc in avail_loc %}
+              <option value="{{ loc }}">{{ loc }} </option>
+            {% endfor %}
+        </select>
+    </div>
+
+        <label for="vctype" class="col my-auto">Vaccine Type:</label>
+    <div  class="col my-auto">
+        <select name="vctype" id="vctype" class="selectpicker" data-live-search="true">
         <option value="Nothing selected" selected>-</option>
-        {% for loc in avail_loc %}
-          <option value="{{ loc }}">{{ loc }} </option>
-        {% endfor %}
-    </select>
-
-    <label for="vctype">Vaccine Type:</label>
-    <select name="vctype" id="vctype">
-    <option value="Nothing selected" selected>-</option>
-        {% for vc in vacc_types %}
-          <option value="{{ vc }}">{{ vc }} </option>
-        {% endfor %}
-    </select>
-
-    <input type="button", value="Filter", id="filter">
+            {% for vc in vacc_types %}
+              <option value="{{ vc }}">{{ vc }} </option>
+            {% endfor %}
+        </select>
+    </div>
 
     </div>
 
 
-    <div class="container">
+    <div class="container my-3">
       <input id="search" class="form-control" onkeyup="search_func()" type="text" placeholder="Search..." >
 
       <table class="table" id="schedule_appt">
