@@ -118,7 +118,7 @@
       for (i = 0; i < tr.length; i++) {
         tds = tr[i].getElementsByTagName("td");
         tr[i].style.display = "none";
-        for (j = 1; j < tds.length; j++) {
+        for (let j = 1; j < tds.length; j++) {
             td = tds[j];
             if (td) {
               txtValue = td.textContent || td.innerText;

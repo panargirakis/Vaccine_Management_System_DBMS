@@ -125,7 +125,6 @@
 
 {% block content %}
     <div class="topnav">
-    <input type="text" placeholder="Search..">
 
     <!-- Rounded switch -->
 
@@ -137,26 +136,70 @@
 {#    <label class="past_appt"> Show Past Appointments</label>#}
 
     <!-- Past appt button -->
-    <form method="post"> <input type="submit" name="Show Past Appointments" value="Show Past Appointments" style="float:right"> </form>
     </div>
 
 
-  <table id="future_appt">
+  <div class="container my-1">
+      <div class="form-row">
+          <div class="col my-auto">
+            <input id="search" class="form-control" onkeyup="search_table()" type="text" placeholder="Search..." >
+          </div>
+          <div class="col my-auto">
+              <form method="post">
+                <input type="submit" name="Show Past Appointments" value="Show Past Appointments" class="btn btn-info">
+              </form>
+          </div>
+      </div>
 
-  {%  for heading in header %}
-      <th> {{ heading }} </th>
-  {% endfor %}
+      <table class="table" id="future_appt">
 
-  {%  for row in data %}
-      <tr>
-      {%  for cell in row %}
-          <td>
-          {{ cell }}
-          </td>
-      {% endfor %}
-      </tr>
-  {%  endfor %}
+      <thead>
+          {%  for heading in header %}
+              <th> {{ heading }} </th>
+          {% endfor %}
+          <th>Actions</th>
+      </thead>
 
-  </table>
+      <tbody id="table_body">
+          {%  for row in data %}
+              <tr>
+              {%  for cell in row %}
+                  <td>
+                  {{ cell }}
+                  </td>
+              {% endfor %}
+              <td> <form method="post"> <input type="submit" name="cancel{{ row[0] }}" class="form-control" value="Cancel"> </form> </td>
+              </tr>
+          {%  endfor %}
+      </tbody>
+      </table>
+    </div>
+
+
+    <script>
+        function search_table() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("table_body");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                tds = tr[i].getElementsByTagName("td");
+                tr[i].style.display = "none";
+                for (let j = 1; j < tds.length; j++) {
+                    td = tds[j];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
 {% endblock %}
