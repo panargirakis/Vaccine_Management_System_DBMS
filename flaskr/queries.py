@@ -51,6 +51,15 @@ find_appt_by_person = \
 "INNER JOIN Vaccine_Type vt ON vt.Vaccine_ID = ap.Vaccine_ID " \
 "WHERE ap.SSN = :ssn AND ap.Appt_date > SYSDATE"
 
+# Find past appointments for a person
+find_past_appt_by_person = \
+"SELECT ap.Appt_ID, TO_CHAR(ap.Appt_date, 'MM-DD-YYYY HH24:MI:SS'), dl.Location_name, " \
+"ad.Street, ad.Apartment, ad.City, ad.State, ad.Country, vt.Vaccine_Name " \
+"FROM Appointments ap INNER JOIN Distribution_Location dl ON ap.Located = dl.location_id " \
+"INNER JOIN Address ad ON ad.Address_ID = dl.Located " \
+"INNER JOIN Vaccine_Type vt ON vt.Vaccine_ID = ap.Vaccine_ID " \
+"WHERE ap.SSN = :ssn AND ap.Appt_date < SYSDATE"
+
 # find_all_available_appointments = \
 # "select a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name"\
 # "from appointments a, Distribution_Location dl, vaccine_type v"\
@@ -58,4 +67,4 @@ find_appt_by_person = \
 # "order by a.appt_id"
 
 # Find all available appointments
-all_available_appointments = "select a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name from appointments a, Distribution_Location dl, vaccine_type v where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id order by a.appt_id"
+all_available_appointments = "select a.appt_id, a.appt_date, dl.location_name, a.is_part_of, v.vaccine_name from appointments a, Distribution_Location dl, vaccine_type v where a.ssn IS NULL and a.located = dl.Location_ID AND a.vaccine_id = v.vaccine_id order by a.appt_id"
