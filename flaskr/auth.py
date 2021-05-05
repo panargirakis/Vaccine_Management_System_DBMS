@@ -344,10 +344,8 @@ def show_appt():
     header = ("Appt Id", "Date & Time", "Location", "Street", "Apartment", "City", "State", "Country","Vaccine")
 
     # Get past appointments: Past appointment button
-    if request.method == 'POST':
-        print("post", request.form)
-        if request.form['Show Past Appointments'] == "Show Past Appointments":
-            return render_template('auth/show_appt.html', header=header, data=qres_past)
+    if request.method == 'GET' and request.args.get('Show Past Appointments') == "True":
+        return render_template('auth/show_appt.html', header=header, data=qres_past)
 
     return render_template('auth/show_appt.html', header=header, data=qres, output=vacc_out)
 
