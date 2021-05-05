@@ -4,7 +4,6 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 import pycountry
-from werkzeug.security import check_password_hash, generate_password_hash
 
 from db import DB
 from queries import *
@@ -13,36 +12,6 @@ import app
 from datetime import datetime
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
-
-
-# @bp.route('/register', methods=('GET', 'POST'))
-# def register():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         db = get_db()
-#         error = None
-#
-#         if not username:
-#             error = 'Username is required.'
-#         elif not password:
-#             error = 'Password is required.'
-#         elif db.execute(
-#             'SELECT id FROM user1 WHERE username = ?', (username,)
-#         ).fetchone() is not None:
-#             error = 'User1 {} is already registered.'.format(username)
-#
-#         if error is None:
-#             db.execute(
-#                 'INSERT INTO user1 (username, password) VALUES (?, ?)',
-#                 (username, generate_password_hash(password))
-#             )
-#             db.commit()
-#             return redirect(url_for('auth.login'))
-#
-#         flash(error)
-#
-#     return render_template('auth/register.html')
 
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -349,6 +318,10 @@ def phase_eligibility():
 @bp.route('/show_appt', methods=('GET', 'POST'))
 def show_appt():
 
+    if request.method == "POST":
+        cursor = DB.get_instance()
+        cursor.execute("update APPOINTMENTS set ssn=null where APPT_ID = :ap_id", [request.form['cancel']])
+
     # Get past and upcoming appointments
     user_id = session.get('user_id')
     #print(user_id)
@@ -375,12 +348,11 @@ def show_appt():
     header = ("Appt Id", "Date & Time", "Location", "Street", "Apartment", "City", "State", "Country","Vaccine")
 
     # Get past appointments: Past appointment button
-    if request.method == 'POST':
-        print("post", request.form)
-        if request.form['Show Past Appointments'] == "Show Past Appointments":
-            return render_template('auth/show_appt.html', header=header, data=qres_past)
+    if request.method == 'GET' and request.args.get('Show Past Appointments') == "True":
+        return render_template('auth/show_appt.html', header=header, data=qres_past)
 
-    return render_template('auth/show_appt.html', header=header, data=qres, output=vacc_out)
+    return render_template('auth/show_appt.html', header=header, data=qres, output=vacc_out,
+                           just_cancelled=request.method == "POST")
 
 
 @bp.route('/schedule_appt', methods=('GET', 'POST'))
@@ -389,6 +361,10 @@ def schedule_appt():
     user_id = session.get('user_id')
 
     cursor = DB.get_instance()
+
+    if request.method == "POST":
+        cursor.execute("update APPOINTMENTS set ssn=:u_ssn where APPT_ID = :ap_id", [user_id, request.form['schedule']])
+
     cursor.execute(available_appointments_by_user_eligibility, [user_id])
     available_appointments = cursor.fetchall()
 
@@ -400,111 +376,6 @@ def schedule_appt():
 
     # print(qres)
     header = ("Appt_Id", "Date", "Location", "Phase", "Vaccine_Type", "Schedule")
-    if request.method == 'POST':
-        # print("post", request.form)
-        for row in available_appointments:
-            try:
-                if request.form[f'schedule{row[0]}'] == "Schedule":
-                    #print("FOUND", row)
-
-                    # get appt id
-                    #print(str(row[0]))
-                    cursor.execute(
-                        "UPDATE Appointments SET SSN=%s WHERE Appt_Id='%s'" % (
-                        user_id,str(row[0])))
-
-                    print("successfully added")
-                    #break
-                    return render_template('auth/schedule_appt_success.html', data=[row], header=header,
-                                           avail_loc=avail_loc, vacc_types=vacc_types)
-
-            except Exception as e:
-                pass
-
 
     return render_template('auth/schedule_appt.html', data=available_appointments, header=header, avail_loc=avail_loc,
-                           vacc_types=vacc_types)
-
-
-#------------------------------
-
-#
-# @bp.route('/login', methods=('GET', 'POST'))
-# def login():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         db = get_db()
-#         error = None
-#         user1 = db.execute(
-#             'SELECT * FROM user1 WHERE username = ?', (username,)
-#         ).fetchone()
-#
-#         if user1 is None:
-#             error = 'Incorrect username.'
-#         elif not check_password_hash(user1['password'], password):
-#             error = 'Incorrect password.'
-#
-#         if error is None:
-#             session.clear()
-#             session['user_id'] = user1['id']
-#             return redirect(url_for('index'))
-#
-#         flash(error)
-#
-#     return render_template('auth/login.html')
-#
-#
-# @bp.before_app_request
-# def load_logged_in_user():
-#     user_id = session.get('user_id')
-#
-#     if user_id is None:
-#         g.user1 = None
-#     else:
-#         g.user1 = get_db().execute(
-#             'SELECT * FROM user1 WHERE id = ?', (user_id,)
-#         ).fetchone()
-#
-#
-# @bp.route('/logout')
-# def logout():
-#     session.clear()
-#     return redirect(url_for('index'))
-#
-#
-# def login_required(view):
-#     @functools.wraps(view)
-#     def wrapped_view(**kwargs):
-#         if g.user1 is None:
-#             return redirect(url_for('auth.login'))
-#
-#         return view(**kwargs)
-#
-#     return wrapped_view
-
-# @bp.route('/enter_name', methods=('GET', 'POST'))
-# def enter_name():
-#     if request.method == 'POST':
-#         name = request.form['Name']
-#         db = get_db()
-#         error = None
-#
-#         if not name:
-#             error = 'Name is required.'
-#         elif db.execute(
-#             'SELECT  FROM user1 WHERE username = ?', (name,)
-#         ).fetchone() is not None:
-#             error = 'User1 {} is already registered.'.format(name)
-#
-#         if error is None:
-#             db.execute(
-#                 'INSERT INTO People (name) VALUES (?, ?)',
-#                 (name)#, generate_password_hash(password))
-#             )
-#             db.commit()
-#             return redirect(url_for('auth.login'))
-#
-#         flash(error)
-#
-#     return render_template('auth/register.html')
+                           vacc_types=vacc_types, just_scheduled=request.method == "POST")

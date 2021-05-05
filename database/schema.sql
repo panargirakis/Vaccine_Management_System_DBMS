@@ -334,6 +334,14 @@ INSERT INTO Appointments VALUES ('7', To_DATE('2021-05-10 16:00:00', 'yyyy-mm-dd
 INSERT INTO Appointments VALUES ('8', To_DATE('2021-05-10 09:00:00', 'yyyy-mm-dd HH24:MI:SS'), '1', '3', NULL, '3');
 INSERT INTO Appointments VALUES ('9', To_DATE('2021-07-16 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), '1', '3', NULL, '3');
 
+INSERT INTO Appointments VALUES ('10', To_DATE('2021-05-11 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), '1', '2', NULL, '3');
+INSERT INTO Appointments VALUES ('11', To_DATE('2021-05-12 11:00:00', 'yyyy-mm-dd HH24:MI:SS'), '2', '2', NULL, '1');
+INSERT INTO Appointments VALUES ('12', To_DATE('2021-07-10 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), '3', '3', NULL, '2');
+INSERT INTO Appointments VALUES ('13', To_DATE('2021-07-10 10:00:00', 'yyyy-mm-dd HH24:MI:SS'), '1', '3', NULL, '3');
+INSERT INTO Appointments VALUES ('14', To_DATE('2021-07-10 09:00:00', 'yyyy-mm-dd HH24:MI:SS'), '2', '3', NULL, '3');
+INSERT INTO Appointments VALUES ('15', To_DATE('2021-07-10 13:00:00', 'yyyy-mm-dd HH24:MI:SS'), '3', '3', NULL, '1');
+INSERT INTO Appointments VALUES ('16', To_DATE('2021-07-10 12:00:00', 'yyyy-mm-dd HH24:MI:SS'), '1', '3', NULL, '1');
+
 
 
 Create table Health_Insurance (

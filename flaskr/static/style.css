@@ -105,7 +105,6 @@ nav ul li a, nav ul li span, header .action {
 }
 
 .content form {
-  margin: 1em 0;
   display: flex;
   flex-direction: column;
 }

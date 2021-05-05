@@ -40,6 +40,15 @@
 {% endblock %}
 
 {% block content %}
+    {% if just_scheduled %}
+    <div class="alert alert-success my-2" role="alert">
+        Appointment successfully scheduled!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
     <div class="form-row">
 
             <label for="date" class="col my-auto">Date:</label>
@@ -93,7 +102,7 @@
                   {{ cell }}
                   </td>
               {% endfor %}
-              <td> <form method="post"> <input type="submit" name="schedule{{ row[0] }}" class="form-control" value="Schedule"> </form> </td>
+                  <td> <form method="post"> <button type="submit" name="schedule" class="form-control" value="{{ row[0] }}">Schedule</button> </form> </td>
               </tr>
           {%  endfor %}
       </tbody>
@@ -118,7 +127,7 @@
       for (i = 0; i < tr.length; i++) {
         tds = tr[i].getElementsByTagName("td");
         tr[i].style.display = "none";
-        for (j = 1; j < tds.length; j++) {
+        for (let j = 1; j < tds.length; j++) {
             td = tds[j];
             if (td) {
               txtValue = td.textContent || td.innerText;
