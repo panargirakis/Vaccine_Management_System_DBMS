@@ -318,9 +318,11 @@ def phase_eligibility():
 @bp.route('/show_appt', methods=('GET', 'POST'))
 def show_appt():
 
+    just_scheduled = False
     if request.method == "POST":
         cursor = DB.get_instance()
         cursor.execute("update APPOINTMENTS set ssn=null where APPT_ID = :ap_id", [request.form['cancel']])
+        just_scheduled = True
 
     # Get past and upcoming appointments
     user_id = session.get('user_id')
@@ -360,6 +362,12 @@ def schedule_appt():
     user_id = session.get('user_id')
 
     cursor = DB.get_instance()
+
+    just_scheduled = False
+    if request.method == "POST":
+        cursor.execute("update APPOINTMENTS set ssn=:u_ssn where APPT_ID = :ap_id", [user_id, request.form['schedule']])
+        just_scheduled = True
+
     cursor.execute(available_appointments_by_user_eligibility, [user_id])
     available_appointments = cursor.fetchall()
 
@@ -371,27 +379,6 @@ def schedule_appt():
 
     # print(qres)
     header = ("Appt_Id", "Date", "Location", "Phase", "Vaccine_Type", "Schedule")
-    if request.method == 'POST':
-        # print("post", request.form)
-        for row in available_appointments:
-            try:
-                if request.form[f'schedule{row[0]}'] == "Schedule":
-                    #print("FOUND", row)
-
-                    # get appt id
-                    #print(str(row[0]))
-                    cursor.execute(
-                        "UPDATE Appointments SET SSN=%s WHERE Appt_Id='%s'" % (
-                        user_id,str(row[0])))
-
-                    print("successfully added")
-                    #break
-                    available_appointments.remove(row)
-                    return render_template('auth/schedule_appt.html', data=available_appointments, header=header,
-                                           avail_loc=avail_loc, vacc_types=vacc_types, just_scheduled=True)
-
-            except Exception as e:
-                pass
 
     return render_template('auth/schedule_appt.html', data=available_appointments, header=header, avail_loc=avail_loc,
-                           vacc_types=vacc_types, just_scheduled=False)
+                           vacc_types=vacc_types, just_scheduled=just_scheduled)
