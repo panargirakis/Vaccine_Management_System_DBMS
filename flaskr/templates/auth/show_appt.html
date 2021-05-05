@@ -168,7 +168,7 @@
                   {{ cell }}
                   </td>
               {% endfor %}
-              <td> <form method="post"> <input type="submit" name="cancel{{ row[0] }}" class="form-control" value="Cancel"> </form> </td>
+                  <td> <form method="post"> <button type="submit" name="cancel" class="form-control" value="{{ row[0] }}">Cancel</button> </form> </td>
               </tr>
           {%  endfor %}
       </tbody>

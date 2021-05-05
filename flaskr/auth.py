@@ -318,6 +318,10 @@ def phase_eligibility():
 @bp.route('/show_appt', methods=('GET', 'POST'))
 def show_appt():
 
+    if request.method == "POST":
+        cursor = DB.get_instance()
+        cursor.execute("update APPOINTMENTS set ssn=null where APPT_ID = :ap_id", [request.form['cancel']])
+
     # Get past and upcoming appointments
     user_id = session.get('user_id')
     #print(user_id)
