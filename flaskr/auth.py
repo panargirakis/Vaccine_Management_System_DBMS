@@ -385,12 +385,12 @@ def schedule_appt():
 
                     print("successfully added")
                     #break
-                    return render_template('auth/schedule_appt_success.html', data=[row], header=header,
-                                           avail_loc=avail_loc, vacc_types=vacc_types)
+                    available_appointments.remove(row)
+                    return render_template('auth/schedule_appt.html', data=available_appointments, header=header,
+                                           avail_loc=avail_loc, vacc_types=vacc_types, just_scheduled=True)
 
             except Exception as e:
                 pass
 
-
     return render_template('auth/schedule_appt.html', data=available_appointments, header=header, avail_loc=avail_loc,
-                           vacc_types=vacc_types)
+                           vacc_types=vacc_types, just_scheduled=False)

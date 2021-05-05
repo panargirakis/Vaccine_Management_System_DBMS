@@ -40,6 +40,15 @@
 {% endblock %}
 
 {% block content %}
+    {% if just_scheduled %}
+    <div class="alert alert-success my-2" role="alert">
+        Appointment successfully scheduled!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
     <div class="form-row">
 
             <label for="date" class="col my-auto">Date:</label>
