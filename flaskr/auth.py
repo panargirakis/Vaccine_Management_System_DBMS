@@ -318,11 +318,9 @@ def phase_eligibility():
 @bp.route('/show_appt', methods=('GET', 'POST'))
 def show_appt():
 
-    just_scheduled = False
     if request.method == "POST":
         cursor = DB.get_instance()
         cursor.execute("update APPOINTMENTS set ssn=null where APPT_ID = :ap_id", [request.form['cancel']])
-        just_scheduled = True
 
     # Get past and upcoming appointments
     user_id = session.get('user_id')
@@ -353,7 +351,8 @@ def show_appt():
     if request.method == 'GET' and request.args.get('Show Past Appointments') == "True":
         return render_template('auth/show_appt.html', header=header, data=qres_past)
 
-    return render_template('auth/show_appt.html', header=header, data=qres, output=vacc_out)
+    return render_template('auth/show_appt.html', header=header, data=qres, output=vacc_out,
+                           just_cancelled=request.method == "POST")
 
 
 @bp.route('/schedule_appt', methods=('GET', 'POST'))
@@ -363,10 +362,8 @@ def schedule_appt():
 
     cursor = DB.get_instance()
 
-    just_scheduled = False
     if request.method == "POST":
         cursor.execute("update APPOINTMENTS set ssn=:u_ssn where APPT_ID = :ap_id", [user_id, request.form['schedule']])
-        just_scheduled = True
 
     cursor.execute(available_appointments_by_user_eligibility, [user_id])
     available_appointments = cursor.fetchall()
@@ -381,4 +378,4 @@ def schedule_appt():
     header = ("Appt_Id", "Date", "Location", "Phase", "Vaccine_Type", "Schedule")
 
     return render_template('auth/schedule_appt.html', data=available_appointments, header=header, avail_loc=avail_loc,
-                           vacc_types=vacc_types, just_scheduled=just_scheduled)
+                           vacc_types=vacc_types, just_scheduled=request.method == "POST")

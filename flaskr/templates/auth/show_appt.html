@@ -139,6 +139,16 @@
     </div>
 
 
+    {% if just_cancelled %}
+    <div class="alert alert-success my-2" role="alert">
+        Appointment successfully cancelled!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
   <div class="container my-3">
       <div class="form-row">
           <div class="col">
