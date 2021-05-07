@@ -119,15 +119,15 @@ def register():
         job_title = request.form['job_title']
         covid_coverage = request.form.get('covid_coverage')
 
-        print(covid_coverage)
-        print(exp_date)
-        print(job_title)
-        print(ssn)
-        print(comorbidities)
-        # print(comorbidities[0])
-        print(country)
-        print(occupation)
-        print()
+        # print(covid_coverage)
+        # print(exp_date)
+        # print(job_title)
+        # print(ssn)
+        # print(comorbidities)
+        # # print(comorbidities[0])
+        # print(country)
+        # print(occupation)
+        # print()
 
         cursor = DB.get_instance()
         error = None
@@ -165,9 +165,10 @@ def register():
         ).fetchone() is not None:
             error = 'User {} is already registered.'.format(username)
 
+
         # save changes feature
         if session.get('user_id'):
-            print('hello')
+
             # user_id = session.get('user_id')
             dt = datetime.strptime(exp_date, "%Y-%m-%d")  # , %H:%M:%S")
             dtt = dt.strftime('%d %b %Y')
@@ -190,11 +191,18 @@ def register():
             else:
                 covid_coverage = 'F'
 
-            cursor.execute("update Address set Address_ID=:Address_ID, Apartment=:apartment, Street=:street, City=:city, State=:state, Country=:country, Zip_Code=:zip_code WHERE Address_ID = :Address_ID", [address_id, apartment, street, city, state, country, zip_code, address_id])
 
-            cursor.execute("update People set ssn=:ssn, name=:name, occupation=:occupation, username=:username, password=:password, email_address=:email_address, age=:age, address_id=:address_id, phase_number=:phase_number WHERE ssn = :ssn", [ssn, name, occupation, username, password, email_address, float(age), address_id, phase_number, ssn])
+            cursor.execute(
+                "update Address set Address_ID=:Address_ID, Apartment=:apartment, Street=:street, City=:city, State=:state, Country=:country, Zip_Code=:zip_code WHERE Address_ID = :Address_ID",
+                [address_id, apartment, street, city, state, country, zip_code, address_id])
 
-            cursor.execute("update Health_Insurance set Insurance_Number=:Insurance_Number, ssn=:ssn, Insurance_Company=:Insurance_Company, covid_coverage=:covid_coverage, expiration_date=TO_DATE(:exp_date, 'DD MON YYYY') WHERE ssn = :ssn",[insurance_number, ssn, insurance_company, covid_coverage, dtt, ssn])
+            cursor.execute(
+                "update People set ssn=:ssn, name=:name, occupation=:occupation, username=:username, password=:password, email_address=:email_address, age=:age, address_id=:address_id, phase_number=:phase_number WHERE ssn = :ssn",
+                [ssn, name, occupation, username, password, email_address, float(age), address_id, phase_number, ssn])
+
+            cursor.execute(
+                "update Health_Insurance set Insurance_Number=:Insurance_Number, ssn=:ssn, Insurance_Company=:Insurance_Company, covid_coverage=:covid_coverage, expiration_date=TO_DATE(:exp_date, 'DD MON YYYY') WHERE ssn = :ssn",
+                [insurance_number, ssn, insurance_company, covid_coverage, dtt, ssn])
 
             # did_list = []
             for i in range(0, len(comorbidities)):
@@ -206,9 +214,9 @@ def register():
                                [comorbidities[i]])
                 did = cursor.fetchall()
                 # did_list.append(did)
-                print(did)
+                # print(did)
                 did = did[0][0]
-                print(did)
+                # print(did)
                 # cursor.execute("update Diagnosed set ssn=:ssn, Disease_ID=:disease_id WHERE ssn = :ssn", [ssn, did, ssn])
                 cursor.execute('INSERT INTO Diagnosed (SSN, Disease_ID) VALUES (:ssn, :disease_id)', [ssn, did])
 
@@ -227,7 +235,6 @@ def register():
                 cursor.execute("delete FROM Administers WHERE ssn=:ssn", [ssn])
                 cursor.execute("delete FROM Healthcare_Staff WHERE ssn=:ssn", [ssn])
 
-
             # DB.__instance.acquire().commit()
 
             return redirect(url_for('auth.register'))
@@ -236,7 +243,7 @@ def register():
         #############
         #############
         if error is None and session.get('user_id') is None:
-            print('bye')
+
             dt = datetime.strptime(exp_date, "%Y-%m-%d") #, %H:%M:%S")
             dtt = dt.strftime('%d %b %Y')
 
