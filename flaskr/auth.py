@@ -215,12 +215,18 @@ def register():
             if healthcare_worker == 'on' and job_title != '':
                 # randomly pick a vaccine they administer
                 vaccine_id = random.randint(1, 3)
-                cursor.execute('INSERT INTO Healthcare_Staff (ssn, job_title) VALUES (:ssn, :job_title)',
-                               (ssn, job_title))
-                cursor.execute('INSERT INTO Administers (SSN, Vaccine_ID) VALUES (:ssn, :vaccine_id)',
-                               [ssn, vaccine_id])
+                try:
+                    cursor.execute('INSERT INTO Healthcare_Staff (ssn, job_title) VALUES (:ssn, :job_title)',
+                                   (ssn, job_title))
+                    cursor.execute('INSERT INTO Administers (SSN, Vaccine_ID) VALUES (:ssn, :vaccine_id)',
+                                   [ssn, vaccine_id])
+                except Exception:
+                    cursor.execute("update Administers set ssn=:ssn, Vaccine_ID=:vaccine_id WHERE ssn=:ssn", [ssn, vaccine_id, ssn])
+                    cursor.execute("update Healthcare_Staff set ssn=:ssn, job_title=:job_title WHERE ssn=:ssn", [ssn, job_title, ssn])
             else:
-                pass
+                cursor.execute("delete FROM Administers WHERE ssn=:ssn", [ssn])
+                cursor.execute("delete FROM Healthcare_Staff WHERE ssn=:ssn", [ssn])
+
 
             # DB.__instance.acquire().commit()
 
