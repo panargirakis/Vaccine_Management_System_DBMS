@@ -40,10 +40,17 @@
           <input name="age" id="age" class="form-control" value="{{ g.user[6] }}" type="number" min="1" max="140" step="1" required>
         </div>
 
-        <div  class="col-md-4">
-          <label for="ssn">SSN</label>
-          <input name="ssn" id="ssn" class="form-control" value="{{ g.user[0] }}" placeholder="#########" maxlength="9" required>
-        </div>
+        {% if g.user %}
+            <div  class="col-md-4">
+              <label for="ssn">SSN</label>
+              <input name="ssn" id="ssn" class="form-control" value="{{ g.user[0] }}" readonly placeholder="#########" maxlength="9" required>
+            </div>
+        {% else %}
+            <div  class="col-md-4">
+              <label for="ssn">SSN</label>
+              <input name="ssn" id="ssn" class="form-control" value="{{ g.user[0] }}" placeholder="#########" maxlength="9" required>
+            </div>
+        {% endif %}
 
     </div>
 

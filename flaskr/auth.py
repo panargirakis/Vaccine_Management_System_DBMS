@@ -169,7 +169,7 @@ def register():
         # save changes feature
         if session.get('user_id'):
 
-            # user_id = session.get('user_id')
+            user_id = session.get('user_id')
             dt = datetime.strptime(exp_date, "%Y-%m-%d")  # , %H:%M:%S")
             dtt = dt.strftime('%d %b %Y')
 
