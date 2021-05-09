@@ -38,7 +38,7 @@ def login():
             session['user_id'] = user1[0]
             # print(ssn)
             # return redirect(url_for('index'))
-            return redirect(url_for('auth.register')) # redirect to y show_appt page here
+            return redirect(url_for('show_appt'))
 
         flash(error)
 
