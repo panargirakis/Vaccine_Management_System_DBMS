@@ -1,0 +1,215 @@
+
+{% extends 'base.html' %}
+
+{% block header %}
+
+    <h1>{% block title %}Show My Appointments{% endblock %}</h1>
+
+    <div>
+        <p>{{ output }}</p>
+    </div>
+
+
+    <style>
+    #future_appt {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    #future_appt td, #future_appt th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    }
+
+    #future_appt tr:nth-child(even){background-color: #f2f2f2;}
+
+    #future_appt tr:hover {background-color: #ddd;}
+
+    #future_appt th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: royalblue;
+    color: white;
+    }
+
+    .topnav input[type=text] {
+    float: left;
+    padding: 6px;
+    border: solid;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+    }
+
+
+    .past_appt {
+        float: right;
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+    }
+
+
+    /* Rounded sliders */
+    .switch {
+        float: right;
+        padding: 6px;
+        margin-top: 8px;
+        margin-right: 16px;
+        position:relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+    }
+
+   /* Hide default HTML checkbox */
+  .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+  }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked + .slider {
+    background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+     box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+     -ms-transform: translateX(26px);
+    transform: translateX(26px);
+    }
+
+    .slider.round {
+     border-radius: 20px;
+     }
+
+    .slider.round:before {
+     border-radius: 50%;
+     }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="topnav">
+
+    <!-- Rounded switch -->
+
+{#    <label class="switch">#}
+{#    <input type="checkbox">#}
+{#    <span class="slider round"></span>#}
+{#    </label>#}
+{##}
+{#    <label class="past_appt"> Show Past Appointments</label>#}
+
+    <!-- Past appt button -->
+    </div>
+
+
+    {% if just_cancelled %}
+    <div class="alert alert-success my-2" role="alert">
+        Appointment successfully cancelled!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+  <div class="container my-3">
+      <div class="form-row">
+          <div class="col">
+            <input id="search" class="form-control" onkeyup="search_table()" type="text" placeholder="Search..." >
+          </div>
+          <div class="w-30">
+              <form method="get">
+                  <button type="submit" name="Show Past Appointments" value="True" class="btn btn-info">Show Past Appointments</button>
+              </form>
+          </div>
+      </div>
+
+      <table class="table" id="future_appt">
+
+      <thead>
+          {%  for heading in header %}
+              <th> {{ heading }} </th>
+          {% endfor %}
+          <th>Actions</th>
+      </thead>
+
+      <tbody id="table_body">
+          {%  for row in data %}
+              <tr>
+              {%  for cell in row %}
+                  <td>
+                  {{ cell }}
+                  </td>
+              {% endfor %}
+                  <td> <form method="post"> <button type="submit" name="cancel" class="form-control" value="{{ row[0] }}">Cancel</button> </form> </td>
+              </tr>
+          {%  endfor %}
+      </tbody>
+      </table>
+    </div>
+
+
+    <script>
+        function search_table() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("table_body");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                tds = tr[i].getElementsByTagName("td");
+                tr[i].style.display = "none";
+                for (let j = 1; j < tds.length; j++) {
+                    td = tds[j];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+{% endblock %}

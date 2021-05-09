@@ -1,0 +1,207 @@
+
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Schedule Appointments{% endblock %}</h1>
+    <style>
+    #schedule_appt {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    #schedule_appt td, #schedule_appt th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    }
+
+    #schedule_appt tr:nth-child(even){background-color: #f2f2f2;}
+
+    #schedule_appt tr:hover {background-color: #ddd;}
+
+    #schedule_appt th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: royalblue;
+    color: white;
+    }
+
+    .topnav input[type=text] {
+    float: left;
+    padding: 8px;
+    border: solid;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+    }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% if just_scheduled %}
+    <div class="alert alert-success my-2" role="alert">
+        Appointment successfully scheduled!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <div class="form-row">
+
+            <label for="date" class="col my-auto">Date:</label>
+         <div  class="col my-auto">
+            <input type="date" id="date" name="date" class="form-control my-auto" onchange="apply_filters()">
+        </div>
+
+            <label for="location" class="col my-auto"> Location:</label>
+        <div  class="col my-auto">
+            <select name="location" id="location" class="selectpicker" data-live-search="true" onchange="apply_filters()">
+                <option value="Nothing selected" selected>-</option>
+                {% for loc in avail_loc %}
+                  <option value="{{ loc }}">{{ loc }} </option>
+                {% endfor %}
+            </select>
+        </div>
+
+            <label for="vctype" class="col my-auto">Vaccine Type:</label>
+        <div  class="col my-auto">
+            <select name="vctype" id="vctype" class="selectpicker" data-live-search="true" onchange="apply_filters()">
+            <option value="Nothing selected" selected>-</option>
+                {% for vc in vacc_types %}
+                  <option value="{{ vc }}">{{ vc }} </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div  class="col my-auto">
+            <button id="clear" type="button" class="btn btn-light" onclick="clearAll()">Clear</button>
+        </div>
+
+    </div>
+
+
+    <div class="container my-3">
+      <input id="search" class="form-control" onkeyup="search_func()" type="text" placeholder="Search..." >
+
+      <table class="table" id="schedule_appt">
+
+      <thead>
+          {%  for heading in header %}
+              <th> {{ heading }} </th>
+          {% endfor %}
+      </thead>
+
+      <tbody id="table_body">
+          {%  for row in data %}
+              <tr>
+              {%  for cell in row %}
+                  <td>
+                  {{ cell }}
+                  </td>
+              {% endfor %}
+                  <td> <form method="post"> <button type="submit" name="schedule" class="form-control" value="{{ row[0] }}">Schedule</button> </form> </td>
+              </tr>
+          {%  endfor %}
+      </tbody>
+      </table>
+    </div>
+
+    <script>
+    function search_func() {
+      document.getElementById("date").value = '';
+      document.getElementById("location").selectedIndex = 0;
+      document.getElementById("vctype").selectedIndex = 0;
+      $('.selectpicker').selectpicker("refresh");
+
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("search");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("table_body");
+      tr = table.getElementsByTagName("tr");
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        tds = tr[i].getElementsByTagName("td");
+        tr[i].style.display = "none";
+        for (let j = 1; j < tds.length; j++) {
+            td = tds[j];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              }
+            }
+        }
+      }
+    }
+    </script>
+
+    <script>
+    function clearAll() {
+      // Declare variables
+      document.getElementById("search").value = '';
+      document.getElementById("date").value = '';
+      document.getElementById("location").selectedIndex = 0;
+      document.getElementById("vctype").selectedIndex = 0;
+      $('.selectpicker').selectpicker("refresh");
+      search_func();
+    }
+    </script>
+
+    <script>
+    function apply_filters() {
+      // Declare variables
+      var table, tr, td, i, txtValue;
+      var dateElt = document.getElementById("date");
+      var date = dateElt.value.toUpperCase();
+      var locElt = document.getElementById("location");
+      var loc = locElt.value.toUpperCase();
+      var vcElt = document.getElementById("vctype");
+      var vctype = vcElt.value.toUpperCase();
+      table = document.getElementById("table_body");
+      tr = table.getElementsByTagName("tr");
+
+      document.getElementById("search").value = '';
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        tds = tr[i].getElementsByTagName("td");
+        tr[i].style.display = "";
+
+        if (dateElt.value !== dateElt.defaultValue) {
+            td = tds[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (!(txtValue.toUpperCase().indexOf(date) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        if (locElt.selectedIndex !== 0) {
+            td = tds[2];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (!(txtValue.toUpperCase().indexOf(loc) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        if (vcElt.selectedIndex !== 0) {
+            td = tds[4];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (!(txtValue.toUpperCase().indexOf(vctype) > -1)) {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+      }
+    }
+    </script>
+{% endblock %}

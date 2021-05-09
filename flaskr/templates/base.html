@@ -28,9 +28,9 @@
     {% if g.user %}
       <li><span>{{ g.user['username'] }}</span>
       <li><a href="{{ url_for('auth.register') }}">My Profile</a>
-      <li><a href="{{ url_for('auth.show_appt') }}">My Appointments</a>
-      <li><a href="{{ url_for('auth.schedule_appt') }}">Schedule Appointments</a>
-      <li><a href="{{ url_for('auth.phase_eligibility') }}">Phase Eligibility</a>
+      <li><a href="{{ url_for('show_appt') }}">My Appointments</a>
+      <li><a href="{{ url_for('schedule_appt') }}">Schedule Appointments</a>
+      <li><a href="{{ url_for('phase_eligibility') }}">Phase Eligibility</a>
       <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
     {% else %}
       <li><a href="{{ url_for('auth.register') }}">Register</a>
