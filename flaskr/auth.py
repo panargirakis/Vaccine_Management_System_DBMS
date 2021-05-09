@@ -87,7 +87,7 @@ def login_required(view):
     return wrapped_view
 
 
-## MY PROFILE PAGE ##
+## MY PROFILE/Registration PAGE ##
 
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -108,7 +108,9 @@ def register():
         occupation = request.form['occupation']
         ssn = request.form['ssn']
         username = request.form['username']
+
         password = request.form['password']
+
         comorbidities = request.form.getlist('comorbidities')
         insurance_company = request.form['insurance_company']
         insurance_number = request.form['insurance_number']
@@ -122,8 +124,9 @@ def register():
         # print(job_title)
         # print(ssn)
         # print(comorbidities)
-        # print(comorbidities[0])
+        # # print(comorbidities[0])
         # print(country)
+        # print(occupation)
         # print()
 
         cursor = DB.get_instance()
@@ -162,7 +165,85 @@ def register():
         ).fetchone() is not None:
             error = 'User {} is already registered.'.format(username)
 
-        if error is None:
+
+        # save changes feature
+        if session.get('user_id'):
+
+            user_id = session.get('user_id')
+            dt = datetime.strptime(exp_date, "%Y-%m-%d")  # , %H:%M:%S")
+            dtt = dt.strftime('%d %b %Y')
+
+            # generate address id
+            cursor.execute("SELECT DISTINCT P.Address_ID FROM People P WHERE ssn=:ssn", [ssn])
+            address_id = cursor.fetchall()
+            address_id = address_id[0][0]
+
+            # get appropriate phase number for new user
+            if healthcare_worker == 'on':
+                phase_number = '1'
+            elif float(age) > 55 or len(comorbidities) >= 2 or occupation == 'teacher':
+                phase_number = '2'
+            else:
+                phase_number = '3'
+
+            if covid_coverage == 'on':
+                covid_coverage = 'T'
+            else:
+                covid_coverage = 'F'
+
+
+            cursor.execute(
+                "update Address set Address_ID=:Address_ID, Apartment=:apartment, Street=:street, City=:city, State=:state, Country=:country, Zip_Code=:zip_code WHERE Address_ID = :Address_ID",
+                [address_id, apartment, street, city, state, country, zip_code, address_id])
+
+            cursor.execute(
+                "update People set ssn=:ssn, name=:name, occupation=:occupation, username=:username, password=:password, email_address=:email_address, age=:age, address_id=:address_id, phase_number=:phase_number WHERE ssn = :ssn",
+                [ssn, name, occupation, username, password, email_address, float(age), address_id, phase_number, ssn])
+
+            cursor.execute(
+                "update Health_Insurance set Insurance_Number=:Insurance_Number, ssn=:ssn, Insurance_Company=:Insurance_Company, covid_coverage=:covid_coverage, expiration_date=TO_DATE(:exp_date, 'DD MON YYYY') WHERE ssn = :ssn",
+                [insurance_number, ssn, insurance_company, covid_coverage, dtt, ssn])
+
+            # did_list = []
+            for i in range(0, len(comorbidities)):
+                cursor.execute("delete FROM Diagnosed WHERE ssn = :ssn", [ssn])
+                # cursor.execute('INSERT INTO Diagnosed (SSN, Disease_ID) VALUES (:ssn, :disease_id)', [ssn, did])
+
+            for i in range(0, len(comorbidities)):
+                cursor.execute("SELECT DISTINCT C.Disease_ID FROM Comorbidities C WHERE C.Disease_name= :disease_name",
+                               [comorbidities[i]])
+                did = cursor.fetchall()
+                # did_list.append(did)
+                # print(did)
+                did = did[0][0]
+                # print(did)
+                # cursor.execute("update Diagnosed set ssn=:ssn, Disease_ID=:disease_id WHERE ssn = :ssn", [ssn, did, ssn])
+                cursor.execute('INSERT INTO Diagnosed (SSN, Disease_ID) VALUES (:ssn, :disease_id)', [ssn, did])
+
+            if healthcare_worker == 'on' and job_title != '':
+                # randomly pick a vaccine they administer
+                vaccine_id = random.randint(1, 3)
+                try:
+                    cursor.execute('INSERT INTO Healthcare_Staff (ssn, job_title) VALUES (:ssn, :job_title)',
+                                   (ssn, job_title))
+                    cursor.execute('INSERT INTO Administers (SSN, Vaccine_ID) VALUES (:ssn, :vaccine_id)',
+                                   [ssn, vaccine_id])
+                except Exception:
+                    cursor.execute("update Administers set ssn=:ssn, Vaccine_ID=:vaccine_id WHERE ssn=:ssn", [ssn, vaccine_id, ssn])
+                    cursor.execute("update Healthcare_Staff set ssn=:ssn, job_title=:job_title WHERE ssn=:ssn", [ssn, job_title, ssn])
+            else:
+                cursor.execute("delete FROM Administers WHERE ssn=:ssn", [ssn])
+                cursor.execute("delete FROM Healthcare_Staff WHERE ssn=:ssn", [ssn])
+
+            # DB.__instance.acquire().commit()
+
+            return redirect(url_for('auth.register'))
+
+
+        #############
+        #############
+        if error is None and session.get('user_id') is None:
+
             dt = datetime.strptime(exp_date, "%Y-%m-%d") #, %H:%M:%S")
             dtt = dt.strftime('%d %b %Y')
 
