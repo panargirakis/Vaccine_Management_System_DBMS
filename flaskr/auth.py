@@ -118,16 +118,6 @@ def register():
         job_title = request.form['job_title']
         covid_coverage = request.form.get('covid_coverage')
 
-        # print(covid_coverage)
-        # print(exp_date)
-        # print(job_title)
-        # print(ssn)
-        # print(comorbidities)
-        # # print(comorbidities[0])
-        # print(country)
-        # print(occupation)
-        # print()
-
         cursor = DB.get_instance()
         error = None
 
@@ -298,10 +288,6 @@ def register():
                 cursor.execute('INSERT INTO Healthcare_Staff (ssn, job_title) VALUES (:ssn, :job_title)',
                            (ssn, job_title))
                 cursor.execute('INSERT INTO Administers (SSN, Vaccine_ID) VALUES (:ssn, :vaccine_id)', [ssn, vaccine_id])
-            else:
-                pass
-
-            # DB.__instance.acquire().commit()
 
             return redirect(url_for('auth.login'))
 

@@ -65,23 +65,14 @@ def phase_eligibility():
         try:
             cursor.execute("SELECT DISTINCT D.Disease_ID FROM Diagnosed D WHERE D.ssn= :ssn", [user_id])
             did = cursor.fetchall()
-            # did = did
-            # print(did)
-            # print(len(did))
-            # print(did[1][0])
-            # cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did])
+
             com_list = []
             for i in range(0, len(did)):
                 cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did[i][0]])
-                # cursor.execute("SELECT DISTINCT C.Disease_ID FROM Comorbidities C WHERE C.Disease_name= :disease_name", [comorbidities[i]])
+
                 com = cursor.fetchall()
                 com_list.append(com[0][0])
-                # print(did)
-                # did = did[0][0]
-                # print(did)
-                # cursor.execute("SELECT DISTINCT C.Disease_name FROM Comorbidities C WHERE C.Disease_ID= :Disease_ID", [did])
 
-            # comorbidities = cursor.fetchall()
             listToStr = ', '.join([str(elem) for elem in com_list])
             output5 = 'Comorbidities: ' + listToStr # str(comorbidities[0][0])
         except Exception:
@@ -106,7 +97,6 @@ def show_appt():
 
     # Get past and upcoming appointments
     user_id = session.get('user_id')
-    #print(user_id)
 
     qres = cursor.execute(find_appt_by_person, [user_id]).fetchall()
     qres_past = cursor.execute(find_past_appt_by_person, [user_id]).fetchall()
